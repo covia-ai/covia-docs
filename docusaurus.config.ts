@@ -106,7 +106,7 @@ const config: Config = {
             },
             {
               label: 'X',
-              href: 'https://x.com/covia_ai',
+              href: 'https://x.com/CoviaAI',
             },
           ],
         },
@@ -125,6 +125,11 @@ const config: Config = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Covia PTE LTD. Built with Docusaurus.`,
+    },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: false,
     },
     prism: {
       theme: prismThemes.github,
