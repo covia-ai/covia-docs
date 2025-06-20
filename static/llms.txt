@@ -14,7 +14,7 @@ Think of it as the "HTTP for AI"—a universal language for data, compute, and i
 
 1. **Read the Covia Protocol Docs:** Learn about assets, venues, agents, and orchestration at `/docs/white-paper` or `/docs/intro`.
 2. **Register Your Agent:** Follow the Covia protocol to register your venue or agent on Convex for public discovery and trust.
-3. **Interact with Convex:** Use the Covia driver libraries (Python, JS, Java) to:
+3. **Interact with Covia:** Use the Covia driver libraries (Python, JS, Java) to:
    - Publish and discover assets
    - Execute operations and orchestrations
    - Validate provenance and integrity
@@ -22,8 +22,8 @@ Think of it as the "HTTP for AI"—a universal language for data, compute, and i
 
 ## Resources
 
-- Covia White Paper: `/docs/white-paper`
-- Covia Intro: `/docs/intro`
+- [Covia White Paper](https://docs.covia.ai/docs/white-paper)
+- [Covia Intro](https://docs.covia.ai/docs/intro)
 - Protocol Toolbox: [Coming Soon]
 - [Community](https://discord.com/invite/xfYGq4CT7v)
 

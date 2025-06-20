@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Welcome to Covia: The HTTP for AI 🚀
+# Intro to Covia: The HTTP for AI
 
 > **Imagine a world where any organization, big or small, can tap into the global power of AI—securely, openly, and at scale.**
 

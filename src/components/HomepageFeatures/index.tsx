@@ -11,32 +11,29 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: 'Federated AI Orchestration',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Covia enables seamless orchestration of AI agents and workflows across organizations and platforms, making distributed intelligence possible at scale.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Universal Data Assets',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Every dataset, model, or compute service becomes a universal, verifiable asset—shareable and traceable across the Covia network.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Trust by Design & Open Interoperability',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Built on open standards, Covia ensures cryptographic trust, provenance, and interoperability—empowering you to connect, share, and monetize AI securely and openly.
       </>
     ),
   },
