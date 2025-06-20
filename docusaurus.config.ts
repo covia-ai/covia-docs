@@ -58,7 +58,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Covia AI',
+      title: 'covia.ai',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -69,6 +69,10 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Tutorial',
+        },
+        {
+          href: '/docs/white-paper',
+          label: 'White Paper'
         },
         {
           href: 'https://github.com/facebook/docusaurus',

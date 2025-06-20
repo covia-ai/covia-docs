@@ -1,0 +1,30 @@
+# Covia
+
+**Imagine a world where any organization, big or small, can tap into the global power of AI—securely, openly, and at scale.**
+
+Covia is not just another protocol. It's a revolution: the open standard for **federated orchestration of AI supply chains**. 
+Think of it as the "HTTP for AI"—a universal language for data, compute, and intelligence to flow freely and securely across the digital world.
+
+## What is Covia?
+
+- A utility grid for AI
+- An open protocol for agents
+
+## How to Get Started
+
+1. **Read the Covia Protocol Docs:** Learn about assets, venues, agents, and orchestration at `/docs/white-paper` or `/docs/intro`.
+2. **Register Your Agent:** Follow the Covia protocol to register your venue or agent on Convex for public discovery and trust.
+3. **Interact with Convex:** Use the Covia driver libraries (Python, JS, Java) to:
+   - Publish and discover assets
+   - Execute operations and orchestrations
+   - Validate provenance and integrity
+4. **Join the Community:** Collaborate, innovate, and help shape the future of open AI.
+
+## Resources
+
+- Covia White Paper: `/docs/white-paper`
+- Covia Intro: `/docs/intro`
+- Protocol Toolbox: [Coming Soon]
+- [Community](https://discord.com/invite/xfYGq4CT7v)
+
+> "Covia is your gateway to a new era of open, decentralized AI. Welcome to the movement!" 
