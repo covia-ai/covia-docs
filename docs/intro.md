@@ -2,46 +2,49 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Welcome to Covia: The HTTP for AI 🚀
 
-Let's discover **Docusaurus in less than 5 minutes**.
+> **Imagine a world where any organization, big or small, can tap into the global power of AI—securely, openly, and at scale.**
 
-## Getting Started
+Covia is not just another protocol. It's a revolution: the open standard for **federated orchestration of AI supply chains**. Think of it as the "HTTP for AI"—a universal language for data, compute, and intelligence to flow freely and securely across the digital world.
 
-Get started by **creating a new site**.
+---
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## 🌐 Why Covia?
 
-### What you'll need
+AI is the new electricity, but most organizations lack the resources to harness it fully. Covia changes the game:
+- **Democratizes AI**: Connects you to the best data, compute, and skills—globally.
+- **Open & Interoperable**: Built on open Internet standards, not walled gardens.
+- **Trust by Design**: Every asset is cryptographically verifiable and traceable.
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+---
 
-## Generate a new site
+## 🔑 Key Concepts (The Cool Stuff)
 
-Generate a new Docusaurus site using the **classic template**.
+### Universal Data Assets (UDA)
+Every dataset, model, or compute service becomes a **universal asset**—immutable, verifiable, and shareable. Imagine NFTs, but for *anything* digital and useful in AI.
 
-The classic template will automatically be added to your project after you run the command:
+### Venues & Agents
+- **Venues**: Digital spaces (like vaults or labs) where assets live and are managed.
+- **Agents**: The smart gatekeepers—software that connects your existing systems to the Covia universe, enforcing your rules and unlocking new value.
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+### Orchestration: AI as a Symphony
+Covia lets you compose and run **arbitrary graphs of operations**—think of it as building AI workflows that span the globe, with every step verifiable and auditable.
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+### Lattice Technology
+Covia uses cutting-edge math (lattices!) to make distributed data and operations conflict-free and always in sync. No more data silos, no more trust issues.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+---
 
-## Start your site
+## 🚀 What Can You Do with Covia?
+- Build and share AI models and datasets with full provenance and trust.
+- Monetize your data or compute power in a global marketplace.
+- Orchestrate complex, multi-party AI workflows—securely and transparently.
+- Bridge your existing enterprise systems into the open AI economy.
 
-Run the development server:
+---
 
-```bash
-cd my-website
-npm run start
-```
+## 🌍 Join the Open AI Ecosystem
+Covia is open source, open standard, and open for innovation. Whether you're a developer, data scientist, or enterprise leader, Covia is your gateway to the next era of AI.
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+> **Ready to build the future? Dive into the docs, explore the protocol, and become part of the Covia movement!**
