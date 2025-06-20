@@ -14,7 +14,7 @@ With Covia, organisations of all sizes can orchestrate powerful AI supply chains
 
 ### Assets
 
-Covia is designed around the concept of a Universal Data Asset (UDA), a model that allows for the representation of *any* compute resource or data set in a standard form.
+Covia introduces the concept of a Universal Data Asset (UDA), a model that allows for the representation of *any* compute resource or data set in a standard form.
 
 An asset is defined the following:
 - Immutable metadata that describes the asset
