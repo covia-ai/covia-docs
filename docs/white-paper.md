@@ -46,7 +46,7 @@ At the core of Covia’s architecture is the **Execution Graph Runtime**, suppor
 | -- | -- | 
 |SDK/CLI | Developer tooling to definem simulate, test, and deploy orchestration graphs |
 | Execution Runtime | Resolves graph nodes, manages retries, memory, rollback, and concurrency | 
-| Policy Engine | Enforces runtime access, identity scope, fallback, and data handling aconstraints |
+| Policy Engine | Enforces runtime access, identity scope, fallback, and data handling constraints |
 | Venue Adapters | Interfaces for executing across clouds, SaaS tools, or partner agents | 
 | Audit + Trace Layer | Emits signed logs, verifiable execution traces, and runtime observability | 
 
