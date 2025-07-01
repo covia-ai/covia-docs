@@ -1,14 +1,64 @@
-# Covia White Paper
+# Covia.ai White Paper
 
 THIS IS A DRAFT OF THE COVIA WHITE PAPER FOR DISCUSSION ONLY. NOT TO BE CONSIDERED FINAL.
 
 ## Vision
 
-Covia is a protocol for **federated orchestration** AI supply chains at global scale, the **"HTTP for AI"**.
+Modern AI systems are no longer isolated models or linear pipelines — they are **distributed, agentic, multi-party workflows** operating across APIs, clouds, internal services, and external data zones.
 
-The need for Covia is critical: all organisations will need to adopt AI to secure their competitive advantage in the digital economy of the future. However, most organisations do not have the capabilities to do so. Data assets, skills, compute resources, governance are all essential but only a few large organisations possess all of these assets and the ability to apply them consistently at scale.
+Yet the infrastructure to run these systems with **control, coordination, and compliance** is missing.
 
-With Covia, organisations of all sizes can orchestrate powerful AI supply chains, harnessing the best resources available in a global ecosystem, using open standard Internet technology.
+Covia introduces a **runtime orchestration protocol** that lets developers and infra teams **compose, execute, and govern AI-native workflows** with cryptographic traceability, policy enforcement, and modular deployment.
+
+Inspired by the modularity of **HTTP**, the operational consistency of **Kubernetes**, and the verifiability of **Git**, **Covia.ai** enables secure, multi-agent AI workflows to operate across trust boundaries — without losing control, visibility, or scalability.
+
+With Covia.ai, organisations of all sizes can orchestrate powerful AI supply chains, harnessing the best resources available in a global ecosystem, using open standard Internet technology.
+
+## Protocol Overview
+
+The Covia.ai protocol defines a standard for orchestrating federated execution graphs across systems, teams, and infrastructure zones. It enables agents, APIs, models, and data services to interoperate securely under runtime policies and execution constraints.
+
+**Core Concepts**
+- **Assets** — Addressable, immutable units of data or compute
+- **Venues** — Execution environments with scoped trust and policy
+- **Agents** — Runtime-exposed capabilities: APIs, models, scripts, or services
+- **Operations** — Executable nodes in an orchestration graph
+- **Policies** — Rules enforced at runtime: identity, access, fallback, rollback
+- **Traces** — Verifiable records of what ran, where, and under what conditions
+
+Each Covia graph is:
+- Executed in parts, across federated venues
+- Governed by runtime policy per operation
+- Logged and signed for audit and traceability
+- Composable into reusable modules for orchestration at scale
+
+By combining execution and governance in a unified runtime, Covia.ai offers a **developer-friendly protocol for operating AI workflows safely in production** — even when they span multiple organisations or regulatory regimes.
+
+## Architecture Overview
+
+Covia.ai is built as a **federated execution layer** for orchestrating AI workflows across distributed systems. The architecture is modular, pluggable, and policy-aware — designed to span clouds, teams, and partner organisations without centralising control or breaking trust boundaries.
+
+At the core of Covia’s architecture is the **Execution Graph Runtime**, supported by runtime policy enforcement, shared memory, and observability services — all operating within or across isolated **venues**.
+
+### Component Summary
+
+| Component | Purpose |
+| -- | -- | 
+|SDK/CLI | Developer tooling to definem simulate, test, and deploy orchestration graphs |
+| Execution Runtime | Resolves graph nodes, manages retries, memory, rollback, and concurrency | 
+| Policy Engine | Enforces runtime access, identity scope, fallback, and data handling constraints |
+| Venue Adapters | Interfaces for executing across clouds, SaaS tools, or partner agents | 
+| Audit + Trace Layer | Emits signed logs, verifiable execution traces, and runtime observability | 
+
+### Federated by Design
+
+Each **Venue** (e.g., - workspace, AWS account, on-prem node, vendor endpoint) operates with its own policy context and identity boundary. Nodes within a graph may execute across venues, with:
+- Isolated runtime sandboxes
+- Signed, policy-bound transitions
+- Encrypted memory scoped to actor identity
+- Unified trace collection and verification
+
+This allows Covia.ai to operate not just within an **organisation, but across organizational lines**, while maintaining runtime trust and governance.
 
 ## Key Concepts
 
@@ -312,21 +362,6 @@ This solution is based on combining several important technologies:
 - Vector similarity search
 
 Decentralised vector database options can also be used directly with the Covia protocol, because database nodes are themselves Covia agents! So a vector similarity search can easily be included in a Covia based orchestration as part a larger AI process pipeline.
-
-## The Covia Token
-
-The Covia Token is a decentralised digital currency for the data economy.
-
-Use of the Covia token is **optional** - The protocol can be operated freely on a P2P basis without any usage of the token. Collaborating organisations may simply choose to utilise each other's venues directly. 
-
-However the token will provide a number of important additional capabilities: 
-- Trade and monetise data assets using decentralised smart contracts
-- Create immutable, public provenance records
-- Register venues to establish a public root of trust
-- Accept payments in tokens, e.g. pre-payment for metered services
-- Allow for decentralised governance mechanisms, such as dispute arbitration
-
-The Covia Token is a CAD29 fungible token running on the Convex protonet / main network. The lattice technology powering Convex makes it extremely well suited as the basis for a decentralised data economy.
 
 
  
