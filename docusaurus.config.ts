@@ -65,14 +65,22 @@ const config: Config = {
       },
       items: [
         {
+          href: '/docs/white-paper',
+          label: 'Overview'
+        },
+        {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'User Guide',
         },
         {
           href: '/docs/white-paper',
-          label: 'White Paper'
+          label: 'Protocol'
+        },
+        {
+          href: '/docs/white-paper',
+          label: 'Venues'
         },
         {
           href: 'https://github.com/covia-ai/covia',
