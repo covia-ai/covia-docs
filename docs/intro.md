@@ -1,8 +1,11 @@
 ---
+id: overview
+title: Overview
+sidebar_label: Overview
 sidebar_position: 1
 ---
 
-# Intro to Covia.ai
+# Overview
 
 >**The Runtime Orchestration Layer for Secure, Agentic, AI Systems.**
 > **Imagine a world where any organization, big or small, can tap into the global power of AI—securely, openly, and at scale.**
