@@ -15,7 +15,7 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://covia.ai',
+  url: 'https://docs.covia.ai',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -65,14 +65,22 @@ const config: Config = {
       },
       items: [
         {
+          href: '/docs/white-paper',
+          label: 'Overview'
+        },
+        {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'User Guide',
         },
         {
           href: '/docs/white-paper',
-          label: 'White Paper'
+          label: 'Protocol'
+        },
+        {
+          href: '/docs/white-paper',
+          label: 'Venues'
         },
         {
           href: 'https://github.com/covia-ai/covia',
