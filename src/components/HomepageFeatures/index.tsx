@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Covia enables seamless orchestration of AI agents and workflows across organizations and platforms, making distributed intelligence possible at scale.
+        Covia enables seamless orchestration of AI agents and workflows across organisations and platforms, making distributed intelligence possible at scale.
       </>
     ),
   },
@@ -33,7 +33,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Built on open standards, Covia ensures cryptographic trust, provenance, and interoperability—empowering you to connect, share, and monetize AI securely and openly.
+        Built on open standards, Covia ensures cryptographic trust, provenance, and interoperability—empowering you to connect, share, and monetise AI securely and openly.
       </>
     ),
   },
