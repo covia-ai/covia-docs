@@ -9,3 +9,33 @@
   height: 200px;
   width: 200px;
 }
+.features {
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+/* Ensure headings and paragraphs are readable in all modes */
+.features h3,
+.features p {
+  color: var(--ifm-font-color-base) !important;
+}
+
+/* Extra contrast for dark mode */
+[data-theme='dark'] .features {
+  background-color: #1E2642; /* Covia Dark Navy */
+  color: #F5E5E9;
+}
+[data-theme='dark'] .features h3,
+[data-theme='dark'] .features p {
+  color: #F5E5E9 !important;
+}
+
+/* Extra contrast for light mode */
+[data-theme='light'] .features {
+  background-color: #F5E5E9; /* Covia Light Gray */
+  color: #1E2642;
+}
+[data-theme='light'] .features h3,
+[data-theme='light'] .features p {
+  color: #1E2642 !important;
+}
