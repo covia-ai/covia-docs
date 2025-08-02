@@ -119,8 +119,3 @@ If you encounter issues:
 2. Review the [MCP specification](https://modelcontextprotocol.io)
 3. Contact Covia support for integration-specific issues
 
-## Next Steps
-
-- Explore advanced features like custom data sources
-- Learn about [Covia with A2A](./covia-with-a2a.md) for agent-to-agent communication
-- Check out the [protocol documentation](../protocol/overview.md) for technical details 
