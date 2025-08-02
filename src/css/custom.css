@@ -15,6 +15,15 @@
 
 /* You can override the default Infima variables here. */
 :root {
+ /* --- Covia.ai Brand Palette --- */
+  --color-primary-purple: #6B46C1;   /* Added for Covia.ai brand palette */
+  --color-bright-blue: #4A90E2;      /* Added for Covia.ai brand palette */
+  --color-dark-navy: #1E2642;        /* Added for Covia.ai brand palette */
+  --color-vibrant-orange: #F2AE30;   /* Added for Covia.ai brand palette */
+  --color-light-gray: #F5E5E9;       /* Added for Covia.ai brand palette */
+  --color-success-green: #10B981;    /* Added for Covia.ai brand palette */
+  --color-warning-yellow: #F59E0B;   /* Added for Covia.ai brand palette */
+  
   --ifm-color-primary: #6B46C1; /* Primary Purple */
   --ifm-color-primary-dark: #5e3ca8; /* Darkened by 10% */
   --ifm-color-primary-darker: #54369a; /* Darkened by 15% */
@@ -34,6 +43,8 @@
   --ifm-color-info: #4A90E2; /* Bright Blue for info */
   --ifm-color-danger: #F2AE30; /* Vibrant Orange for danger */
   --ifm-background-color: #F5E5E9; /* Light Gray for background */
+
+  /* Keep other Infima variables as is */
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
@@ -60,4 +71,78 @@
   --ifm-color-danger: #f7c262; /* Lighter Vibrant Orange for danger */
   --ifm-background-color: #1E2642; /* Dark Navy for background */
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar background and text */
+.navbar {
+  background-color: var(--color-dark-navy) !important; /* Added for Covia.ai brand palette */
+  color: var(--color-light-gray) !important;           /* Added for Covia.ai brand palette */
+}
+
+/* Sidebar background */
+.theme-doc-sidebar-container {
+  background-color: var(--color-dark-navy) !important; /* Added for Covia.ai brand palette */
+}
+
+/* Sidebar link color */
+.menu__link {
+  color: var(--color-light-gray) !important;           /* Added for Covia.ai brand palette */
+}
+.menu__link--active {
+  color: var(--color-primary-purple) !important;       /* Added for Covia.ai brand palette */
+}
+
+/* Primary button */
+.button--primary {
+  /* background-color: var(--ifm-color-primary);  Commented out original */
+  background-color: var(--color-primary-purple); /* Added for Covia.ai brand palette */
+  color: var(--ifm-font-color-base);
+}
+
+/* Secondary button */
+.button--secondary {
+  background-color: var(--color-bright-blue); /* Added for Covia.ai brand palette */
+  color: var(--ifm-font-color-base);
+}
+
+/* Link color */
+a {
+  /* color: var(--ifm-link-color);  Commented out original */
+  color: var(--color-bright-blue); /* Added for Covia.ai brand palette */
+}
+
+/* Success and warning alerts */
+.alert--success,
+.alert--warning {
+  /* color: #fff;  <-- Hardcoded, does not adapt */
+  color: var(--ifm-font-color-base); /* Use theme variable instead */
+}
+
+/* Page background */
+body {
+  /* background-color: #fff;  Commented out original */
+  background-color: var(--color-light-gray); /* Added for Covia.ai brand palette */
+}
+
+/*
+/* Ensure features section text is always readable in both modes */
+.features {
+  background-color: var(--ifm-background-color); /* Adapts to light/dark mode */
+  color: var(--ifm-font-color-base);             /* Adapts to light/dark mode */
+}
+ 
+/* Make sure headings and paragraphs also adapt */
+.features h3, 
+.features p {
+  color: var(--ifm-font-color-base);
+}
+*/
+/* Optional: For extra contrast, use your brand palette in each mode */
+[data-theme='dark'] .features {
+  background-color: #1E2642; /* Covia Dark Navy */
+  color: #F5E5E9;            /* Covia Light Gray */
+}
+[data-theme='light'] .features {
+  background-color: #F5E5E9; /* Covia Light Gray */
+  color: #1E2642;            /* Covia Dark Navy */
 }
