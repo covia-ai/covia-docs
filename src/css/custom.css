@@ -42,7 +42,7 @@
   --ifm-color-warning: #F59E0B; /* Warning Yellow */
   --ifm-color-info: #4A90E2; /* Bright Blue for info */
   --ifm-color-danger: #F2AE30; /* Vibrant Orange for danger */
-  --ifm-background-color: #F5E5E9; /* Light Gray for background */
+  --ifm-background-color: #F5F5F9; /* Light Gray for background */
 
   /* Keep other Infima variables as is */
   --ifm-code-font-size: 95%;
@@ -73,76 +73,14 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
-/* Navbar background and text */
-.navbar {
-  background-color: var(--color-dark-navy) !important; /* Added for Covia.ai brand palette */
-  color: var(--color-light-gray) !important;           /* Added for Covia.ai brand palette */
-}
 
-/* Sidebar background */
-.theme-doc-sidebar-container {
-  background-color: var(--color-dark-navy) !important; /* Added for Covia.ai brand palette */
-}
-
-/* Sidebar link color */
-.menu__link {
-  color: var(--color-light-gray) !important;           /* Added for Covia.ai brand palette */
-}
-.menu__link--active {
-  color: var(--color-primary-purple) !important;       /* Added for Covia.ai brand palette */
-}
-
-/* Primary button */
-.button--primary {
-  /* background-color: var(--ifm-color-primary);  Commented out original */
-  background-color: var(--color-primary-purple); /* Added for Covia.ai brand palette */
-  color: var(--ifm-font-color-base);
-}
-
-/* Secondary button */
-.button--secondary {
-  background-color: var(--color-bright-blue); /* Added for Covia.ai brand palette */
-  color: var(--ifm-font-color-base);
-}
-
-/* Link color */
-a {
-  /* color: var(--ifm-link-color);  Commented out original */
-  color: var(--color-bright-blue); /* Added for Covia.ai brand palette */
-}
-
-/* Success and warning alerts */
-.alert--success,
-.alert--warning {
-  /* color: #fff;  <-- Hardcoded, does not adapt */
-  color: var(--ifm-font-color-base); /* Use theme variable instead */
-}
-
-/* Page background */
-body {
-  /* background-color: #fff;  Commented out original */
-  background-color: var(--color-light-gray); /* Added for Covia.ai brand palette */
-}
-
-/*
-/* Ensure features section text is always readable in both modes */
-.features {
-  background-color: var(--ifm-background-color); /* Adapts to light/dark mode */
-  color: var(--ifm-font-color-base);             /* Adapts to light/dark mode */
-}
- 
-/* Make sure headings and paragraphs also adapt */
-.features h3, 
-.features p {
-  color: var(--ifm-font-color-base);
-}
 */
 /* Optional: For extra contrast, use your brand palette in each mode */
 [data-theme='dark'] .features {
   background-color: #1E2642; /* Covia Dark Navy */
-  color: #F5E5E9;            /* Covia Light Gray */
+  color: #F5F5F9;            /* Covia Light Gray */
 }
 [data-theme='light'] .features {
-  background-color: #F5E5E9; /* Covia Light Gray */
+  background-color: #F5F5F9; /* Covia Light Gray */
   color: #1E2642;            /* Covia Dark Navy */
 }

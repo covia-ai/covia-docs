@@ -45,8 +45,8 @@ The Covia protocol is defined through a set of formal specifications:
 
 To start building with the Covia protocol:
 
-1. Read the [Whitepaper](./whitepaper) for a deep dive into the protocol design
-2. Explore the [Governance Model](./governance) to understand protocol evolution
+1. Read the [Whitepaper](../protocol/whitepaper) for a deep dive into the protocol design
+2. Explore the [Governance Model](../protocol/governance) to understand protocol evolution
 3. Join the community and contribute to protocol development
 
 The protocol is continuously evolving through our open governance process, with regular updates and improvements based on community feedback and real-world implementation experience. 

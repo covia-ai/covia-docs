@@ -58,29 +58,35 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/covia.png',
     navbar: {
-      title: 'covia.ai',
+      // title: 'covia.ai',
       logo: {
         alt: 'My Site Logo',
         src: 'img/covia.png',
       },
       items: [
         {
-          href: '/docs/overview',
-          label: 'Overview'
+          type: 'docSidebar',
+          sidebarId: 'overviewSidebar',
+          position: 'left',
+          label: 'Overview',
         },
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'userGuideSidebar',
           position: 'left',
           label: 'User Guide',
         },
         {
-          href: '/docs/white-paper',
-          label: 'Protocol'
+          type: 'docSidebar',
+          sidebarId: 'protocolSidebar',
+          position: 'left',
+          label: 'Protocol',
         },
         {
-          href: '/docs/white-paper',
-          label: 'Venues'
+          type: 'docSidebar',
+          sidebarId: 'cogsSidebar',
+          position: 'left',
+          label: 'COGs',
         },
         {
           href: 'https://github.com/covia-ai/covia',

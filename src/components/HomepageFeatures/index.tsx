@@ -11,11 +11,11 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Federated AI Orchestration',
+    title: 'AI Orchestration Grid',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Covia enables seamless orchestration of AI agents and workflows across organisations and platforms, making distributed intelligence possible at scale.
+        Covia enables seamless federated orchestration of AI agents and workflows across organisations and platforms, making distributed intelligence possible at scale.
       </>
     ),
   },
