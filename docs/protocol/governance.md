@@ -2,11 +2,11 @@
 sidebar_position: 3
 ---
 
-# Protocol Governance
+# Governance
 
 Covia follows a community-driven governance model that ensures transparent and collaborative evolution of the protocol while maintaining its core principles of openness, security, and interoperability.
 
-## Governance Principles
+## Principles
 
 ### 1. Open Participation
 - Anyone can propose protocol improvements
@@ -20,7 +20,7 @@ Covia follows a community-driven governance model that ensures transparent and c
 - Security considerations paramount
 - Performance impact analysis
 
-### 3. Decentralized Decision Making
+### 3. Decentralised Decision Making
 - Multi-stakeholder governance
 - Distributed voting mechanisms
 - Prevention of capture by any single entity

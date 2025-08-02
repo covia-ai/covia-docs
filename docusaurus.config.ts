@@ -134,7 +134,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Covia PTE LTD. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Covia Labs Pte Ltd. Built with Docusaurus.`,
     },
     colorMode: {
       defaultMode: 'light',

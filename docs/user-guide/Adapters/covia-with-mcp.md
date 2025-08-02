@@ -1,10 +1,10 @@
 ---
 id: covia-with-mcp
 title: Covia with MCP
-sidebar_label: Covia with MCP
+sidebar_label: MCP
 ---
 
-# Covia with MCP
+# MCP Adapter
 
 This guide will help you integrate Covia with the Model Context Protocol (MCP) to enhance your AI applications with real-time data and context.
 

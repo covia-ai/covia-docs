@@ -1,10 +1,10 @@
 ---
 id: covia-with-a2a
 title: Covia with A2A
-sidebar_label: Covia with A2A
+sidebar_label: A2A
 ---
 
-# Covia with A2A
+# A2A Adapter
 
 This guide will help you implement Covia with Agent-to-Agent (A2A) communication protocols to enable intelligent multi-agent systems.
 
@@ -194,10 +194,3 @@ a2aClient.on('message', (message) => {
   console.log('Message received:', message);
 });
 ```
-
-## Next Steps
-
-- Explore advanced agent coordination patterns
-- Learn about [Covia with MCP](./covia-with-mcp.md) for model context integration
-- Review the [protocol documentation](../protocol/overview.md) for technical specifications
-- Implement custom agent capabilities and communication protocols 

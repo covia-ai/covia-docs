@@ -10,7 +10,7 @@
  * Vibrant Orange: #F2AE30
  * Light Gray: #F5E5E9
  * Success Green: #10B981
- * Warning Yellow: #F59E0B
+ * Warning Yellow: #E5E5E9 
  */
 
 /* You can override the default Infima variables here. */
@@ -42,7 +42,7 @@
   --ifm-color-warning: #F59E0B; /* Warning Yellow */
   --ifm-color-info: #4A90E2; /* Bright Blue for info */
   --ifm-color-danger: #F2AE30; /* Vibrant Orange for danger */
-  --ifm-background-color: #F5F5F9; /* Light Gray for background */
+  --ifm-background-color: #F8F8F8; /* Light Gray for background */
 
   /* Keep other Infima variables as is */
   --ifm-code-font-size: 95%;
@@ -69,7 +69,7 @@
   --ifm-color-warning: #fbbf24; /* Lighter Warning Yellow for dark mode */
   --ifm-color-info: #76b2ee; /* Lighter Bright Blue for info */
   --ifm-color-danger: #f7c262; /* Lighter Vibrant Orange for danger */
-  --ifm-background-color: #1E2642; /* Dark Navy for background */
+  --ifm-background-color: #101010; /* Dark Navy for background */
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
