@@ -65,7 +65,7 @@ const config: Config = {
       },
       items: [
         {
-          href: '/docs/white-paper',
+          href: '/docs/overview',
           label: 'Overview'
         },
         {

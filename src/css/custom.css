@@ -2,11 +2,20 @@
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
+ *
+ * Spock8888: Color Palette for Reference
+ * Primary Purple: #6B46C1
+ * Bright Blue: #4A90E2
+ * Dark Navy: #1E2642
+ * Vibrant Orange: #F2AE30
+ * Light Gray: #F5E5E9
+ * Success Green: #10B981
+ * Warning Yellow: #F59E0B
  */
 
 /* You can override the default Infima variables here. */
 :root {
-  /* --- Covia.ai Brand Palette --- */
+ /* --- Covia.ai Brand Palette --- */
   --color-primary-purple: #6B46C1;   /* Added for Covia.ai brand palette */
   --color-bright-blue: #4A90E2;      /* Added for Covia.ai brand palette */
   --color-dark-navy: #1E2642;        /* Added for Covia.ai brand palette */
@@ -14,22 +23,54 @@
   --color-light-gray: #F5E5E9;       /* Added for Covia.ai brand palette */
   --color-success-green: #10B981;    /* Added for Covia.ai brand palette */
   --color-warning-yellow: #F59E0B;   /* Added for Covia.ai brand palette */
-
-  /* --- Docusaurus Theme Overrides --- */
-  /* --ifm-color-primary: #2e8555;  Commented out original Infima variable */
-  --ifm-color-primary: var(--color-primary-purple); /* Added for Covia.ai brand palette */
-  --ifm-color-primary-dark: #5531a7; /* Slightly darker purple, added for Covia.ai */
-  --ifm-color-primary-light: #7d5fd3; /* Slightly lighter purple, added for Covia.ai */
-  --ifm-background-color: var(--color-light-gray); /* Added for Covia.ai brand palette */
-  --ifm-navbar-background-color: var(--color-dark-navy); /* Added for Covia.ai brand palette */
-  --ifm-footer-background-color: var(--color-dark-navy); /* Added for Covia.ai brand palette */
-  --ifm-link-color: var(--color-bright-blue); /* Added for Covia.ai brand palette */
-  --ifm-success-color: var(--color-success-green); /* Added for Covia.ai brand palette */
-  --ifm-warning-color: var(--color-warning-yellow); /* Added for Covia.ai brand palette */
+  
+  --ifm-color-primary: #6B46C1; /* Primary Purple */
+  --ifm-color-primary-dark: #5e3ca8; /* Darkened by 10% */
+  --ifm-color-primary-darker: #54369a; /* Darkened by 15% */
+  --ifm-color-primary-darkest: #462d80; /* Darkened by 25% */
+  --ifm-color-primary-light: #7e5cc8; /* Lightened by 10% */
+  --ifm-color-primary-lighter: #9172d0; /* Lightened by 20% */
+  --ifm-color-primary-lightest: #a588d8; /* Lightened by 30% */
+  --ifm-color-secondary: #4A90E2; /* Bright Blue */
+  --ifm-color-secondary-dark: #3d7cc9; /* Darkened by 10% */
+  --ifm-color-secondary-darker: #366fb5; /* Darkened by 15% */
+  --ifm-color-secondary-darkest: #2d5c97; /* Darkened by 25% */
+  --ifm-color-secondary-light: #60a1e8; /* Lightened by 10% */
+  --ifm-color-secondary-lighter: #76b2ee; /* Lightened by 20% */
+  --ifm-color-secondary-lightest: #8cc3f4; /* Lightened by 30% */
+  --ifm-color-success: #10B981; /* Success Green */
+  --ifm-color-warning: #F59E0B; /* Warning Yellow */
+  --ifm-color-info: #4A90E2; /* Bright Blue for info */
+  --ifm-color-danger: #F2AE30; /* Vibrant Orange for danger */
+  --ifm-background-color: #F5E5E9; /* Light Gray for background */
 
   /* Keep other Infima variables as is */
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #9172d0; /* Lighter Primary Purple for better contrast */
+  --ifm-color-primary-dark: #7e5cc8; /* Slightly darker than primary */
+  --ifm-color-primary-darker: #6b46c1; /* Base Primary Purple */
+  --ifm-color-primary-darkest: #54369a; /* Darker shade */
+  --ifm-color-primary-light: #a588d8; /* Lightened by 10% */
+  --ifm-color-primary-lighter: #b89ee0; /* Lightened by 20% */
+  --ifm-color-primary-lightest: #cbb4e8; /* Lightened by 30% */
+  --ifm-color-secondary: #76b2ee; /* Lighter Bright Blue for contrast */
+  --ifm-color-secondary-dark: #60a1e8; /* Slightly darker */
+  --ifm-color-secondary-darker: #4a90e2; /* Base Bright Blue */
+  --ifm-color-secondary-darkest: #3d7cc9; /* Darker shade */
+  --ifm-color-secondary-light: #8cc3f4; /* Lightened by 10% */
+  --ifm-color-secondary-lighter: #a2d4fa; /* Lightened by 20% */
+  --ifm-color-secondary-lightest: #b8e5ff; /* Lightened by 30% */
+  --ifm-color-success: #34d399; /* Lighter Success Green for dark mode */
+  --ifm-color-warning: #fbbf24; /* Lighter Warning Yellow for dark mode */
+  --ifm-color-info: #76b2ee; /* Lighter Bright Blue for info */
+  --ifm-color-danger: #f7c262; /* Lighter Vibrant Orange for danger */
+  --ifm-background-color: #1E2642; /* Dark Navy for background */
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
 /* Navbar background and text */
