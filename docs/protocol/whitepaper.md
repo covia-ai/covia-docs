@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Covia.ai White Paper
 
 THIS IS A DRAFT OF THE COVIA WHITE PAPER FOR DISCUSSION ONLY. NOT TO BE CONSIDERED FINAL.

@@ -78,16 +78,17 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
+          sidebarId: 'operatorGuideSidebar',
+          position: 'left',
+          label: 'Operator Guide',
+        },
+        {
+          type: 'docSidebar',
           sidebarId: 'protocolSidebar',
           position: 'left',
           label: 'Protocol',
         },
-        {
-          type: 'docSidebar',
-          sidebarId: 'cogsSidebar',
-          position: 'left',
-          label: 'COGs',
-        },
+
         {
           href: 'https://github.com/covia-ai/covia',
           label: 'GitHub',
