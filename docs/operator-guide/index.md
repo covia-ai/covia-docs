@@ -57,13 +57,13 @@ Covia supports various types of operators:
 
 ## Next Steps
 
-Explore the following sections to learn more about becoming a Covia Operator:
+This guide will be expanded with detailed sections covering:
 
-- **[Setup Guide](./setup-guide)**: Step-by-step instructions for setting up your infrastructure
-- **[Resource Management](./resource-management)**: Best practices for managing computational resources
-- **[Service Configuration](./service-configuration)**: How to configure and offer services
-- **[Network Integration](./network-integration)**: Connecting to and participating in the network
-- **[Revenue Optimization](./revenue-optimization)**: Strategies for maximizing your earnings
-- **[Troubleshooting](./troubleshooting)**: Common issues and solutions
+- **Setup Guide**: Step-by-step instructions for setting up your infrastructure
+- **Resource Management**: Best practices for managing computational resources
+- **Service Configuration**: How to configure and offer services
+- **Network Integration**: Connecting to and participating in the network
+- **Revenue Optimization**: Strategies for maximizing your earnings
+- **Troubleshooting**: Common issues and solutions
 
-Ready to start your journey as a Covia Operator? Let's begin with the [Setup Guide](./setup-guide) to get your infrastructure up and running. 
+Stay tuned for these detailed guides as they become available. 

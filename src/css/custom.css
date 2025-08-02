@@ -72,9 +72,6 @@
   --ifm-background-color: #101010; /* Dark Navy for background */
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
-
-
-*/
 /* Optional: For extra contrast, use your brand palette in each mode */
 [data-theme='dark'] .features {
   background-color: #1E2642; /* Covia Dark Navy */

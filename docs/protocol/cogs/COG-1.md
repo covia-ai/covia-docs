@@ -174,10 +174,8 @@ The architecture supports horizontal scaling across organizational and geographi
 
 ## 8. References
 
-- [COG-2: Message Format Specification](./COG-2)
-- [COG-3: Universal Data Assets Specification](./COG-3)
-- [Protocol Whitepaper](../protocol/whitepaper)
-- [Governance Model](../protocol/governance)
+- [Protocol Whitepaper](../whitepaper)
+- [Governance Model](../governance)
 
 ## 9. Appendix
 

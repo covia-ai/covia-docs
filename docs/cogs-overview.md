@@ -20,7 +20,7 @@ COGs (Covia Open Grid apecifications) are the formal technical specifications th
 
 ### Core Protocol Specifications
 
-- **[COG-1](./cogs/COG-1)** - Architecture
+- **[COG-1](./protocol/cogs/COG-1)** - Architecture
 
 ## COG Development Process
 
