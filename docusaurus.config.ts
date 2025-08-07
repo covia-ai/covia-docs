@@ -54,6 +54,21 @@ const config: Config = {
     ],
   ],
 
+  // Add redirect plugin to redirect homepage to overview
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: ['/'],
+            to: '/docs/overview/',
+          },
+        ],
+      },
+    ],
+  ],
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/covia.png',
