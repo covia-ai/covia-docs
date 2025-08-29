@@ -70,13 +70,16 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
+    // Image for social card
     image: 'img/covia.png',
+
+    // Main navigation bar
     navbar: {
-      // title: 'covia.ai',
+      // title: 'covia.ai',  // Hide this, the logo does the job
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Covia Logo',
         src: 'img/covia.png',
+        href: '/'
       },
       items: [
         {
@@ -107,6 +110,11 @@ const config: Config = {
         {
           href: 'https://github.com/covia-ai/covia',
           label: 'GitHub',
+          position: 'right',
+        },
+        {
+          href: 'https://covia.ai',
+          label: 'Covia.ai',
           position: 'right',
         },
       ],
