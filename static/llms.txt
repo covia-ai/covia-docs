@@ -23,7 +23,7 @@ Think of it as the "HTTP for AI"—a universal language for data, compute, and i
 ## Resources
 
 - [Covia White Paper](https://docs.covia.ai/docs/white-paper)
-- [Covia Intro](https://docs.covia.ai/docs/intro)
+- [Covia Overview](https://docs.covia.ai/docs/overview)
 - Protocol Toolbox: [Coming Soon]
 - [Community](https://discord.com/invite/xfYGq4CT7v)
 

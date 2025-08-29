@@ -8,7 +8,7 @@ COGs (Covia Open Grid specifications) are formal  documents that define the tech
 
 ## What are COGs?
 
-COGs (Covia Open Grid apecifications) are the formal technical specifications that define:
+COGs (Covia Open Grid specifications) are the formal technical specifications that define:
 
 - **Protocol Standards**: Core protocol specifications and message formats
 - **Security Standards**: Cryptographic primitives, authentication, and authorization
@@ -20,7 +20,7 @@ COGs (Covia Open Grid apecifications) are the formal technical specifications th
 
 ### Core Protocol Specifications
 
-- **[COG-1](./protocol/cogs/COG-001)** - Architecture
+- **[COG-1](./cogs/COG-001)** - Architecture
 
 ## COG Development Process
 
@@ -30,7 +30,7 @@ Each COG follows a structured development process:
 2. **Discussion**: Open community discussion and technical analysis
 3. **Drafting**: Formal specification drafting with community input
 4. **Review**: Technical and security review of reference implementations by experts
-5. **Acceptance**: Aproval for offical adoption across the ecosystem
+5. **Acceptance**: Approval for official adoption across the ecosystem
 
 ## Contributing to COGs
 

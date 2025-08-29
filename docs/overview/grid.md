@@ -4,7 +4,9 @@ sidebar_position: 2
 
 # Grid
 
-The Covia Grid is the foundational infrastructure that enables distributed AI orchestration across organizational boundaries.
+The Grid is the decentralised backbone that enables distributed AI orchestration across organisational boundaries.
+
+It's a public utility network: making AI accessible and pluggable for the whole world.
 
 ## What is the Grid?
 
@@ -18,6 +20,7 @@ The Grid represents the core networking and coordination layer of the Covia prot
 ## Grid Architecture
 
 ### Network Topology
+
 The Grid operates as a decentralized network where each node can:
 - Host AI models and services
 - Provide computational resources
