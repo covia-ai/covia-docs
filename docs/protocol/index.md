@@ -2,16 +2,17 @@
 sidebar_position: 1
 ---
 
-# Protocol
+# Grid Protocol
 
-The Covia protocol is the foundational specification that enables federated AI orchestration across organizational boundaries.
+The Covia Open Grid protocol is the foundational specification that enables federated AI orchestration across organisational boundaries.
 
 ## Protocol Components
 
 ### Core Specifications
 
-- **[Whitepaper](./whitepaper)** - Comprehensive technical specification of the protocol design, architecture, and implementation details
+- **[Whitepaper](./whitepaper)** - Outline of the grid protocol design, architecture, and key implementation details
 - **[Governance](./governance)** - Protocol governance model, decision-making processes, and community participation guidelines
+- **[COGS](./cogs-overview)** - Formal specification documents for the Covia Open Grid
 
 ### Key Protocol Features
 
@@ -48,13 +49,3 @@ To understand and work with the Covia protocol:
 3. **Explore the [Overview section](../overview)** for high-level concepts and architecture
 4. **Join the community** to contribute to protocol development and governance
 
-## Protocol Evolution
-
-The Covia protocol is designed to evolve through community governance:
-
-- **Open Development**: All protocol changes are proposed and discussed publicly
-- **Community Voting**: Protocol upgrades are decided through community consensus
-- **Backward Compatibility**: Changes maintain compatibility with existing implementations
-- **Gradual Migration**: Protocol updates support smooth transitions for all participants
-
-The protocol continues to evolve based on real-world implementation experience, community feedback, and emerging requirements from the AI ecosystem. 

@@ -1,15 +1,24 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Governance
 
 Covia follows a community-driven governance model that ensures transparent and collaborative evolution of the protocol while maintaining its core principles of openness, security, and interoperability.
 
+The Covia protocol is designed to evolve through community governance:
+
+- **Open Development**: All protocol changes are proposed and discussed publicly
+- **Community Voting**: Protocol upgrades are decided through community consensus
+- **Backward Compatibility**: Changes maintain compatibility with existing implementations
+- **Gradual Migration**: Protocol updates support smooth transitions for all participants
+
+The protocol continues to evolve based on real-world implementation experience, community feedback, and emerging requirements from the AI ecosystem. 
+
 ## Principles
 
 ### 1. Open Participation
-- Anyone can propose protocol improvements
+- Anyone can propose protocol improvements via COGs
 - All discussions are public and archived
 - Decisions are made through consensus-building
 - Clear path for new contributors
@@ -28,17 +37,23 @@ Covia follows a community-driven governance model that ensures transparent and c
 
 ## Governance Process
 
-### Protocol Improvement Proposals (PIPs)
+### COG proposals 
 
-1. **Draft Stage**
+0. **Proposal Stage**
    - Initial proposal submission
    - Community discussion and feedback
+   - Appointment of editor / maintainer
+   - Assignment of COG-XXX number
+
+1. **Draft Stage**
    - Technical specification development
+   - Development of reference implementation
+   - Development of test suite 
+   - Publication of draft documentation
 
 2. **Review Stage**
    - Formal technical review
    - Security analysis
-   - Implementation considerations
    - Community impact assessment
 
 3. **Acceptance Stage**
@@ -50,25 +65,6 @@ Covia follows a community-driven governance model that ensures transparent and c
    - Reference implementation
    - Testing and validation
    - Deployment coordination
-
-### Decision Making
-
-Decisions about protocol changes follow a structured process:
-
-1. **Discussion Period** (2-4 weeks)
-   - Open debate and feedback
-   - Technical analysis
-   - Impact assessment
-
-2. **Consensus Building** (1-2 weeks)
-   - Addressing concerns
-   - Refinement of proposal
-   - Building broad support
-
-3. **Final Decision** (1 week)
-   - Formal acceptance vote
-   - Implementation planning
-   - Timeline establishment
 
 ## Working Groups
 
