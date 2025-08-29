@@ -140,7 +140,7 @@ const config: Config = {
             },
             {
               label: 'Discord',
-              href: 'https://discord.com/invite/xfYGq4CT7v',
+              href: 'https://discord.gg/fywdrKd8QT',
             },
             {
               label: 'X',
