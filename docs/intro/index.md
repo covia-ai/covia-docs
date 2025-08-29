@@ -13,7 +13,7 @@ sidebar_position: 1
 
 ---
 
-## 🌐 What is Covia.ai?
+## What is Covia.ai?
 
 Covia is a federated orchestration runtime built for the next generation of AI-native systems—where agents, data, models, and human-in-the-loop steps are coordinated across tools, clouds, and trust boundaries.
 
@@ -25,7 +25,7 @@ Covia is not just another protocol. It's a revolution: the open standard for **f
 
 ---
 
-## 🌐 Why Covia?
+## Why Covia?
 
 AI is the new electricity, but most organizations lack the resources to harness it fully. Covia changes the game:
 - **Democratises AI**: Connects you to the best data, compute, and skills—globally.
@@ -49,7 +49,7 @@ Modern AI systems are fragmented:
 
 ---
 
-## 🔑 Key Concepts (The Cool Stuff)
+## Key Concepts (The Cool Stuff)
 
 ### Universal Data Assets (UDA)
 Every dataset, model, or compute service becomes a **universal asset**—immutable, verifiable, and shareable. Imagine NFTs, but for *anything* digital and useful in AI.
@@ -89,7 +89,7 @@ Every execution node generates:
 
 ---
 
-## 🚀 What Can You Build with Covia?
+## What Can You Build with Covia?
 - Build and share AI models and datasets with full provenance and trust
 - Secure multi-agent workflows across departments or organisations 
 - Governed orchestration for LLM agents with retries, access control, and rollback
@@ -101,7 +101,7 @@ Every execution node generates:
 
 ---
 
-## 🌍 Join the Open AI Ecosystem
+## Join the Open AI Ecosystem
 Covia is open source, open standard, and open for innovation. Whether you're a developer, data scientist, or enterprise leader, Covia.ai is your gateway to the next era of AI.
 
 > **Ready to build the future? Dive into the docs, explore the protocol, and become part of the Covia.ai movement!**
