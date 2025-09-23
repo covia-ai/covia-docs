@@ -4,13 +4,13 @@ sidebar_position: 1
 
 # Operator Guide
 
-Welcome to the Covia Operator Guide. This section provides comprehensive information for venue operators who want to participate in the Covia ecosystem by providing computational resources and services by operating a Covia venue.
+This section provides comprehensive information for those who want to run their own venue.
 
 ## What is a Covia Operator?
 
-A Covia Operator is an individual or organization that runs and maintains computational infrastructure within the Covia network. Operators provide the physical and virtual resources that power the decentralized computing grid, enabling the execution of AI workloads, data processing tasks, and other computational services.
+A Covia Operator is an individual or organisation that runs and maintains computational infrastructure within the Covia network. 
 
-Operators maintain one of more **Venues** that act as nodes on the covia grid.
+Operators maintain one of more **Venues** that act as nodes on the covia grid. Venues control access the physical and virtual resources that power the decentralised computing grid, enabling the execution of AI workloads, data processing tasks, and other computational services.
 
 ## Benefits of Being an Operator
 

@@ -1,3 +1,7 @@
 {
-  "label": "COGs"
+  "label": "COGs",
+  "link": {
+    "type": "generated-index",
+    "description": "Covia Open Grid specifications."
+  }
 } 
