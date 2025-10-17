@@ -6,7 +6,7 @@ sidebar_label: MCP
 
 # MCP Adapter
 
-This guide will help you integrate Covia with the Model Context Protocol (MCP) to enhance your AI applications with real-time data and context.
+Covia is natively integrated with the [Model Context Protocol Protocol (MCP)](https://modelcontextprotocol.io/) to enhance your AI applications with real-time data and context.
 
 ## Overview
 
@@ -17,105 +17,25 @@ The Model Context Protocol (MCP) is a standard for connecting AI models to exter
 - Enable dynamic data retrieval during conversations
 - Maintain secure and controlled data access
 
-## Prerequisites
+## MCP Server Capabilities
 
-Before you begin, ensure you have:
+Every venue on the Covia grid is **automatically** functional as an MCP server. So you don't need to do anything special to tap into MCP capabilities: just run your venue and connect with standard MCP tools.
 
-- Covia account and API credentials
-- MCP-compatible AI model or application
-- Basic understanding of API integration
+To enable the MCP server, simple include an `"mcp"` property in your venue configuration, e.g.:
 
-## Setup
-
-### 1. Install Covia MCP Server
-
-```bash
-npm install @covia/mcp-server
-```
-
-### 2. Configure Your MCP Server
-
-Create a configuration file for your MCP server:
-
-```javascript
-// mcp-config.js
-module.exports = {
-  covia: {
-    apiKey: process.env.COVIA_API_KEY,
-    baseUrl: 'https://api.covia.ai',
-    timeout: 30000
-  },
-  resources: {
-    // Define your data sources
-    realTimeData: {
-      type: 'stream',
-      description: 'Real-time data stream from Covia'
-    },
-    historicalData: {
-      type: 'file',
-      description: 'Historical data access'
-    }
+```json
+{
+  "name":"My Venue",
+  ...
+  "mcp":{
+    "enabled":true
   }
-};
+}
 ```
 
-### 3. Initialize the Connection
+## MCP Grid operations
 
-```javascript
-import { CoviaMCPServer } from '@covia/mcp-server';
-
-const server = new CoviaMCPServer({
-  config: require('./mcp-config.js')
-});
-
-await server.start();
-```
-
-## Usage Examples
-
-### Real-time Data Streaming
-
-```javascript
-// Example: Streaming real-time market data
-const stream = await server.getResource('realTimeData');
-stream.on('data', (data) => {
-  console.log('Received real-time data:', data);
-});
-```
-
-### Context-Aware Queries
-
-```javascript
-// Example: Querying with context
-const response = await server.query({
-  prompt: "What's the current market sentiment?",
-  context: {
-    timeframe: "last 24 hours",
-    sources: ["news", "social_media", "financial_data"]
-  }
-});
-```
-
-## Best Practices
-
-1. **Error Handling**: Always implement proper error handling for network issues and API limits
-2. **Rate Limiting**: Respect Covia's rate limits and implement appropriate backoff strategies
-3. **Data Caching**: Cache frequently accessed data to improve performance
-4. **Security**: Keep your API keys secure and use environment variables
-
-## Troubleshooting
-
-### Common Issues
-
-- **Connection Timeout**: Check your network connection and API endpoint
-- **Authentication Errors**: Verify your API key and permissions
-- **Data Format Issues**: Ensure your data conforms to expected schemas
-
-### Getting Help
-
-If you encounter issues:
-
-1. Check the [Covia API documentation](https://docs.covia.ai)
-2. Review the [MCP specification](https://modelcontextprotocol.io)
-3. Contact Covia support for integration-specific issues
-
+The MCP adapter lets you utilise MCP servers and tools as grid operations. Compared to integrating with an MCP server directly, this gives a number of unique advantages:
+- Plug-and-play orchestration with other grid operations and services
+- Having a system of record / audit trail maintained within your own venue
+- Handling authentication / API keys in a controlled manner
