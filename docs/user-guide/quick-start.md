@@ -46,17 +46,17 @@ Covia provides a comprehensive set of adapters that enable seamless integration 
 ## Available Adapters
 
 ### Protocol Adapters
-- **[A2A Adapter](adapters/covia-with-a2a)** - Agent-to-Agent Protocol integration for multi-agent systems
-- **[MCP Adapter](adapters/covia-with-mcp)** - Model Context Protocol integration for real-time data access
+- **[A2A Adapter](adapters/covia-with-a2a.md)** - Agent-to-Agent Protocol integration for multi-agent systems
+- **[MCP Adapter](adapters/covia-with-mcp.md)** - Model Context Protocol integration for real-time data access
 
 ### Framework Adapters
-- **[LangChain Adapter](adapters/langchain-adapter)** - LangChain framework integration for AI application development
+- **[LangChain Adapter](adapters/langchain-adapter.md)** - LangChain framework integration for AI application development
 
 ### Infrastructure Adapters
-- **[HTTP Adapter](adapters/http-adapter)** - HTTP and REST API integration
-- **[Grid Adapter](adapters/grid-adapter)** - Distributed computing and resource management
-- **[Orchestrator](adapters/orchestrator)** - Workflow coordination and management
-- **[Venue Adapter](adapters/venue-adapter)** - Core service hosting and infrastructure
+- **[HTTP Adapter](adapters/http-adapter.md)** - HTTP and REST API integration
+- **[Grid Adapter](adapters/grid-adapter.md)** - Distributed computing and resource management
+- **[Orchestrator](adapters/orchestrator.md)** - Workflow coordination and management
+- **[Venue Adapter](adapters/venue-adapter.md)** - Core service hosting and infrastructure
 
 ## Getting Started
 
