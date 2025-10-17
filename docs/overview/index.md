@@ -33,10 +33,10 @@ AI is the new electricity, but most organizations lack the resources to harness 
 - **Trust by Design**: Every asset is cryptographically verifiable and traceable.
 
 Modern AI systems are fragmented:
-	•	Agents are stateless and brittle
-	•	Execution logic is hidden in glue code
-	•	Compliance is post-hoc, not built-in
-	•	Every team rebuilds orchestration, retries, and policy enforcement from scratch
+- Agents are stateless and brittle without a reliable system of record
+- Execution logic is hidden in glue code
+- Compliance is post-hoc, not built-in
+- Every team rebuilds orchestration, retries, and policy enforcement from scratch
 
 **Covia.ai** changes that:
 
