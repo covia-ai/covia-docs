@@ -25,6 +25,8 @@ COGs (Covia Open Grid specifications) are the formal technical specifications th
 - **[COG-3](./cogs/COG-003)** - Authentication
 - **[COG-4](./cogs/COG-004)** - Grid Lattice
 - **[COG-5](./cogs/COG-005)** - Asset Metadata
+- **[COG-6](./cogs/COG-006)** - Artifacts
+- **[COG-7](./cogs/COG-007)** - Operations
 
 ## COG Development Process
 
