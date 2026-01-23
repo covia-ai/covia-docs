@@ -10,7 +10,7 @@ This section provides comprehensive information for those who want to run their 
 
 A Covia Operator is an individual or organisation that runs and maintains computational infrastructure within the Covia network. 
 
-Operators maintain one of more **Venues** that act as nodes on the covia grid. Venues control access the physical and virtual resources that power the decentralised computing grid, enabling the execution of AI workloads, data processing tasks, and other computational services.
+Operators maintain **Venues** that act as nodes on the covia grid. Venues control access the physical and virtual resources that power the decentralised computing grid, enabling the execution of AI workloads, data processing tasks, and other computational services.
 
 ## Benefits of Being an Operator
 
@@ -21,6 +21,8 @@ Operating in the Covia ecosystem offers several advantages:
 - **Decentralized Control**: Maintain autonomy over your infrastructure
 - **Community Participation**: Contribute to the growth of the ecosystem
 - **Technical Innovation**: Access to cutting-edge distributed computing technology
+
+Operators remain fully in control of their own infrastructure, resources and data.
 
 ## Key Responsibilities
 
