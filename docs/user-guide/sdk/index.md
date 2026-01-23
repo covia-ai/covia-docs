@@ -11,13 +11,13 @@ The Covia SDK provides client libraries for building applications on the Grid. S
 - Upload and download artifacts
 - Build AI-powered applications
 
-## Available SDKs
+SDKs are available for major language ecosystems.
 
-| Language | Package | Status |
-| -------- | ------- | ------ |
-| [Java](./java) | `covia-core` | Available |
-| [Python](./python) | `covia` | Coming Soon |
-| [TypeScript](./typescript) | `@covia/sdk` | Coming Soon |
+| Language | Package | GitHub | Status |
+| -------- | ------- | ------ | ------ |
+| [Java](./java) | `covia-core` | [covia-ai/covia-java](https://github.com/covia-ai/covia-java) | Available |
+| [Python](./python) | `covia` | [covia-ai/covia-python](https://github.com/covia-ai/covia-python) | Coming Soon |
+| [TypeScript](./typescript) | `@covia/sdk` | [covia-ai/covia-ts](https://github.com/covia-ai/covia-ts) | Coming Soon |
 
 ## Core Concepts
 

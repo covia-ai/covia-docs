@@ -68,3 +68,4 @@ Use the Grid to invoke any MCP server's tools:
 
 - [Venues as MCP Servers](./venues-as-mcp-servers) - How to expose your venue's operations via MCP
 - [Calling MCP Tools](./calling-mcp-tools) - How to invoke external MCP tools through the Grid
+- [Agentic Economics](./agentic-economics) - AI agents as economic participants using Convex
