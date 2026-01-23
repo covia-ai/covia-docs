@@ -7,7 +7,7 @@ sidebar_position: 1
 
 You can use the Covia grid simply through the online web app or the SDK as a user. But for more powerful capabilities, such as controlling local resources and installing custom adapters, you may want to create your own venue.
 
-A venue is implemented as a server process that you can run by obtaining the latest `covia.jar` which is regularly made available in the [Snapshots Drive](https://drive.google.com/drive/folders/1AZdyuZOmC70i_TtuEW3uEKvjYLOqIMiv)
+A venue is implemented as a server process that you can run by obtaining the latest `covia.jar` from the [latest-snapshot release](https://github.com/covia-ai/covia/releases/tag/latest-snapshot) on GitHub. This snapshot is automatically built and updated on every push to the develop branch.
 
 Running a venue requires Java 21+ installed. The venue can be launched with:
 
