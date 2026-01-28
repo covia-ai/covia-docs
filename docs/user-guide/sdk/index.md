@@ -15,9 +15,10 @@ SDKs are available for major language ecosystems.
 
 | Language | Package | GitHub | Status |
 | -------- | ------- | ------ | ------ |
-| [Java](./java) | `covia-core` | [covia-ai/covia-java](https://github.com/covia-ai/covia-java) | Available |
-| [Python](./python) | `covia` | [covia-ai/covia-python](https://github.com/covia-ai/covia-python) | Coming Soon |
-| [TypeScript](./typescript) | `@covia/sdk` | [covia-ai/covia-ts](https://github.com/covia-ai/covia-ts) | Coming Soon |
+| [Java](./java) | `covia-core` | [covia-ai/covia](https://github.com/covia-ai/covia) | Available |
+| [Python](./python) | `covia` | [covia-ai/covia-sdk-py](https://github.com/covia-ai/covia-sdk-py) | Available |
+| [TypeScript](./typescript) | `@covia/sdk` | [covia-ai/covia-sdk-ts](https://github.com/covia-ai/covia-sdk-ts) | Coming Soon |
+| [Rust](./rust) | `covia` | [covia-ai/covia-sdk-rs](https://github.com/covia-ai/covia-sdk-rs) | Planned |
 
 ## Core Concepts
 
@@ -41,33 +42,36 @@ Here's a simple example showing the common pattern across all SDKs:
 
 ```java
 // Java
-Venue venue = Grid.connect("did:web:venue-test.covia.ai");
-Asset op = venue.getAsset("0x7a8b9c0d...");
-Job job = op.invoke(Map.of("query", "hello world")).get();
-Object result = job.getOutput();
+Venue venue = Grid.connect("did:web:venue.covia.ai");
+Object result = venue.run("my-operation", Map.of("query", "hello world"));
 ```
 
 ```python
-# Python (coming soon)
-venue = covia.connect("did:web:venue-test.covia.ai")
-op = venue.get_asset("0x7a8b9c0d...")
-job = await op.invoke({"query": "hello world"})
-result = job.output
+# Python
+from covia import Grid
+
+with Grid.connect("did:web:venue.covia.ai") as venue:
+    result = venue.run("my-operation", {"query": "hello world"})
 ```
 
 ```typescript
 // TypeScript (coming soon)
-const venue = await Covia.connect("did:web:venue-test.covia.ai");
-const op = await venue.getAsset("0x7a8b9c0d...");
-const job = await op.invoke({ query: "hello world" });
-const result = job.output;
+const venue = await Covia.connect("did:web:venue.covia.ai");
+const result = await venue.run("my-operation", { query: "hello world" });
+```
+
+```rust
+// Rust (planned)
+let venue = Grid::connect("did:web:venue.covia.ai").await?;
+let result = venue.run("my-operation", json!({"query": "hello world"})).await?;
 ```
 
 ## Choosing an SDK
 
-- **Java**: Best for enterprise applications, JVM-based systems, and when you need the full reference implementation
-- **Python**: Ideal for data science, ML pipelines, and scripting
+- **Java**: Reference implementation. Best for enterprise applications, JVM-based systems, and when you need the full feature set
+- **Python**: Ideal for data science, ML pipelines, scripting, and rapid prototyping. Full sync and async support
 - **TypeScript**: Perfect for web applications, Node.js backends, and full-stack development
+- **Rust**: For performance-critical systems, embedded applications, and when you need zero-overhead abstractions
 
 ## Direct API Access
 
