@@ -14,18 +14,26 @@ This lets you connect to venues and run test operations on the Grid. There are a
 
 Every publicly accessible venue will have a Decentralized ID (DID) which can be used to reference it on the grid.
 
+## REST API
+
+Venues expose a REST API for programmatic access. See the [API Reference](api/) for complete documentation of available endpoints:
+
+- Asset management (create, retrieve, list)
+- Operation invocation and job management
+- Grid queries and venue status
+
 ## Using the SDK
 
-We're building the Covia SDK for developers in the form of open source libraries for multiple language ecosystems, starting with:
-- TypeScript / JavaScript
-- Python
-- Java
-- Rust
+The Covia SDK provides client libraries for building applications on the Grid:
 
-This enables grid operations and artifacts to be accessed by simple one-liners, e.g.
+- **[Java SDK](sdk/java)** - Reference implementation with full Grid access
+- **[Python SDK](sdk/python)** - For data science, ML workflows, and scripting
+- **[TypeScript SDK](sdk/typescript)** - For web apps and Node.js
+
+This enables grid operations and artifacts to be accessed by simple one-liners:
 
 ```java
-// Connect to a find
+// Connect to a venue
 Venue myVenue = Grid.connect("did:web:venue-test.covia.ai", credentials);
 
 // Look up a remote operation
@@ -35,7 +43,16 @@ Operation myOp = myVenue.findOperation("Document Summary Service");
 Object result = myVenue.run("Give me a summary of the last 5 blog posts");
 ```
 
-Say goodbye to complex glue code! The SDK is coming soon, so stay connected to see updates!
+See the [SDK documentation](sdk/) for detailed guides and API references.
+
+## MCP Integration
+
+Covia venues support the [Model Context Protocol (MCP)](https://modelcontextprotocol.io), enabling AI assistants to interact directly with the Grid:
+
+- **[Venues as MCP Servers](mcp/venues-as-mcp-servers)** - Expose your operations to AI assistants
+- **[Calling MCP Tools](mcp/calling-mcp-tools)** - Invoke external MCP tools via the Grid
+
+This allows seamless integration with tools like Claude, enabling natural language interaction with Grid operations.
 
 
 
