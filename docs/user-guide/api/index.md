@@ -228,13 +228,17 @@ Gets the current status of a job.
 
 **Job Status Values:**
 
-| Status | Description |
-| ------ | ----------- |
-| `pending` | Job created, waiting to execute |
-| `running` | Job currently executing |
-| `completed` | Job finished successfully |
-| `failed` | Job finished with an error |
-| `cancelled` | Job was cancelled |
+| Status | Category | Description |
+| ------ | -------- | ----------- |
+| `PENDING` | Active | Job created, waiting to execute |
+| `STARTED` | Active | Job is currently executing |
+| `COMPLETE` | Terminal | Job finished successfully with output |
+| `FAILED` | Terminal | Job finished with an error |
+| `CANCELLED` | Terminal | Job was cancelled by client or venue |
+| `REJECTED` | Terminal | Job was rejected before execution (e.g. policy violation) |
+| `PAUSED` | Interactive | Job execution suspended, awaiting resume |
+| `INPUT_REQUIRED` | Interactive | Job requires additional input from the client |
+| `AUTH_REQUIRED` | Interactive | Job requires authorisation or credentials |
 
 #### `GET /api/v1/jobs/{id}/sse`
 
@@ -247,6 +251,18 @@ Server-Sent Events endpoint for real-time job status updates.
 Cancels a running job.
 
 **Response:** `200 OK` with final job status, or `404 Not Found`.
+
+#### `PUT /api/v1/jobs/{id}/pause`
+
+Pauses a running job. Only valid when the job is in a non-terminal, non-paused state (`PENDING`, `STARTED`, `INPUT_REQUIRED`, `AUTH_REQUIRED`).
+
+**Response:** `200 OK` with updated job status, `404 Not Found`, or `409 Conflict` if the job is already finished or paused.
+
+#### `PUT /api/v1/jobs/{id}/resume`
+
+Resumes a paused job. Only valid when the job is in `PAUSED` state. The venue re-engages the adapter to continue execution.
+
+**Response:** `200 OK` with updated job status, `404 Not Found`, or `409 Conflict` if the job is not paused.
 
 #### `PUT /api/v1/jobs/{id}/delete`
 
@@ -303,6 +319,7 @@ Errors return appropriate HTTP status codes with a JSON body:
 | ------ | ----------- |
 | `400` | Bad request (invalid parameters) |
 | `404` | Resource not found |
+| `409` | Conflict (invalid state transition, e.g. pausing a finished job) |
 | `500` | Server error |
 
 ## Related Documentation
