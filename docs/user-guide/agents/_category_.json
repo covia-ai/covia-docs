@@ -1,0 +1,8 @@
+{
+  "label": "Agents",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Create and manage AI agents on Covia venues — lifecycle, configuration, tools, and patterns."
+  }
+}
