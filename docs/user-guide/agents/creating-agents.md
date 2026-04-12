@@ -75,7 +75,7 @@ The `config` field controls agent behaviour. All fields are optional — default
 | `model` | string | `gpt-4o` | LLM model name passed to the backend. |
 | `llmOperation` | string | `v/ops/langchain/openai` | Level 3 LLM operation. See [LLM Backends](./llm-backends). |
 | `tools` | array | — | Operations the agent can call. Strings or `{operation, name, description}` maps. |
-| `defaultTools` | boolean | `true` | Include the platform's 19 default tools. Set `false` for explicit control. |
+| `defaultTools` | boolean | `true` | Include the platform's default tools (workspace CRUD, agent management, assets, schemas). Set `false` for explicit control. |
 | `caps` | array | — | Capability restrictions. Each entry: `{with: "path/", can: "crud/read"}`. |
 | `context` | array | — | Lattice paths to load into context every turn. |
 | `outputs` | object | — | Typed output schemas for `complete` and `fail` (Goal Tree only). |
@@ -88,7 +88,7 @@ The `tools` array lists operations the agent can invoke. Each entry is either:
 - A **string** — an operation path like `"v/ops/covia/read"`
 - A **map** — `{ "operation": "v/ops/covia/read", "name": "read_data", "description": "Read workspace data" }` for a custom name/description
 
-When `defaultTools` is `true` (the default), the platform adds ~19 standard operations covering workspace CRUD, agent management, asset operations, and schema validation. Set `defaultTools: false` for full control over the tool palette.
+When `defaultTools` is `true` (the default), the platform adds standard operations covering workspace CRUD, agent management, asset operations, and schema validation. Set `defaultTools: false` for full control over the tool palette.
 
 ### Capabilities
 

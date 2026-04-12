@@ -21,13 +21,13 @@ If you think of HTTP as the protocol that made the web interoperable, Covia.ai i
 
 Covia isn’t a framework. It’s infrastructure—built for real-world AI systems that must be composable, observable, and secure.
 
-Covia is not just another protocol. It's a revolution: the open standard for **federated orchestration of AI supply chains**. Think of it as grid with a universal language for data, compute, and intelligence to flow freely and securely across the digital world.
+Covia is the open standard for **federated orchestration of AI supply chains** — a grid with a universal language for data, compute, and intelligence to flow freely and securely across the digital world.
 
 ---
 
 ## Why Covia?
 
-AI is the new electricity, but most organizations lack the resources to harness it fully. Covia changes the game:
+AI is the new electricity, but most organisations lack the resources to harness it fully. Covia changes that:
 - **Democratises AI**: Connects you to the best data, compute, and skills—globally.
 - **Open & Interoperable**: Built on open Internet standards, not walled gardens.
 - **Trust by Design**: Every asset is cryptographically verifiable and traceable.
@@ -49,13 +49,13 @@ Modern AI systems are fragmented:
 
 ---
 
-## Key Concepts (The Cool Stuff)
+## Key Concepts
 
 ### Universal Data Assets (UDA)
-Every dataset, model, or compute service becomes a **universal asset**—immutable, verifiable, and shareable. Imagine NFTs, but for *anything* digital and useful in AI.
+Every dataset, model, or compute service becomes a **universal asset** — immutable, verifiable, and shareable. Any digital resource can be content-addressed, signed, and exchanged across the grid.
 
 ### Federated Policy Engine 
-Enforce per-node trust boundaries and policy constraints. Every execution is cryptographically signed, tracable, and resumable across teams, clouds, and partners. 
+Enforce per-node trust boundaries and policy constraints. Every execution is cryptographically signed, traceable, and resumable across teams, clouds, and partners. 
 
 ### Venues & Agents
 - **Venues**: Digital spaces (like vaults or labs) where assets live and are managed.
@@ -72,9 +72,9 @@ Define distributed execution graphs across agents, models, SaaS APIs, and human 
 Covia lets you compose and run **arbitrary graphs of operations**—think of it as building AI workflows that span the globe, with every step verifiable and auditable.
 
 ### Lattice Technology
-Covia uses cutting-edge math (lattices!) to make distributed data and operations conflict-free and always in sync. No more data silos, no more trust issues.
+Covia is built on [lattice technology](https://docs.convex.world/docs/overview/lattice) — mathematical structures that make distributed data and operations conflict-free and always convergent. Data merges deterministically regardless of ordering, eliminating the need for complex consensus protocols.
 
-### Audit-Ready by design 
+### Audit-Ready by Design
 Every execution node generates: 
 - Signed state transitions
 - Retry logs

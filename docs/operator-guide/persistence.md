@@ -39,7 +39,7 @@ The `store` field in venue configuration controls where state is persisted:
 
 ### Venue Identity
 
-When using a persistent file store and no explicit `seed` is configured, the venue auto-generates an Ed25519 keypair and saves it to `venue.key` alongside the store file. On restart with the same store path, the same venue DID is restored — identity is stable across restarts.
+When using a persistent file store and no explicit `seed` is configured, the venue auto-generates an Ed25519 keypair and saves it to `venue.key` in the same directory as the Etch store file. On restart with the same store path, the same venue DID is restored — identity is stable across restarts.
 
 ## Shutdown
 
@@ -56,7 +56,7 @@ On restart, all state is automatically restored:
 
 1. Etch store restores the lattice root cursor from the last persisted value
 2. Engine creates a fresh fork for subsequent writes
-3. Job manager scans for PENDING/STARTED jobs and resumes them
+3. Job manager scans for PENDING/STARTED jobs and restores their records (jobs that were mid-execution are marked as recoverable; they do not automatically re-execute)
 4. Agents with pending work wake automatically via the scheduler
 5. DLFS drives are recovered from the independent `:dlfs` lattice region
 

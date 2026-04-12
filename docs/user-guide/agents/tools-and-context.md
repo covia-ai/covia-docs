@@ -85,7 +85,7 @@ Each context entry has a byte budget. The context builder uses budget-aware rend
 - **Low budget** — summarised, key fields only
 - **Compacted segments** (Goal Tree) — summaries at low budget, full turns at high budget
 
-Default total context budget is ~180,000 bytes (~45,000 tokens).
+The default context budget is 180,000 bytes (approximately 45,000 tokens). This is configurable.
 
 The Goal Tree adapter manages budget pressure automatically:
 - At 70% capacity: suggests compaction

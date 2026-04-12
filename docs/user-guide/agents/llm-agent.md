@@ -71,7 +71,7 @@ This means:
 
 ## Built-in Tools
 
-When `defaultTools` is `true` (the default), the agent has access to ~19 standard tools:
+When `defaultTools` is `true` (the default), the agent has access to a standard set of tools:
 
 **Workspace CRUD:** `covia:read`, `covia:write`, `covia:delete`, `covia:append`, `covia:slice`, `covia:list`
 
