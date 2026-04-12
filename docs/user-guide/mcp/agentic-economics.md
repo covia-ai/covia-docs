@@ -73,10 +73,14 @@ Covia venues expose Convex operations as MCP tools:
 
 | Tool | Description |
 | ---- | ----------- |
-| `convexQuery` | Read blockchain state without transaction |
-| `convexTransact` | Execute state-changing transactions |
-| `createAccount` | Create new Convex accounts |
-| `keyGen` | Generate cryptographic key pairs |
+| `convex_query` | Read blockchain state without transaction |
+| `convex_transact` | Execute state-changing transactions |
+| `convex_createAccount` | Create new Convex accounts |
+| `convex_keyGen` | Generate cryptographic key pairs |
+
+:::note Tool naming
+MCP tool names are derived from operation names with colons and slashes replaced by underscores (e.g., `convex:query` becomes `convex_query`).
+:::
 
 ### Example: Agent-Initiated Payment
 
@@ -94,10 +98,10 @@ Agent thinking:
 
 ```json
 {
-  "operation": "mcp:toolCall",
+  "operation": "mcp:tools:call",
   "input": {
     "server": "did:web:venue-test.covia.ai",
-    "toolName": "convexTransact",
+    "toolName": "convex_transact",
     "arguments": {
       "source": "(call data-venue/subscribe :premium)",
       "address": "#user-agent-account"

@@ -4,20 +4,17 @@ sidebar_position: 4
 
 # TypeScript SDK
 
-:::info Coming Soon
-The TypeScript SDK is currently under development. This page documents the planned API.
-:::
+The TypeScript SDK provides a fully-typed client for the Covia Grid, with manager classes for agents, workspace, assets, jobs, secrets, and UCAN capabilities.
 
-The TypeScript SDK provides a fully-typed interface to the Covia Grid, perfect for web applications, Node.js backends, and full-stack development.
+- **Package:** `@covia/covia-sdk`
+- **Node.js:** 18+
+- **License:** MIT
+- **Source:** [covia-ai/covia-sdk](https://github.com/covia-ai/covia-sdk)
 
 ## Installation
 
 ```bash
-npm install @covia/sdk
-# or
-yarn add @covia/sdk
-# or
-pnpm add @covia/sdk
+npm install @covia/covia-sdk
 ```
 
 ## Quick Start
@@ -25,250 +22,361 @@ pnpm add @covia/sdk
 ### Connecting to a Venue
 
 ```typescript
-import { Covia, Venue } from '@covia/sdk';
+import { Grid, BearerAuth, KeyPairAuth } from "@covia/covia-sdk";
+
+// Connect using a URL
+const venue = await Grid.connect("https://venue-test.covia.ai");
 
 // Connect using a DID
-const venue: Venue = await Covia.connect("did:web:venue-test.covia.ai");
+const venue = await Grid.connect("did:web:venue-test.covia.ai");
 
-// With authentication
-const venue = await Covia.connect("did:web:venue-test.covia.ai", {
-  apiKey: "your-api-key"
-});
+// With bearer token
+const venue = await Grid.connect("https://venue-test.covia.ai",
+  new BearerAuth("your-token")
+);
+
+// With Ed25519 key pair (self-issued JWT)
+const auth = KeyPairAuth.generate();
+console.log(`Your DID: ${auth.getDID()}`);
+const venue = await Grid.connect("https://venue-test.covia.ai", auth);
 ```
 
-### Discovering Assets
+`Grid.connect()` caches venue connections — calling it twice with the same ID returns the same instance.
+
+### Running Operations
 
 ```typescript
-import { Asset } from '@covia/sdk';
+// Run synchronously (invoke + wait + return output)
+const result = await venue.operations.run("test:echo", { message: "hello" });
+console.log(result);
 
-// List all assets
-const assets: Asset[] = await venue.listAssets();
-
-// Get a specific asset
-const asset = await venue.getAsset("0x119e30db8a4ea8b33723603743591a5f8229684e6236d89ef1966a72d7293607");
-
-// Access typed metadata
-console.log(asset.name);
-console.log(asset.description);
-console.log(asset.metadata);
+// Invoke asynchronously
+const job = await venue.operations.invoke("langchain:openai", {
+  prompt: "Summarise this document..."
+});
+const output = await job.result({ timeout: 60000 });
 ```
 
-### Invoking Operations
+### Venue Properties
 
 ```typescript
-import { Job, Operation } from '@covia/sdk';
+const status = await venue.status();
+console.log(status.did);     // "did:web:venue-test.covia.ai"
+console.log(status.name);    // "Test Venue"
+console.log(status.stats);   // { assets: 42, users: 10, ops: 15 }
+```
 
-// Get an operation
-const op = await venue.getOperation("0x7a8b9c0d...");
+## Managers
 
-// Invoke with typed input
-const job: Job = await op.invoke({
-  url: "https://example.com/data",
-  format: "json"
-});
+The venue exposes manager classes for each domain. They are lazy-loaded on first access.
 
-// Wait for result
-const result = await job.wait();
+```typescript
+venue.operations   // OperationManager
+venue.agents       // AgentManager
+venue.workspace    // WorkspaceManager
+venue.assets       // AssetManager
+venue.jobs         // JobManager
+venue.secrets      // SecretManager
+venue.ucan         // UCANManager
+```
 
-if (result.status === "completed") {
-  console.log(result.output);
-} else {
-  console.error(result.error);
+### Operations
+
+```typescript
+// List all operations
+const ops = await venue.operations.list();
+for (const op of ops) {
+  console.log(`${op.name}: ${op.description}`);
 }
+
+// Run by name
+const result = await venue.operations.run("covia:read", { path: "w/data" });
+
+// Invoke and track job
+const job = await venue.operations.invoke("agent:request", {
+  agentId: "Alice",
+  input: { question: "What vendors are overdue?" },
+  wait: true
+});
 ```
 
-### Synchronous-Style Execution
+### Agents
 
 ```typescript
-// Run and get result directly (still async under the hood)
-const result = await op.run({ query: "hello world" });
+// Create
+await venue.agents.create({
+  agentId: "Alice",
+  config: {
+    systemPrompt: "You are a helpful assistant.",
+    model: "gpt-4o",
+    tools: ["v/ops/covia/read", "v/ops/covia/list"]
+  }
+});
+
+// Send a task and wait
+const response = await venue.agents.request("Alice",
+  { question: "Summarise the vendor records" },
+  true  // wait
+);
+console.log(response.output);
+
+// Send a notification
+await venue.agents.message("Alice", { event: "new-invoice" });
+
+// Query state
+const info = await venue.agents.query("Alice");
+console.log(info.status);  // "SLEEPING"
+
+// List all agents
+const list = await venue.agents.list();
+
+// Lifecycle
+await venue.agents.suspend("Alice");
+await venue.agents.resume("Alice");
+await venue.agents.delete("Alice");
 ```
 
-### Working with Artifacts
+### Workspace
 
 ```typescript
-import { Artifact } from '@covia/sdk';
+// Write
+await venue.workspace.write("w/config", { theme: "dark", lang: "en" });
 
-// Get artifact content
-const content: ArrayBuffer = await artifact.getContent();
+// Read
+const result = await venue.workspace.read("w/config");
+console.log(result.value);  // { theme: "dark", lang: "en" }
 
-// As text
-const text: string = await artifact.getText();
+// List keys
+const list = await venue.workspace.list("w/", 100, 0);
+console.log(list.keys);  // ["config", "vendor-records", ...]
 
-// As JSON
-const data = await artifact.getJson<MyDataType>();
+// Append to a vector
+await venue.workspace.append("w/events", { type: "invoice_received" });
 
-// Download to file (Node.js)
-await artifact.download("./local_file.csv");
+// Paginate
+const slice = await venue.workspace.slice("w/events", 0, 10);
+
+// Delete
+await venue.workspace.delete("w/config");
 ```
 
-### Uploading Assets
+### Assets
 
 ```typescript
-// Create artifact from file (Node.js)
-const assetId = await venue.createArtifact({
+// List
+const assets = await venue.assets.list({ limit: 50, offset: 0 });
+console.log(`Total: ${assets.total}`);
+
+// Get (returns Operation or DataAsset)
+const asset = await venue.assets.get("0x1234...");
+const meta = await asset.getMetadata();
+
+// Register
+const newAsset = await venue.assets.register({
   name: "My Dataset",
   description: "Sample data",
-  contentType: "text/csv",
-  file: "./data.csv"
+  content: { contentType: "text/csv" }
 });
 
-// Create artifact from data
-const assetId = await venue.createArtifact({
-  name: "Processed Data",
-  contentType: "application/json",
-  content: JSON.stringify(data)
-});
+// Upload content
+const blob = new Blob(["col1,col2\na,b"], { type: "text/csv" });
+await asset.putContent(blob);
 
-// Create artifact from Blob (browser)
-const assetId = await venue.createArtifact({
-  name: "User Upload",
-  contentType: file.type,
-  content: file
-});
+// Download content
+const stream = await asset.getContent();
 ```
 
-## Type Safety
-
-The SDK provides full TypeScript support with generics for typed operations:
+### Jobs
 
 ```typescript
-// Define input/output types
-interface SearchInput {
-  query: string;
-  limit?: number;
+// List job IDs
+const jobIds = await venue.jobs.list();
+
+// Get a job
+const job = await venue.jobs.get("0x1234...");
+
+// Status checks
+job.isFinished;   // terminal state?
+job.isComplete;   // COMPLETE?
+job.isPaused;     // PAUSED, INPUT_REQUIRED, or AUTH_REQUIRED?
+
+// Wait for result
+const output = await job.result({ timeout: 30000 });
+
+// Lifecycle
+await job.pause();
+await job.resume();
+await job.cancel();
+await job.delete();
+
+// Stream SSE events
+for await (const event of job.stream()) {
+  console.log(event.event, event.json());
 }
 
-interface SearchOutput {
-  results: Array<{ title: string; url: string }>;
-  total: number;
-}
-
-// Get typed operation
-const searchOp = await venue.getOperation<SearchInput, SearchOutput>("0x...");
-
-// Invoke with type checking
-const result = await searchOp.run({
-  query: "typescript",
-  limit: 10
-});
-
-// result is typed as SearchOutput
-console.log(result.results[0].title);
+// Send message to a running job
+await job.sendMessage({ action: "continue" });
 ```
 
-## Browser Usage
+### Secrets
 
 ```typescript
-// React example
-import { useCovia, useJob } from '@covia/sdk/react';
+// Store
+await venue.secrets.put("OPENAI_API_KEY", "sk-...");
 
-function SearchComponent() {
-  const venue = useCovia("did:web:venue-test.covia.ai");
-  const [result, setResult] = useState(null);
+// List names
+const names = await venue.secrets.list();
 
-  const handleSearch = async (query: string) => {
-    const op = await venue.getOperation("search");
-    const job = await op.invoke({ query });
-    const result = await job.wait();
-    setResult(result.output);
-  };
-
-  return (
-    <div>
-      <input onChange={e => handleSearch(e.target.value)} />
-      {result && <pre>{JSON.stringify(result, null, 2)}</pre>}
-    </div>
-  );
-}
+// Delete
+await venue.secrets.delete("OPENAI_API_KEY");
 ```
 
-## Node.js Usage
+### UCAN
 
 ```typescript
-import { Covia } from '@covia/sdk';
-import { readFile } from 'fs/promises';
-
-async function main() {
-  const venue = await Covia.connect("did:web:venue-test.covia.ai");
-
-  // Upload a file
-  const data = await readFile("./data.csv");
-  const assetId = await venue.createArtifact({
-    name: "Uploaded Data",
-    contentType: "text/csv",
-    content: data
-  });
-
-  console.log(`Created asset: ${assetId}`);
-}
-
-main();
+// Issue a capability token
+const token = await venue.ucan.issue(
+  "did:key:z6Mk...",              // audience DID
+  [{ with: "w/data/", can: "crud/read" }],  // attenuations
+  Date.now() + 3600000             // expiry (1 hour)
+);
 ```
 
-## Streaming Results
+## Authentication
+
+### NoAuth (Default)
 
 ```typescript
-// Stream job updates
-const job = await op.invoke(input);
+import { NoAuth } from "@covia/covia-sdk";
 
-for await (const update of job.stream()) {
-  console.log(`Status: ${update.status}`);
-  if (update.progress) {
-    console.log(`Progress: ${update.progress}%`);
-  }
-}
-
-console.log("Final result:", job.output);
+const venue = await Grid.connect("https://public-venue.covia.ai", new NoAuth());
 ```
+
+### BearerAuth
+
+```typescript
+import { BearerAuth } from "@covia/covia-sdk";
+
+const venue = await Grid.connect("https://venue.covia.ai",
+  new BearerAuth("your-api-token")
+);
+```
+
+### KeyPairAuth (Ed25519 Self-Issued JWT)
+
+```typescript
+import { KeyPairAuth } from "@covia/covia-sdk";
+
+// Generate a new key pair
+const auth = KeyPairAuth.generate();
+console.log(auth.getDID());        // did:key:z6Mk...
+console.log(auth.getPublicKey());  // Uint8Array
+
+// Or from an existing private key (hex)
+const auth = KeyPairAuth.fromHex("abcdef0123456789...");
+
+const venue = await Grid.connect("https://venue.covia.ai", auth);
+```
+
+Tokens are generated fresh per request with a configurable lifetime (default: 300 seconds).
+
+## Job Lifecycle
+
+Jobs progress through a state machine:
+
+```
+PENDING → STARTED → COMPLETE | FAILED | CANCELLED | REJECTED | TIMEOUT
+```
+
+Jobs may also enter interactive states: `PAUSED`, `INPUT_REQUIRED`, `AUTH_REQUIRED`.
+
+```typescript
+import { RunStatus } from "@covia/covia-sdk";
+
+const job = await venue.operations.invoke("long:task", input);
+await job.wait({ timeout: 120000 });
+
+if (job.metadata.status === RunStatus.COMPLETE) {
+  console.log(job.output);
+}
+```
+
+Polling uses exponential backoff (300ms initial, 1.5x multiplier, 10s cap).
 
 ## Error Handling
 
 ```typescript
 import {
   CoviaError,
-  ConnectionError,
+  GridError,
+  NotFoundError,
   AssetNotFoundError,
-  OperationFailedError
-} from '@covia/sdk';
+  JobNotFoundError,
+  CoviaConnectionError,
+  CoviaTimeoutError,
+  JobFailedError
+} from "@covia/covia-sdk";
 
 try {
-  const result = await op.run({ query: "test" });
+  const result = await venue.operations.run("my-op", input);
 } catch (error) {
   if (error instanceof AssetNotFoundError) {
-    console.error("Operation not found");
-  } else if (error instanceof OperationFailedError) {
-    console.error(`Operation failed: ${error.message}`);
-  } else if (error instanceof ConnectionError) {
-    console.error(`Connection error: ${error.message}`);
-  } else {
-    throw error;
+    console.error(`Asset not found: ${error.assetId}`);
+  } else if (error instanceof JobFailedError) {
+    console.error(`Job failed: ${error.jobData.error}`);
+  } else if (error instanceof GridError) {
+    console.error(`API error ${error.statusCode}: ${error.message}`);
+  } else if (error instanceof CoviaTimeoutError) {
+    console.error("Operation timed out");
+  } else if (error instanceof CoviaConnectionError) {
+    console.error("Cannot connect to venue");
   }
 }
 ```
 
-## Configuration
+## Discovery
 
 ```typescript
-import { Covia } from '@covia/sdk';
+// DID Document
+const doc = await venue.didDocument();
+console.log(doc.id);  // "did:web:venue-test.covia.ai"
 
-// Global configuration
-Covia.configure({
-  timeout: 30000,
-  retries: 3,
-  baseHeaders: {
-    "X-Custom-Header": "value"
-  }
-});
+// MCP Discovery
+const mcp = await venue.mcpDiscovery();
 
-// Per-venue configuration
-const venue = await Covia.connect("did:web:venue-test.covia.ai", {
-  timeout: 60000,
-  fetch: customFetch // Custom fetch implementation
-});
+// A2A Agent Card
+const card = await venue.agentCard();
+```
+
+## Logging
+
+```typescript
+import { logger } from "@covia/covia-sdk";
+
+// Enable debug logging
+logger.level = "debug";
+
+// Custom handler
+logger.handler = (level, message) => {
+  myLogger.log(level, message);
+};
+```
+
+## Cleanup
+
+```typescript
+// Manual cleanup
+venue.close();
+
+// Or use the Disposable protocol (TypeScript 5.2+)
+{
+  using venue = await Grid.connect("https://venue.covia.ai");
+  // venue.close() called automatically at end of block
+}
 ```
 
 ## Related Documentation
 
-- [API Reference](../api) - REST API documentation
-- [MCP Adapter](../adapters/covia-with-mcp) - MCP integration for AI tools
+- [SDK Overview](./) — comparison of all Covia SDKs
+- [REST API Reference](../api) — direct HTTP API documentation
+- [Agents](/docs/user-guide/agents/) — agent system documentation

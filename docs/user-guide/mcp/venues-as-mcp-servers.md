@@ -68,7 +68,15 @@ Any MCP-compatible client can connect using the standard HTTP/SSE transport. Con
 
 ## How Operations Become Tools
 
-Covia automatically converts operations to MCP tools:
+Covia automatically converts operations to MCP tools. Tool names are derived from operation names by replacing colons and slashes with underscores:
+
+| Operation | MCP Tool Name |
+|-----------|---------------|
+| `covia:read` | `covia_read` |
+| `agent:create` | `agent_create` |
+| `mcp:tools:call` | `mcp_tools_call` |
+
+Operations are discovered dynamically from the venue's adapter registries — any operation with a valid input schema is automatically exposed as an MCP tool.
 
 ### Operation Metadata
 

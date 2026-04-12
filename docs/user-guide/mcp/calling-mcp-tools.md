@@ -15,13 +15,13 @@ The MCP adapter enables you to invoke tools from any MCP server as Grid operatio
 
 Every Covia venue includes two built-in MCP operations:
 
-### `mcp:toolList` - List Available Tools
+### `mcp:tools:list` - List Available Tools
 
 Discover tools available on an MCP server:
 
 ```json
 {
-  "operation": "mcp:toolList",
+  "operation": "mcp:tools:list",
   "input": {
     "server": "https://some-mcp-server.example.com"
   }
@@ -57,13 +57,13 @@ Discover tools available on an MCP server:
 }
 ```
 
-### `mcp:toolCall` - Invoke a Tool
+### `mcp:tools:call` - Invoke a Tool
 
 Call a specific tool on an MCP server:
 
 ```json
 {
-  "operation": "mcp:toolCall",
+  "operation": "mcp:tools:call",
   "input": {
     "server": "https://some-mcp-server.example.com",
     "toolName": "search",
@@ -116,7 +116,7 @@ If the MCP server requires authentication, include a token:
 
 ```json
 {
-  "operation": "mcp:toolCall",
+  "operation": "mcp:tools:call",
   "input": {
     "server": "https://protected-server.example.com",
     "toolName": "private-search",
@@ -151,7 +151,7 @@ Then reference by name:
 
 ```json
 {
-  "operation": "mcp:toolCall",
+  "operation": "mcp:tools:call",
   "input": {
     "server": "protected-server",
     "toolName": "private-search",
@@ -171,7 +171,7 @@ Combine MCP tool calls with other operations in orchestrations:
     "adapter": "orchestrator",
     "steps": [
       {
-        "op": "mcp:toolCall",
+        "op": "mcp:tools:call",
         "name": "Web Search",
         "input": {
           "server": "did:web:search-venue.example.com",
@@ -203,7 +203,7 @@ Use MCP to call tools on other Covia venues:
 
 ```json
 {
-  "operation": "mcp:toolCall",
+  "operation": "mcp:tools:call",
   "input": {
     "server": "did:web:venue-2.covia.ai",
     "toolName": "analyze-sentiment",
@@ -281,7 +281,7 @@ This example shows a complete workflow using multiple MCP tools:
     "steps": [
       {
         "name": "Search",
-        "op": "mcp:toolCall",
+        "op": "mcp:tools:call",
         "input": {
           "server": "did:web:search.example.com",
           "toolName": "web-search",
@@ -290,7 +290,7 @@ This example shows a complete workflow using multiple MCP tools:
       },
       {
         "name": "Fetch First Result",
-        "op": "mcp:toolCall",
+        "op": "mcp:tools:call",
         "input": {
           "server": "did:web:fetch.example.com",
           "toolName": "fetch-url",

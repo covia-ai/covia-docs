@@ -14,14 +14,14 @@ The Java SDK provides the reference implementation for Covia Grid clients, offer
 <dependency>
     <groupId>ai.covia</groupId>
     <artifactId>covia-core</artifactId>
-    <version>0.1.0</version>
+    <version>0.0.2-SNAPSHOT</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'ai.covia:covia-core:0.1.0'
+implementation 'ai.covia:covia-core:0.0.2-SNAPSHOT'
 ```
 
 ## Quick Start
@@ -76,11 +76,11 @@ CompletableFuture<Job> future = operation.invoke(Maps.of(
 Job job = future.get();
 
 // Check result
-if (job.isCompleted()) {
+if (job.isComplete()) {
     ACell output = job.getOutput();
     System.out.println("Result: " + output);
 } else if (job.isFailed()) {
-    System.err.println("Error: " + job.getError());
+    System.err.println("Error: " + job.getErrorMsg());
 }
 ```
 
@@ -181,19 +181,33 @@ try {
 ### Custom HTTP Client
 
 ```java
-import covia.grid.client.VenueHTTP;
+import covia.grid.VenueHTTP;
 
-// Configure timeout
-VenueHTTP venue = VenueHTTP.create("https://venue-test.covia.ai")
-    .withTimeout(Duration.ofSeconds(30));
+// Create and configure
+VenueHTTP venue = VenueHTTP.create("https://venue-test.covia.ai");
+venue.setTimeout(Duration.ofSeconds(30).toMillis());
 ```
 
 ### Authentication
 
 ```java
-// API key authentication
+import covia.grid.VenueAuth;
+
+// Bearer token
 Venue venue = Grid.connect("did:web:venue-test.covia.ai",
-    Credentials.apiKey("your-api-key"));
+    VenueAuth.bearer("your-api-token"));
+
+// Ed25519 key pair (self-issued JWT)
+Venue venue = Grid.connect("did:web:venue-test.covia.ai",
+    VenueAuth.keyPair(keyPair));
+
+// Local venue (no auth needed)
+Venue venue = Grid.connect("http://localhost:8080",
+    VenueAuth.local());
+
+// No authentication
+Venue venue = Grid.connect("https://public-venue.covia.ai",
+    VenueAuth.none());
 ```
 
 ## Related Documentation

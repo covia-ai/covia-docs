@@ -17,8 +17,8 @@ SDKs are available for major language ecosystems.
 | -------- | ------- | ------ | ------ |
 | [Java](./java) | `covia-core` | [covia-ai/covia](https://github.com/covia-ai/covia) | Available |
 | [Python](./python) | `covia` | [covia-ai/covia-sdk-py](https://github.com/covia-ai/covia-sdk-py) | Available |
-| [TypeScript](./typescript) | `@covia/sdk` | [covia-ai/covia-sdk-ts](https://github.com/covia-ai/covia-sdk-ts) | Coming Soon |
-| [Rust](./rust) | `covia` | [covia-ai/covia-sdk-rs](https://github.com/covia-ai/covia-sdk-rs) | Planned |
+| [TypeScript](./typescript) | `@covia/covia-sdk` | [covia-ai/covia-sdk](https://github.com/covia-ai/covia-sdk) | Available |
+| [Rust](./rust) | — | — | Planned |
 
 ## Core Concepts
 
@@ -55,9 +55,9 @@ with Grid.connect("did:web:venue.covia.ai") as venue:
 ```
 
 ```typescript
-// TypeScript (coming soon)
-const venue = await Covia.connect("did:web:venue.covia.ai");
-const result = await venue.run("my-operation", { query: "hello world" });
+// TypeScript
+const venue = await Grid.connect("did:web:venue.covia.ai");
+const result = await venue.operations.run("my-operation", { query: "hello world" });
 ```
 
 ```rust
