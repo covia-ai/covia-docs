@@ -272,7 +272,67 @@ Deletes a job record.
 
 ---
 
-### DID Documents
+### Operations
+
+#### `GET /api/v1/operations`
+
+Lists all registered operations across all adapters.
+
+**Response:**
+```json
+[
+  {
+    "name": "covia:read",
+    "description": "Read a value at any lattice path",
+    "adapter": "covia",
+    "input": { ... }
+  }
+]
+```
+
+#### `GET /api/v1/operations/{name}`
+
+Gets details for a specific operation by name.
+
+**Path Parameters:**
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| `name` | string | Operation name (e.g., `covia:read`, `agent:create`) |
+
+---
+
+### Secrets
+
+#### `GET /api/v1/secrets`
+
+Lists secret names for the authenticated user. Values are never returned.
+
+**Response:**
+```json
+["OPENAI_API_KEY", "ANTHROPIC_API_KEY"]
+```
+
+#### `PUT /api/v1/secrets/{name}`
+
+Stores a secret value (encrypted per-user).
+
+**Request Body:**
+```json
+"sk-proj-abc123..."
+```
+
+**Response:** `200 OK`
+
+#### `DELETE /api/v1/secrets/{name}`
+
+Deletes a secret.
+
+**Response:** `200 OK` or `404 Not Found`.
+
+---
+
+### Discovery Endpoints
 
 #### `GET /.well-known/did.json`
 
@@ -293,17 +353,114 @@ Returns the DID document for the venue, following W3C DID specification.
 }
 ```
 
+#### `GET /.well-known/mcp.json`
+
+MCP server discovery endpoint.
+
+#### `GET /.well-known/agent-card.json`
+
+A2A agent card discovery endpoint.
+
 #### `GET /a/{id}/did.json`
 
 Returns the DID document for a specific asset.
 
-**Response:** `200 OK`
+#### `GET /u/{id}/did.json`
+
+Returns the DID document for a user (did:web resolution).
+
+---
+
+### MCP Endpoints
+
+#### `POST /mcp`
+
+MCP JSON-RPC endpoint for tool listing, tool calls, and notifications. See [Venues as MCP Servers](/docs/user-guide/mcp/venues-as-mcp-servers) for details.
+
+#### `GET /mcp`
+
+MCP SSE session establishment for server-to-client notifications.
+
+#### `DELETE /mcp`
+
+Close an MCP session.
+
+---
+
+### A2A Endpoint
+
+#### `POST /a2a`
+
+Agent-to-Agent JSON-RPC endpoint for federated agent operations.
+
+---
+
+### DLFS (WebDAV)
+
+When WebDAV is enabled (`webdav.enabled: true` in venue config), DLFS drives are accessible via standard WebDAV at `/dlfs/`:
+
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| `GET` | `/dlfs/{drive}/{path}` | Read file |
+| `PUT` | `/dlfs/{drive}/{path}` | Write/upload file |
+| `DELETE` | `/dlfs/{drive}/{path}` | Delete file |
+| `MKCOL` | `/dlfs/{drive}/{path}` | Create directory |
+| `PROPFIND` | `/dlfs/{drive}/{path}` | List directory |
+| `MOVE` | `/dlfs/{drive}/{path}` | Move/rename file |
+| `COPY` | `/dlfs/{drive}/{path}` | Copy file |
+| `OPTIONS` | `/dlfs/*` | WebDAV capability discovery |
+
+See [DLFS Adapter](/docs/user-guide/adapters/dlfs) for details.
+
+---
+
+### Documentation Endpoints
+
+| Endpoint | Description |
+| -------- | ----------- |
+| `GET /openapi` | OpenAPI 3.0 JSON schema |
+| `GET /swagger` | Swagger UI (interactive API docs) |
+| `GET /redoc` | ReDoc UI |
+| `GET /llms.txt` | LLM capabilities file |
+
+---
+
+### Authentication
+
+#### Login
+
+| Endpoint | Description |
+| -------- | ----------- |
+| `GET /login` | Login page listing configured OAuth providers |
+| `GET /auth/{provider}` | Initiate OAuth login |
+| `GET /auth/{provider}/callback` | OAuth callback URL |
+
+#### Bearer Token
+
+```
+Authorization: Bearer <JWT>
+```
+
+Supported token types:
+- EdDSA self-issued tokens (did:key)
+- Venue-signed JWTs
+- OAuth provider RS256 tokens
+
+See [COG-10: Authentication](/docs/protocol/cogs/COG-010) for details.
+
+#### UCAN Proofs
+
+Operations can include UCAN capability proofs:
+
 ```json
 {
-  "@context": "https://www.w3.org/ns/did/v1",
-  "id": "did:web:venue-test.covia.ai/a/119e30db..."
+  "operation": "covia:write",
+  "input": { "path": "w/data", "value": {...} },
+  "ucans": ["<ucan-token>"]
 }
 ```
+
+See [COG-13: Agent Capabilities](/docs/protocol/cogs/COG-013) for the capability model.
 
 ## Error Responses
 
@@ -318,6 +475,8 @@ Errors return appropriate HTTP status codes with a JSON body:
 | Status | Description |
 | ------ | ----------- |
 | `400` | Bad request (invalid parameters) |
+| `401` | Authentication required |
+| `403` | Forbidden (insufficient capabilities) |
 | `404` | Resource not found |
 | `409` | Conflict (invalid state transition, e.g. pausing a finished job) |
 | `500` | Server error |
@@ -327,3 +486,5 @@ Errors return appropriate HTTP status codes with a JSON body:
 - [COG-5: Asset Metadata](/docs/protocol/cogs/COG-005) - Metadata format specification
 - [COG-6: Artifacts](/docs/protocol/cogs/COG-006) - Data asset specification
 - [COG-7: Operations](/docs/protocol/cogs/COG-007) - Operation specification
+- [COG-10: Authentication](/docs/protocol/cogs/COG-010) - Authentication specification
+- [COG-13: Agent Capabilities](/docs/protocol/cogs/COG-013) - Capability model

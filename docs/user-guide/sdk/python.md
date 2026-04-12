@@ -147,9 +147,37 @@ venue = Grid.connect("https://venue-test.covia.ai", auth=NoAuth())
 
 This is the default when `auth` is not specified.
 
+### Ed25519 (Self-Issued JWT)
+
+Authenticate with a self-issued EdDSA JWT using an Ed25519 key pair. This is the recommended method for programmatic access and agent-to-venue communication.
+
+```python
+from covia.auth import Ed25519Auth
+
+# Generate a new key pair
+auth = Ed25519Auth.generate(audience="https://venue-test.covia.ai")
+print(auth.did)  # did:key:z6Mk...
+
+# Or create from an existing seed (deterministic)
+auth = Ed25519Auth.from_seed(
+    seed=b"32-byte-seed-value-here-12345678",
+    audience="https://venue-test.covia.ai"
+)
+
+venue = Grid.connect("https://venue-test.covia.ai", auth=auth)
+```
+
+The `audience` is automatically set from the venue URL when using `Grid.connect()`. Tokens are short-lived and refreshed automatically.
+
+Requires the `signing` extra:
+
+```bash
+pip install covia[signing]
+```
+
 ### Custom Authentication
 
-Implement the `Auth` interface for custom schemes (OAuth 2.0, Ed25519 signing, etc.):
+Implement the `Auth` interface for custom schemes (OAuth 2.0, etc.):
 
 ```python
 from covia.auth import Auth
@@ -298,6 +326,10 @@ async def main():
 
 asyncio.run(main())
 ```
+
+:::note Async property differences
+Some sync properties become async methods. For example, `venue.did` (sync) becomes `await venue.get_did()` (async).
+:::
 
 ### Concurrent Operations
 
@@ -460,7 +492,7 @@ covia
 ├── Job                  # Job lifecycle (wait, result, cancel, stream)
 ├── Asset                # Asset metadata and content
 ├── JobStatus            # Status enum (PENDING, STARTED, COMPLETE, ...)
-├── auth                 # Auth, NoAuth, BearerAuth, BasicAuth
+├── auth                 # Auth, NoAuth, BearerAuth, BasicAuth, Ed25519Auth
 ├── exceptions           # CoviaError, GridError, NotFoundError, ...
 ├── models               # Pydantic data models (VenueStatus, JobData, ...)
 └── async_api            # Full async mirror
