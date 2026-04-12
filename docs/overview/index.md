@@ -44,7 +44,7 @@ Modern AI systems are fragmented:
 |---|---|
 | Spaghetti workflows | Graph-based, policy-aware execution runtime |
 | Untrusted AI operations | Signed, auditable execution traces per operation |
-| Complianca as overhead | Runtime-enforced access control + policy overlays |
+| Compliance as overhead | Runtime-enforced access control + policy overlays |
 | Multi-agent complexity | Native support for memory, retries, fallback, isolation | 
 
 ---
@@ -81,7 +81,7 @@ Every execution node generates:
 - Policy evaluation traces
 - Audit-ready metadata
 
-### Developer-Native Tookkit
+### Developer-Native Toolkit
 - CLI to test, simulate, and deploy graphs
 - SDK for dynamic graph generation
 - Runtime introspection tools
