@@ -120,6 +120,15 @@ const response = await venue.agents.request("Alice",
 );
 console.log(response.output);
 
+// Session-scoped chat — start a session
+const first = await venue.agents.chat("Alice", "Hi Alice");
+const sessionId = first.sessionId;
+console.log(first.response);
+
+// Continue the same session
+const follow = await venue.agents.chat("Alice", "And the next step?", sessionId);
+console.log(follow.response);
+
 // Send a notification
 await venue.agents.message("Alice", { event: "new-invoice" });
 
