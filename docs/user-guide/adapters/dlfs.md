@@ -158,13 +158,59 @@ Standard WebDAV verbs are supported:
 | `MKCOL` | `/dlfs/documents/new-folder` | Create directory |
 | `DELETE` | `/dlfs/documents/temp.txt` | Delete file |
 
-### Mounting
+### Mounting as a Network Drive
 
-**macOS Finder:** Go > Connect to Server > `https://your-venue.example.com/dlfs/documents`
+DLFS drives can be mounted as a native network drive on Windows, macOS, and Linux. Authentication uses your venue credentials (username/password or API token).
 
-**Windows Explorer:** Map Network Drive > `\\your-venue.example.com\dlfs\documents`
+#### Windows (File Explorer)
 
-**CLI tools** like `rclone` or `cadaver` can also connect via the WebDAV endpoint.
+1. Open **File Explorer** → right-click **This PC** → **Map network drive…**
+2. Choose a drive letter (e.g. `Z:`)
+3. In **Folder**, enter:
+   ```
+   https://your-venue.example.com/dlfs/documents
+   ```
+4. Tick **Connect using different credentials**, click **Finish**
+5. Enter your venue username and password when prompted
+
+From PowerShell or `cmd`:
+
+```
+net use Z: https://your-venue.example.com/dlfs/documents /user:alice
+```
+
+:::tip
+If Windows refuses `https://` URLs, ensure the **WebClient** service is running (`services.msc` → WebClient → Start, set to Automatic). Windows also enforces a default 50 MB WebDAV file-size limit — raise `FileSizeLimitInBytes` under `HKLM\SYSTEM\CurrentControlSet\Services\WebClient\Parameters` if you transfer larger files.
+:::
+
+#### macOS (Finder)
+
+1. In Finder, press `⌘K` (or **Go → Connect to Server…**)
+2. Enter the server URL:
+   ```
+   https://your-venue.example.com/dlfs/documents
+   ```
+3. Click **Connect** and authenticate with your venue credentials
+
+The drive appears under **Locations** in Finder.
+
+#### Linux (davfs2)
+
+```bash
+sudo apt install davfs2
+sudo mkdir -p /mnt/dlfs
+sudo mount -t davfs https://your-venue.example.com/dlfs/documents /mnt/dlfs
+```
+
+For unattended mounts, add credentials to `/etc/davfs2/secrets` and an entry to `/etc/fstab`.
+
+#### rclone (cross-platform)
+
+Configure a WebDAV remote once with `rclone config` (vendor: `other`), then:
+
+```bash
+rclone mount dlfs:documents ~/dlfs --vfs-cache-mode writes
+```
 
 ## Security
 
