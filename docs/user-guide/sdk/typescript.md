@@ -47,11 +47,13 @@ const venue = await Grid.connect("https://venue-test.covia.ai", auth);
 
 ```typescript
 // Run synchronously (invoke + wait + return output)
-const result = await venue.operations.run("test:echo", { message: "hello" });
+const result = await venue.operations.run("v/ops/schema/infer", {
+  value: { name: "Ada", age: 36, admin: true },
+});
 console.log(result);
 
 // Invoke asynchronously
-const job = await venue.operations.invoke("langchain:openai", {
+const job = await venue.operations.invoke("v/ops/langchain/openai", {
   prompt: "Summarise this document..."
 });
 const output = await job.result({ timeout: 60000 });
@@ -90,10 +92,10 @@ for (const op of ops) {
 }
 
 // Run by name
-const result = await venue.operations.run("covia:read", { path: "w/data" });
+const result = await venue.operations.run("v/ops/covia/read", { path: "w/data" });
 
 // Invoke and track job
-const job = await venue.operations.invoke("agent:request", {
+const job = await venue.operations.invoke("v/ops/agent/request", {
   agentId: "Alice",
   input: { question: "What vendors are overdue?" },
   wait: true

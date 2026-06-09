@@ -275,10 +275,10 @@ for op in operations:
     print(f"{op.name}: {op.description}")
 
 # Get details of a specific operation
-op = venue.get_operation("test:echo")
+op = venue.get_operation("v/ops/schema/infer")
 
 # Invoke by operation name
-job = venue.invoke("test:echo", {"message": "hello"})
+job = venue.invoke("v/ops/schema/infer", {"value": {"name": "Ada", "age": 36}})
 
 # Invoke by asset ID
 job = venue.invoke("abc123def456...")
