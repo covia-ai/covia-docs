@@ -84,7 +84,7 @@ Three things worth noticing:
    ```bash
    curl -X POST http://localhost:8080/api/v1/invoke \
      -H "Content-Type: application/json" \
-     -d '{ "operation": "covia:read", "input": { "path": "w/notes/preferences" }, "wait": true }'
+     -d '{ "operation": "v/ops/covia/read", "input": { "path": "w/notes/preferences" }, "wait": true }'
    ```
 
    One capability, every protocol — that's the [grid](../../overview/grid) model.
