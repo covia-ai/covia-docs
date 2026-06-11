@@ -13,7 +13,7 @@ The Covia adapter provides workspace CRUD, data inspection, and lattice access. 
 ### covia:read — Read a Value
 
 ```json
-{ "operation": "covia:read", "input": { "path": "w/vendor-records/acme" } }
+{ "operation": "v/ops/covia/read", "input": { "path": "w/vendor-records/acme" } }
 ```
 
 **Response:** `{ "exists": true, "value": { "name": "Acme Corp", "status": "active" } }`
@@ -24,7 +24,7 @@ Supports deep paths: `w/records/acme/contact/email` navigates into nested maps. 
 
 ```json
 {
-  "operation": "covia:write",
+  "operation": "v/ops/covia/write",
   "input": {
     "path": "w/vendor-records/acme",
     "value": { "name": "Acme Corp", "status": "active" }
@@ -37,7 +37,7 @@ Creates intermediate maps for deep paths. Only `w/` (workspace) and `o/` (operat
 ### covia:delete — Remove a Value
 
 ```json
-{ "operation": "covia:delete", "input": { "path": "w/vendor-records/acme" } }
+{ "operation": "v/ops/covia/delete", "input": { "path": "w/vendor-records/acme" } }
 ```
 
 Idempotent — deleting a non-existent path succeeds.
@@ -45,7 +45,7 @@ Idempotent — deleting a non-existent path succeeds.
 ### covia:append — Add to a Vector
 
 ```json
-{ "operation": "covia:append", "input": { "path": "w/events", "value": { "type": "invoice_received" } } }
+{ "operation": "v/ops/covia/append", "input": { "path": "w/events", "value": { "type": "invoice_received" } } }
 ```
 
 Creates the vector if it doesn't exist. Useful for event logs and audit trails.
@@ -53,7 +53,7 @@ Creates the vector if it doesn't exist. Useful for event logs and audit trails.
 ### covia:list — List Keys
 
 ```json
-{ "operation": "covia:list", "input": { "path": "w/vendor-records", "limit": 20 } }
+{ "operation": "v/ops/covia/list", "input": { "path": "w/vendor-records", "limit": 20 } }
 ```
 
 **Response:** `{ "exists": true, "type": "map", "count": 42, "keys": ["acme", "globex", ...] }`
@@ -63,7 +63,7 @@ Supports pagination via `limit` and `offset`. Shows structure without fetching v
 ### covia:slice — Paginate Collections
 
 ```json
-{ "operation": "covia:slice", "input": { "path": "w/events", "offset": 0, "limit": 10 } }
+{ "operation": "v/ops/covia/slice", "input": { "path": "w/events", "offset": 0, "limit": 10 } }
 ```
 
 Returns elements from vectors or `{key, value}` pairs from maps.
@@ -71,7 +71,7 @@ Returns elements from vectors or `{key, value}` pairs from maps.
 ### covia:inspect — Budget-Controlled Preview
 
 ```json
-{ "operation": "covia:inspect", "input": { "path": "w/vendor-records", "budget": 500 } }
+{ "operation": "v/ops/covia/inspect", "input": { "paths": "w/vendor-records", "budget": 500 } }
 ```
 
 Renders data as a compact preview, truncated to fit the byte budget (default 500 bytes). Accepts a single path or an array of paths. Useful for agent context and debugging.
@@ -86,7 +86,7 @@ Renders data as a compact preview, truncated to fit the byte budget (default 500
 | `covia:append` | `path`, `value` | `w/`, `o/` | Append to vector |
 | `covia:list` | `path`, `limit?`, `offset?` | All | List keys with pagination |
 | `covia:slice` | `path`, `limit?`, `offset?` | All | Paginate collection elements |
-| `covia:inspect` | `path` or `paths`, `budget?` | All | Compact preview |
+| `covia:inspect` | `paths` (string or array), `budget?` | All | Compact preview |
 
 ## Lattice Namespaces
 

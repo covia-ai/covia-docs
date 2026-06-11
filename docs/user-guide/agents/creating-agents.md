@@ -13,7 +13,7 @@ The simplest possible agent has just an ID:
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "my-agent"
   }
@@ -28,7 +28,7 @@ The `config` field controls agent behaviour. All fields are optional — default
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "Bob",
     "config": {
@@ -162,7 +162,7 @@ Instead of inline config, you can reference a template:
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "reader-1",
     "config": "template:reader"
@@ -192,7 +192,7 @@ Store a config map in the workspace and reference it:
 ```json
 // Store a template
 {
-  "operation": "covia:write",
+  "operation": "v/ops/covia/write",
   "input": {
     "path": "w/templates/invoice-scanner",
     "value": {
@@ -207,7 +207,7 @@ Store a config map in the workspace and reference it:
 
 // Create agent from template
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "scanner-1",
     "config": "w/templates/invoice-scanner"
@@ -231,7 +231,7 @@ An agent can be created with pre-populated state by including a `state` field at
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "Alice",
     "config": { "operation": "v/ops/goaltree/chat" },
@@ -259,7 +259,7 @@ To replace an existing agent, use `overwrite: true`:
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "Alice",
     "overwrite": true,

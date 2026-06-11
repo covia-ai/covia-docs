@@ -16,7 +16,7 @@ Execute an operation and wait for the result.
 
 ```json
 {
-  "operation": "grid:run",
+  "operation": "v/ops/grid/run",
   "input": {
     "operation": "v/ops/json/merge",
     "input": {
@@ -32,7 +32,7 @@ Returns the operation's output directly.
 
 ```json
 {
-  "operation": "grid:run",
+  "operation": "v/ops/grid/run",
   "input": {
     "operation": "v/ops/test/echo",
     "input": { "message": "hello" },
@@ -47,7 +47,7 @@ Submit an operation and return immediately with a job ID.
 
 ```json
 {
-  "operation": "grid:invoke",
+  "operation": "v/ops/grid/invoke",
   "input": {
     "operation": "v/ops/langchain/openai",
     "input": { "prompt": "Summarise this document..." }
@@ -70,7 +70,7 @@ Submit an operation and return immediately with a job ID.
 Check the current status of a previously submitted job.
 
 ```json
-{ "operation": "grid:jobStatus", "input": { "id": "0x1234..." } }
+{ "operation": "v/ops/grid/job-status", "input": { "id": "0x1234..." } }
 ```
 
 **Response:**
@@ -90,7 +90,7 @@ Check the current status of a previously submitted job.
 Block until a job completes and return its output.
 
 ```json
-{ "operation": "grid:jobResult", "input": { "id": "0x1234..." } }
+{ "operation": "v/ops/grid/job-result", "input": { "id": "0x1234..." } }
 ```
 
 Returns the operation's output directly, or errors if the job failed.
@@ -144,7 +144,7 @@ Execute an operation on a remote venue — caller identity is automatically prop
 
 ```json
 {
-  "operation": "grid:run",
+  "operation": "v/ops/grid/run",
   "input": {
     "operation": "v/ops/covia/read",
     "input": { "path": "w/shared-data" },

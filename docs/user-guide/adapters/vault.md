@@ -23,7 +23,7 @@ All operations work on the `"health-vault"` drive. Only a `path` is needed.
 ### Read
 
 ```json
-{ "operation": "vault:read", "input": { "path": "documents/referral.json" } }
+{ "operation": "v/ops/vault/read", "input": { "path": "documents/referral.json" } }
 ```
 
 Returns `{content, encoding, size}` — identical to `dlfs:read`.
@@ -32,16 +32,16 @@ Returns `{content, encoding, size}` — identical to `dlfs:read`.
 
 ```json
 // Inline content
-{ "operation": "vault:write", "input": { "path": "profile.json", "content": "{...}" } }
+{ "operation": "v/ops/vault/write", "input": { "path": "profile.json", "content": "{...}" } }
 
 // From asset
-{ "operation": "vault:write", "input": { "path": "scan.pdf", "asset": "/a/0x1234..." } }
+{ "operation": "v/ops/vault/write", "input": { "path": "scan.pdf", "asset": "/a/0x1234..." } }
 ```
 
 ### List
 
 ```json
-{ "operation": "vault:list", "input": { "path": "documents" } }
+{ "operation": "v/ops/vault/list", "input": { "path": "documents" } }
 ```
 
 Omit `path` to list the vault root.
@@ -49,13 +49,13 @@ Omit `path` to list the vault root.
 ### Mkdir
 
 ```json
-{ "operation": "vault:mkdir", "input": { "path": "documents/lab-results" } }
+{ "operation": "v/ops/vault/mkdir", "input": { "path": "documents/lab-results" } }
 ```
 
 ### Delete
 
 ```json
-{ "operation": "vault:delete", "input": { "path": "documents/temp.txt" } }
+{ "operation": "v/ops/vault/delete", "input": { "path": "documents/temp.txt" } }
 ```
 
 ## Operations Reference
@@ -74,7 +74,7 @@ Add vault operations to an agent's tool list:
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "health-assistant",
     "config": {

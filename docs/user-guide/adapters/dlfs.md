@@ -21,14 +21,14 @@ Each user can create and manage multiple named drives. A drive is a named file s
 
 ```json
 // Create a drive
-{ "operation": "dlfs:createDrive", "input": { "name": "documents" } }
+{ "operation": "v/ops/dlfs/create-drive", "input": { "name": "documents" } }
 
 // List your drives
-{ "operation": "dlfs:listDrives" }
+{ "operation": "v/ops/dlfs/list-drives" }
 // → { "drives": ["documents", "health-vault", "archive"] }
 
 // Delete a drive and all its contents
-{ "operation": "dlfs:deleteDrive", "input": { "name": "archive" } }
+{ "operation": "v/ops/dlfs/delete-drive", "input": { "name": "archive" } }
 ```
 
 Drive creation is idempotent — creating the same drive twice succeeds without error. The first write to a drive also auto-creates it if needed.
@@ -40,7 +40,7 @@ All file operations take a `drive` name and a `path` within that drive.
 ### Reading Files
 
 ```json
-{ "operation": "dlfs:read", "input": { "drive": "documents", "path": "report.json" } }
+{ "operation": "v/ops/dlfs/read", "input": { "drive": "documents", "path": "report.json" } }
 ```
 
 **Response:**
@@ -56,7 +56,7 @@ Text files are returned as UTF-8 strings. Binary files (images, PDFs) are return
 ```json
 // Write inline text content
 {
-  "operation": "dlfs:write",
+  "operation": "v/ops/dlfs/write",
   "input": {
     "drive": "documents",
     "path": "report.json",
@@ -66,7 +66,7 @@ Text files are returned as UTF-8 strings. Binary files (images, PDFs) are return
 
 // Write from a Covia asset (for binary files)
 {
-  "operation": "dlfs:write",
+  "operation": "v/ops/dlfs/write",
   "input": {
     "drive": "documents",
     "path": "logo.png",
@@ -80,7 +80,7 @@ Creates the file if absent, overwrites if it exists. Returns `{written: <bytes>,
 ### Listing Directories
 
 ```json
-{ "operation": "dlfs:list", "input": { "drive": "documents", "path": "reports" } }
+{ "operation": "v/ops/dlfs/list", "input": { "drive": "documents", "path": "reports" } }
 ```
 
 **Response:**
@@ -100,7 +100,7 @@ Omit `path` to list the drive root.
 ### Creating Directories
 
 ```json
-{ "operation": "dlfs:mkdir", "input": { "drive": "documents", "path": "reports/2026" } }
+{ "operation": "v/ops/dlfs/mkdir", "input": { "drive": "documents", "path": "reports/2026" } }
 ```
 
 Parent directories must already exist.
@@ -108,7 +108,7 @@ Parent directories must already exist.
 ### Deleting Files
 
 ```json
-{ "operation": "dlfs:delete", "input": { "drive": "documents", "path": "reports/draft.json" } }
+{ "operation": "v/ops/dlfs/delete", "input": { "drive": "documents", "path": "reports/draft.json" } }
 ```
 
 Cannot delete non-empty directories — delete contents first.

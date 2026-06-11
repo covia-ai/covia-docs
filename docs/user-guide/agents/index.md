@@ -78,7 +78,7 @@ Create an agent, send it a task, and wait for the result:
 // 1. Create
 POST /api/v1/invoke
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "Alice",
     "config": {
@@ -92,7 +92,7 @@ POST /api/v1/invoke
 // 2. Send a task (waits up to timeout ms for the result)
 POST /api/v1/invoke
 {
-  "operation": "agent:request",
+  "operation": "v/ops/agent/request",
   "input": {
     "agentId": "Alice",
     "input": { "task": "Summarise the vendor records" },

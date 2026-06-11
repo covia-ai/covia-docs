@@ -24,7 +24,7 @@ You never create a session explicitly. The first time you send work without a `s
 
 ```json
 // Request → response carries the sessionId that was minted
-{ "operation": "agent:chat", "input": { "agentId": "Alice", "message": "Hello" } }
+{ "operation": "v/ops/agent/chat", "input": { "agentId": "Alice", "message": "Hello" } }
 ```
 
 ```json
@@ -35,7 +35,7 @@ Echo that `sessionId` on the next call to continue the same conversation:
 
 ```json
 {
-  "operation": "agent:chat",
+  "operation": "v/ops/agent/chat",
   "input": { "agentId": "Alice", "sessionId": "0xabcd...", "message": "What did I just say?" }
 }
 ```
@@ -77,13 +77,13 @@ Sessions are plain lattice data — read them directly with the `covia` adapter:
 
 ```json
 // List an agent's sessions
-{ "operation": "covia:list", "input": { "path": "g/Alice/sessions" } }
+{ "operation": "v/ops/covia/list", "input": { "path": "g/Alice/sessions" } }
 
 // Read one session's metadata
-{ "operation": "covia:read", "input": { "path": "g/Alice/sessions/0xabcd.../meta" } }
+{ "operation": "v/ops/covia/read", "input": { "path": "g/Alice/sessions/0xabcd.../meta" } }
 
 // Read the most recent conversation turns
-{ "operation": "covia:slice", "input": { "path": "g/Alice/sessions/0xabcd.../frames/0/conversation", "limit": 20 } }
+{ "operation": "v/ops/covia/slice", "input": { "path": "g/Alice/sessions/0xabcd.../frames/0/conversation", "limit": 20 } }
 ```
 
 `agent:context` is the higher-level equivalent — it shows the exact LLM input the agent would assemble for a session. See [Agent Operations](./operations#agent-context).

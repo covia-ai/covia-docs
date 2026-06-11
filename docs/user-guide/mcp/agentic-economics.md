@@ -98,7 +98,7 @@ Agent thinking:
 
 ```json
 {
-  "operation": "mcp:tools:call",
+  "operation": "v/ops/mcp/tools-call",
   "input": {
     "server": "did:web:venue-test.covia.ai",
     "toolName": "convex_transact",

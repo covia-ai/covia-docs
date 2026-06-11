@@ -30,7 +30,7 @@ Ancestor frames are visible as progressively summarised context — the parent a
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "processor",
     "config": {

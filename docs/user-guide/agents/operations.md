@@ -25,7 +25,7 @@ Send a tracked task to an agent. The task is recorded as a Job. This is the prim
 
 ```json
 {
-  "operation": "agent:request",
+  "operation": "v/ops/agent/request",
   "input": {
     "agentId": "Alice",
     "input": { "task": "What vendors are overdue?" },
@@ -54,7 +54,7 @@ Send a message and synchronously await the agent's next response on the session.
 
 ```json
 {
-  "operation": "agent:chat",
+  "operation": "v/ops/agent/chat",
   "input": { "agentId": "Alice", "message": "Summarise the vendor records" }
 }
 ```
@@ -79,7 +79,7 @@ Send a fire-and-forget notification. The message is delivered into the session a
 
 ```json
 {
-  "operation": "agent:message",
+  "operation": "v/ops/agent/message",
   "input": {
     "agentId": "Alice",
     "message": "New invoice uploaded to w/invoices/INV-2026-042"
@@ -101,7 +101,7 @@ A fallback kick that nudges the agent's run loop to execute a cycle. **Not a res
 | `sessionId` | string (hex) | — | Resolved and echoed back if supplied; trigger never creates a session. |
 
 ```json
-{ "operation": "agent:trigger", "input": { "agentId": "Alice", "force": false } }
+{ "operation": "v/ops/agent/trigger", "input": { "agentId": "Alice", "force": false } }
 ```
 
 ## Task Completion
@@ -151,7 +151,7 @@ Framework-managed fields (status, tasks, timeline, sessions) are not affected.
 
 ```json
 {
-  "operation": "agent:update",
+  "operation": "v/ops/agent/update",
   "input": {
     "agentId": "Alice",
     "config": { "systemPrompt": "Updated instructions..." }
@@ -172,7 +172,7 @@ Create a new agent from an existing agent's configuration and state.
 
 ```json
 {
-  "operation": "agent:fork",
+  "operation": "v/ops/agent/fork",
   "input": {
     "sourceId": "Alice",
     "agentId": "Alice-v2",
@@ -282,7 +282,7 @@ For detailed debugging beyond `agent:info`, read the agent's lattice state direc
 
 ```json
 {
-  "operation": "covia:read",
+  "operation": "v/ops/covia/read",
   "input": { "path": "g/Alice/timeline" }
 }
 ```

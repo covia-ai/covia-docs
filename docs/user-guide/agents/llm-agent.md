@@ -44,7 +44,7 @@ Use `llmagent:chat` by omitting the `operation` field (it is the default) or set
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "helper",
     "config": {

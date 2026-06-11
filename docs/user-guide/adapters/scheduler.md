@@ -23,9 +23,9 @@ Give `scheduler:schedule` the operation to invoke, its input, and *when* — eit
 
 ```json
 {
-  "operation": "scheduler:schedule",
+  "operation": "v/ops/scheduler/schedule",
   "input": {
-    "operation": "agent:message",
+    "operation": "v/ops/agent/message",
     "input": { "agentId": "Alice", "message": "Daily summary due" },
     "after": 3600000
   }
@@ -43,14 +43,14 @@ Keep the `handle` — you use it to cancel or trigger the event.
 ## Listing, triggering, cancelling
 
 ```json
-{ "operation": "scheduler:list" }
+{ "operation": "v/ops/scheduler/list" }
 ```
 
 `scheduler:list` returns your pending events as `{ handle, op, time }`, soonest first. It is **scoped to the caller** — you only see events you scheduled.
 
 ```json
-{ "operation": "scheduler:trigger", "input": { "handle": "0x4f3a..." } }   // fire now → { triggered, result }
-{ "operation": "scheduler:cancel",  "input": { "handle": "0x4f3a..." } }   // → { cancelled: true|false }
+{ "operation": "v/ops/scheduler/trigger", "input": { "handle": "0x4f3a..." } }   // fire now → { triggered, result }
+{ "operation": "v/ops/scheduler/cancel",  "input": { "handle": "0x4f3a..." } }   // → { cancelled: true|false }
 ```
 
 ## Captured authority — no escalation

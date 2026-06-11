@@ -53,7 +53,7 @@ Use the Grid to invoke any MCP server's tools:
 
 ```json
 {
-  "operation": "mcp:tools:call",
+  "operation": "v/ops/mcp/tools-call",
   "input": {
     "server": "https://some-mcp-server.example.com",
     "toolName": "search",

@@ -172,7 +172,7 @@ User records can be queried via the `/api/v1/users` API endpoint.
 The `auth:whoami` operation reports how the venue resolved the current request — useful for debugging client auth:
 
 ```json
-{ "operation": "auth:whoami" }
+{ "operation": "v/ops/auth/whoami" }
 ```
 
 ```json

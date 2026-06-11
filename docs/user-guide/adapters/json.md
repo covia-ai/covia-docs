@@ -16,7 +16,7 @@ Merges a vector of maps using [RFC 7396](https://datatracker.ietf.org/doc/html/r
 
 ```json
 {
-  "operation": "json:merge",
+  "operation": "v/ops/json/merge",
   "input": {
     "values": [
       { "decision": "ESCALATED", "tier": "manager" },
@@ -46,7 +46,7 @@ Returns the `then` value of the first case whose `when` is truthy. Only `null` a
 
 ```json
 {
-  "operation": "json:cond",
+  "operation": "v/ops/json/cond",
   "input": {
     "cases": [
       { "when": false, "then": { "route": "auto-approve" } },
@@ -68,7 +68,7 @@ Sets a value at a path in a map, creating intermediate maps for missing keys. Eq
 
 ```json
 {
-  "operation": "json:assoc",
+  "operation": "v/ops/json/assoc",
   "input": {
     "target": { "user": { "name": "alice" } },
     "path": ["user", "email"],
@@ -87,7 +87,7 @@ Looks up a value in a map of cases by a discriminator key. Like a switch stateme
 
 ```json
 {
-  "operation": "json:select",
+  "operation": "v/ops/json/select",
   "input": {
     "key": "manager",
     "cases": {

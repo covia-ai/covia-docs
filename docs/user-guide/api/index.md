@@ -165,17 +165,20 @@ Invokes an operation and creates a job to track execution.
 **Request Body:**
 ```json
 {
-  "operation": "0x7a8b9c0d...",
+  "operation": "v/ops/http/get",
   "input": {
     "url": "https://example.com/data"
   }
 }
 ```
 
-The `operation` field can be:
-- An Asset ID (hex string)
-- An operation name registered with the venue
-- An adapter reference (e.g., `"http:get"`)
+The `operation` field is a resolvable reference:
+- A **catalog path** — `v/ops/<adapter>/<op>` (e.g. `v/ops/http/get`). The usual form; list them via `GET /api/v1/operations`.
+- A **user pin** — `o/<name>` from your workspace
+- An **Asset ID** — `a/<hash>` or bare hex
+- A **DID URL** — an operation on a remote venue
+
+The short `adapter:op` style (e.g. `http:get`) is the operation's *name* as used in documentation and adapter metadata — it is **not** a resolvable reference and will be rejected.
 
 **Response:** `201 Created`
 ```json
@@ -456,7 +459,7 @@ Operations can include UCAN capability proofs:
 
 ```json
 {
-  "operation": "covia:write",
+  "operation": "v/ops/covia/write",
   "input": { "path": "w/data", "value": {...} },
   "ucans": ["<ucan-token>"]
 }

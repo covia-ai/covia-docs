@@ -26,8 +26,8 @@ Other OpenAI-compatible providers (DeepSeek, Google Gemini, gateways) work throu
 Store API keys via the secrets manager:
 
 ```json
-{ "operation": "secret:set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." } }
-{ "operation": "secret:set", "input": { "key": "ANTHROPIC_API_KEY", "value": "sk-ant-..." } }
+{ "operation": "v/ops/secret/set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." } }
+{ "operation": "v/ops/secret/set", "input": { "key": "ANTHROPIC_API_KEY", "value": "sk-ant-..." } }
 ```
 
 Keys are resolved from the caller's secret store at invocation time. A backend that requires a key but can't resolve one fails fast with an error naming the secret it expected — it does not silently continue.
@@ -38,7 +38,7 @@ Keys are resolved from the caller's secret store at invocation time. A backend t
 
 ```json
 {
-  "operation": "langchain:openai",
+  "operation": "v/ops/langchain/openai",
   "input": {
     "prompt": "What is the capital of France?",
     "model": "gpt-5.4-mini"
@@ -52,7 +52,7 @@ Keys are resolved from the caller's secret store at invocation time. A backend t
 
 ```json
 {
-  "operation": "langchain:anthropic",
+  "operation": "v/ops/langchain/anthropic",
   "input": {
     "model": "claude-sonnet-4-5",
     "messages": [
@@ -78,7 +78,7 @@ Provide tool definitions and the LLM can request tool calls:
 
 ```json
 {
-  "operation": "langchain:openai",
+  "operation": "v/ops/langchain/openai",
   "input": {
     "model": "gpt-5.4-mini",
     "messages": [
@@ -131,7 +131,7 @@ Request JSON output conforming to a schema:
 
 ```json
 {
-  "operation": "langchain:openai",
+  "operation": "v/ops/langchain/openai",
   "input": {
     "model": "gpt-5.4-mini",
     "messages": [

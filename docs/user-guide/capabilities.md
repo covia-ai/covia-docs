@@ -56,7 +56,7 @@ The `ucan:issue` operation mints a venue-signed UCAN delegating capabilities to 
 
 ```json
 {
-  "operation": "ucan:issue",
+  "operation": "v/ops/ucan/issue",
   "input": {
     "aud": "did:key:z6MkBob...",
     "att": [

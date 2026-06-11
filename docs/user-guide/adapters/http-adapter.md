@@ -14,7 +14,7 @@ The HTTP adapter makes outbound HTTP requests to external APIs and web services,
 
 ```json
 {
-  "operation": "http:get",
+  "operation": "v/ops/http/get",
   "input": {
     "url": "https://api.example.com/data",
     "headers": { "Accept": "application/json" },
@@ -27,7 +27,7 @@ The HTTP adapter makes outbound HTTP requests to external APIs and web services,
 
 ```json
 {
-  "operation": "http:post",
+  "operation": "v/ops/http/post",
   "input": {
     "url": "https://api.example.com/submit",
     "method": "POST",
@@ -45,7 +45,7 @@ To call an API that needs a bearer token without putting the token in plaintext,
 
 ```json
 {
-  "operation": "http:get",
+  "operation": "v/ops/http/get",
   "input": {
     "url": "https://api.example.com/private",
     "bearerSecret": "s/EXAMPLE_API_TOKEN"

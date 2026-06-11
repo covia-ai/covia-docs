@@ -45,7 +45,7 @@ Set the backend via `llmOperation` in agent config. The `model` is optional — 
 
 ```json
 {
-  "operation": "agent:create",
+  "operation": "v/ops/agent/create",
   "input": {
     "agentId": "claude-agent",
     "config": {
@@ -62,7 +62,7 @@ Set the backend via `llmOperation` in agent config. The `model` is optional — 
 API keys are resolved from the per-user secret store at invocation time — they are never stored in job records. Set one with:
 
 ```json
-{ "operation": "secret:set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." } }
+{ "operation": "v/ops/secret/set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." } }
 ```
 
 A backend that needs a key but can't resolve one **fails fast** with a clear error naming the secret it looked for (e.g. `s/OPENAI_API_KEY`) — it does not silently fall back. Ollama needs no key.

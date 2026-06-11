@@ -64,7 +64,7 @@ Exactly one of `path`, `temp`, or `dlfs` must be set. If no roots are configured
 `file:read` decodes by `mode` — `auto` (default; UTF-8 text when it looks like text, otherwise base64), `text`, `bytes` (base64), or `json` (parsed value returned in `value`):
 
 ```json
-{ "operation": "file:read", "input": { "root": "workspace", "path": "notes/daily.md" } }
+{ "operation": "v/ops/file/read", "input": { "root": "workspace", "path": "notes/daily.md" } }
 ```
 
 ```json
@@ -74,7 +74,7 @@ Exactly one of `path`, `temp`, or `dlfs` must be set. If no roots are configured
 `file:tree` renders a compact, tab-indented walk that's cheap for an LLM to read. It is bounded by `maxDepth` (default 3, max 10) and `maxEntries` (default 500, max 5000); `truncated: true` signals the cap was hit. Pass `info: "size"` to annotate files with a human-readable size:
 
 ```json
-{ "operation": "file:tree", "input": { "root": "workspace", "maxDepth": 2, "info": "size" } }
+{ "operation": "v/ops/file/tree", "input": { "root": "workspace", "maxDepth": 2, "info": "size" } }
 ```
 
 ```
@@ -89,7 +89,7 @@ workspace/
 `file:write` and `file:append` take exactly one content source: `content` (UTF-8 text), `value` (written as JSON), `bytes` (base64), or `asset` (an asset reference streamed to the file). Writing requires the file's parent directory to exist; `file:mkdir` with `parents: true` creates intermediates. Writes through a `readOnly` root are rejected.
 
 ```json
-{ "operation": "file:write", "input": { "root": "workspace", "path": "out/result.json", "value": { "ok": true } } }
+{ "operation": "v/ops/file/write", "input": { "root": "workspace", "path": "out/result.json", "value": { "ok": true } } }
 ```
 
 `file:delete` removes a file or empty directory; pass `recursive: true` to delete a non-empty directory. It never deletes the root itself.

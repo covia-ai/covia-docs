@@ -21,7 +21,7 @@ Discover tools available on an MCP server:
 
 ```json
 {
-  "operation": "mcp:tools:list",
+  "operation": "v/ops/mcp/tools-list",
   "input": {
     "server": "https://some-mcp-server.example.com"
   }
@@ -63,7 +63,7 @@ Call a specific tool on an MCP server:
 
 ```json
 {
-  "operation": "mcp:tools:call",
+  "operation": "v/ops/mcp/tools-call",
   "input": {
     "server": "https://some-mcp-server.example.com",
     "toolName": "search",
@@ -116,7 +116,7 @@ If the MCP server requires authentication, include a token:
 
 ```json
 {
-  "operation": "mcp:tools:call",
+  "operation": "v/ops/mcp/tools-call",
   "input": {
     "server": "https://protected-server.example.com",
     "toolName": "private-search",
@@ -151,7 +151,7 @@ Then reference by name:
 
 ```json
 {
-  "operation": "mcp:tools:call",
+  "operation": "v/ops/mcp/tools-call",
   "input": {
     "server": "protected-server",
     "toolName": "private-search",
@@ -171,7 +171,7 @@ Combine MCP tool calls with other operations in orchestrations:
     "adapter": "orchestrator",
     "steps": [
       {
-        "op": "mcp:tools:call",
+        "op": "v/ops/mcp/tools-call",
         "name": "Web Search",
         "input": {
           "server": "did:web:search-venue.example.com",
@@ -182,15 +182,15 @@ Combine MCP tool calls with other operations in orchestrations:
         }
       },
       {
-        "op": "langchain:summarize",
+        "op": "v/ops/langchain/openai",
         "name": "Summarize Results",
         "input": {
-          "text": [0, "content", 0, "text"]
+          "prompt": ["concat", "Summarise the following search results:\n", [0, "content", 0, "text"]]
         }
       }
     ],
     "result": {
-      "summary": [1, "summary"],
+      "summary": [1, "content"],
       "sources": [0, "content"]
     }
   }
@@ -203,7 +203,7 @@ Use MCP to call tools on other Covia venues:
 
 ```json
 {
-  "operation": "mcp:tools:call",
+  "operation": "v/ops/mcp/tools-call",
   "input": {
     "server": "did:web:venue-2.covia.ai",
     "toolName": "analyze-sentiment",
@@ -281,7 +281,7 @@ This example shows a complete workflow using multiple MCP tools:
     "steps": [
       {
         "name": "Search",
-        "op": "mcp:tools:call",
+        "op": "v/ops/mcp/tools-call",
         "input": {
           "server": "did:web:search.example.com",
           "toolName": "web-search",
@@ -290,7 +290,7 @@ This example shows a complete workflow using multiple MCP tools:
       },
       {
         "name": "Fetch First Result",
-        "op": "mcp:tools:call",
+        "op": "v/ops/mcp/tools-call",
         "input": {
           "server": "did:web:fetch.example.com",
           "toolName": "fetch-url",
@@ -299,12 +299,12 @@ This example shows a complete workflow using multiple MCP tools:
       },
       {
         "name": "Summarize",
-        "op": "langchain:summarize",
-        "input": { "text": [1, "content"] }
+        "op": "v/ops/langchain/openai",
+        "input": { "prompt": ["concat", "Summarise this page:\n", [1, "content"]] }
       }
     ],
     "result": {
-      "summary": [2, "summary"],
+      "summary": [2, "content"],
       "source_url": [0, "results", 0, "url"],
       "all_results": [0, "results"]
     }
