@@ -1,6 +1,8 @@
 # Covia Documentation
 
-This the a Docusaurus-based documentation site available at `https/docs.covia.ai`
+The Docusaurus-based documentation site published at [docs.covia.ai](https://docs.covia.ai).
+
+Active development happens on `develop`; pushing to `master` deploys the site.
 
 
 
