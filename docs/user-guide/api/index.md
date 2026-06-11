@@ -11,7 +11,7 @@ The Covia REST API provides HTTP endpoints for interacting with venues on the Gr
 The API is available at `/api/v1/` on any Covia venue. For example:
 
 ```
-https://venue-test.covia.ai/api/v1/
+https://venue-3.covia.ai/api/v1/
 ```
 
 ## Authentication
@@ -39,8 +39,8 @@ Returns venue status information including DID, available assets, and operationa
 **Response:**
 ```json
 {
-  "did": "did:web:venue-test.covia.ai",
-  "url": "https://venue-test.covia.ai/api/v1/",
+  "did": "did:web:venue-3.covia.ai",
+  "url": "https://venue-3.covia.ai/api/v1/",
   "stats": {
     "assets": 42,
     "users": 101,
@@ -347,12 +347,12 @@ Returns the DID document for the venue, following W3C DID specification.
 ```json
 {
   "@context": "https://www.w3.org/ns/did/v1",
-  "id": "did:web:venue-test.covia.ai",
+  "id": "did:web:venue-3.covia.ai",
   "service": [
     {
-      "id": "did:web:venue-test.covia.ai#covia",
+      "id": "did:web:venue-3.covia.ai#covia",
       "type": "Covia.API.v1",
-      "serviceEndpoint": "https://venue-test.covia.ai/api/v1/"
+      "serviceEndpoint": "https://venue-3.covia.ai/api/v1/"
     }
   ]
 }

@@ -5,10 +5,10 @@
 Key facts for agents and tools:
 
 - Every venue serves the same REST API under `/api/v1/` (OpenAPI at `/swagger`). Invoke an operation: `POST /api/v1/invoke` with `{"operation": "v/ops/schema/infer", "input": {...}, "wait": true}` — the response is a job record whose `output` carries the result.
-- Operations are addressed by catalog path `v/ops/<adapter>/<op>` (e.g. `v/ops/schema/infer`, `v/ops/langchain/openai`) or short form `adapter:op`. List them: `GET /api/v1/operations`.
+- Operations are addressed by catalog path `v/ops/<adapter>/<op>` (e.g. `v/ops/schema/infer`, `v/ops/langchain/openai`). The short `adapter:op` style seen in prose is a display name only — it is NOT a resolvable reference. List operations: `GET /api/v1/operations`.
 - Every venue is an **MCP server** at `POST /mcp` (operations exposed as snake_case tools) and an **A2A v1.0 agent** at `POST /a2a`.
 - Machine discovery on every venue: `/.well-known/did.json`, `/.well-known/mcp.json`, `/.well-known/agent-card.json`.
-- Live public venue for testing (no signup): https://venue-test.covia.ai
+- Live public venue for testing (no signup): https://venue-3.covia.ai
 - Run your own venue: `docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest` (or `java -jar covia.jar`, Java 21+).
 - SDKs: TypeScript `@covia/covia-sdk` (npm), Python `covia` (PyPI), Java `ai.covia:covia-core` (build from source).
 - Authorisation is capability-based (UCAN): `{with, can}` grants presented as bearer tokens and enforced per call.

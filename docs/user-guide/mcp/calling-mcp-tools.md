@@ -94,7 +94,7 @@ You can identify MCP servers using either URLs or DIDs:
 
 ```json
 {
-  "server": "https://venue-test.covia.ai/mcp"
+  "server": "https://venue-3.covia.ai/mcp"
 }
 ```
 
@@ -102,7 +102,7 @@ You can identify MCP servers using either URLs or DIDs:
 
 ```json
 {
-  "server": "did:web:venue-test.covia.ai"
+  "server": "did:web:venue-3.covia.ai"
 }
 ```
 
@@ -205,7 +205,7 @@ Use MCP to call tools on other Covia venues:
 {
   "operation": "v/ops/mcp/tools-call",
   "input": {
-    "server": "did:web:venue-2.covia.ai",
+    "server": "did:web:venue-4.covia.ai",
     "toolName": "analyze-sentiment",
     "arguments": {
       "text": "This product is amazing!"

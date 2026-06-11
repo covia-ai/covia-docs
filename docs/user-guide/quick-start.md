@@ -7,11 +7,10 @@ sidebar_position: 1
 
 The fastest way to try Covia is against a **hosted venue** — no install required. Every venue exposes the same REST API and SDK surface, so anything you do here works the same on a venue you run yourself.
 
-There are public example venues you can use right now:
+There are public example venues you can use right now, deployed automatically from the latest development build:
 
-- [Test Venue](https://venue-test.covia.ai) — `did:web:venue-test.covia.ai`
-- [Venue One](https://venue-1.covia.ai) — `did:web:venue-1.covia.ai`
-- [Venue Two](https://venue-2.covia.ai) — `did:web:venue-2.covia.ai`
+- [venue-3.covia.ai](https://venue-3.covia.ai) (AWS) — `did:web:venue-3.covia.ai`
+- [venue-4.covia.ai](https://venue-4.covia.ai) (Azure) — `did:web:venue-4.covia.ai`
 
 Prefer a UI? The [Covia App](https://app.covia.ai) lets you connect to venues and run operations interactively.
 
@@ -20,9 +19,9 @@ Prefer a UI? The [Covia App](https://app.covia.ai) lets you connect to venues an
 List the operations a venue offers, then invoke one and wait for the result. `v/ops/schema/infer` derives a JSON Schema from an example value:
 
 ```bash
-curl https://venue-test.covia.ai/api/v1/operations
+curl https://venue-3.covia.ai/api/v1/operations
 
-curl -X POST https://venue-test.covia.ai/api/v1/invoke \
+curl -X POST https://venue-3.covia.ai/api/v1/invoke \
   -H "Content-Type: application/json" \
   -d '{
         "operation": "v/ops/schema/infer",
@@ -44,7 +43,7 @@ npm install @covia/covia-sdk
 ```typescript
 import { Grid } from "@covia/covia-sdk";
 
-const venue = await Grid.connect("https://venue-test.covia.ai");
+const venue = await Grid.connect("https://venue-3.covia.ai");
 const result = await venue.operations.run("v/ops/schema/infer", {
   value: { name: "Ada", age: 36 },
 });
@@ -61,7 +60,7 @@ pip install covia
 ```python
 from covia import Grid
 
-venue = Grid.connect("https://venue-test.covia.ai")
+venue = Grid.connect("https://venue-3.covia.ai")
 result = venue.run("v/ops/schema/infer", {"value": {"name": "Ada", "age": 36}})
 print(result)  # {'schema': {'type': 'object', ...}}
 ```
@@ -80,6 +79,7 @@ Point the examples above at `http://localhost:8080`. See the [Operator Guide](..
 
 ## What's next
 
+- [Tutorials](tutorials/) — guided builds: [give Claude your own tools in 5 minutes](tutorials/claude-mcp), [run an agent against your workspace](tutorials/running-agents)
 - [REST API](api/) — the full HTTP surface (assets, operations, jobs, SSE)
 - [SDK reference](sdk/) — TypeScript, Python, and Java clients
 - [Agents](agents/) — build persistent, tool-using agents

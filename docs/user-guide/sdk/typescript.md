@@ -25,20 +25,20 @@ npm install @covia/covia-sdk
 import { Grid, BearerAuth, KeyPairAuth } from "@covia/covia-sdk";
 
 // Connect using a URL
-const venue = await Grid.connect("https://venue-test.covia.ai");
+const venue = await Grid.connect("https://venue-3.covia.ai");
 
 // Connect using a DID
-const venue = await Grid.connect("did:web:venue-test.covia.ai");
+const venue = await Grid.connect("did:web:venue-3.covia.ai");
 
 // With bearer token
-const venue = await Grid.connect("https://venue-test.covia.ai",
+const venue = await Grid.connect("https://venue-3.covia.ai",
   new BearerAuth("your-token")
 );
 
 // With Ed25519 key pair (self-issued JWT)
 const auth = KeyPairAuth.generate();
 console.log(`Your DID: ${auth.getDID()}`);
-const venue = await Grid.connect("https://venue-test.covia.ai", auth);
+const venue = await Grid.connect("https://venue-3.covia.ai", auth);
 ```
 
 `Grid.connect()` caches venue connections — calling it twice with the same ID returns the same instance.
@@ -63,7 +63,7 @@ const output = await job.result({ timeout: 60000 });
 
 ```typescript
 const status = await venue.status();
-console.log(status.did);     // "did:web:venue-test.covia.ai"
+console.log(status.did);     // "did:web:venue-3.covia.ai"
 console.log(status.name);    // "Test Venue"
 console.log(status.stats);   // { assets: 42, users: 10, ops: 15 }
 ```
@@ -350,7 +350,7 @@ try {
 ```typescript
 // DID Document
 const doc = await venue.didDocument();
-console.log(doc.id);  // "did:web:venue-test.covia.ai"
+console.log(doc.id);  // "did:web:venue-3.covia.ai"
 
 // MCP Discovery
 const mcp = await venue.mcpDiscovery();

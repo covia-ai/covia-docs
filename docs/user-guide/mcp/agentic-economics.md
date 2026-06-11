@@ -100,7 +100,7 @@ Agent thinking:
 {
   "operation": "v/ops/mcp/tools-call",
   "input": {
-    "server": "did:web:venue-test.covia.ai",
+    "server": "did:web:venue-3.covia.ai",
     "toolName": "convex_transact",
     "arguments": {
       "source": "(call data-venue/subscribe :premium)",

@@ -24,7 +24,7 @@ Custom connectors in claude.ai and Claude Desktop require a **public HTTPS** URL
 2. Paste the test venue's MCP endpoint:
 
    ```
-   https://venue-test.covia.ai/mcp
+   https://venue-3.covia.ai/mcp
    ```
 
 3. Click **Add**. That's it — Claude now has the venue's tools.

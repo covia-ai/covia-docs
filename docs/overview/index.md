@@ -21,7 +21,7 @@ It is built on the [Convex](https://docs.convex.world/docs/overview/lattice) lat
 Every venue exposes the same API. Call a live one — no install, no signup:
 
 ```bash
-curl -X POST https://venue-test.covia.ai/api/v1/invoke \
+curl -X POST https://venue-3.covia.ai/api/v1/invoke \
   -H "Content-Type: application/json" \
   -d '{
         "operation": "v/ops/schema/infer",
@@ -77,7 +77,7 @@ Covia is **open source (EPL-2.0)** and built in the open — and we are delibera
 ## Start here
 
 **Building something?**
-[Quick Start](../user-guide/quick-start) · [SDKs](../user-guide/sdk/) · [Agents](../user-guide/agents/) · [Adapters](../user-guide/adapters/)
+[Give Claude your own tools in 5 minutes](../user-guide/tutorials/claude-mcp) · [Quick Start](../user-guide/quick-start) · [Tutorials](../user-guide/tutorials/) · [SDKs](../user-guide/sdk/) · [Agents](../user-guide/agents/)
 
 **Running infrastructure?**
 [Run a venue](../operator-guide/venue-start) · [Authentication](../operator-guide/auth) · [Persistence](../operator-guide/persistence)

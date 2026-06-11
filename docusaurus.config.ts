@@ -25,7 +25,10 @@ const config: Config = {
   organizationName: 'covia-ai', // Usually your GitHub org/user name.
   projectName: 'covia', // Usually your repo name.
 
+  // Broken internal links, anchors, and markdown links all FAIL the build —
+  // this is the docs link-integrity gate (enforced in CI on every push/PR).
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -37,7 +40,7 @@ const config: Config = {
 
   markdown: {
     hooks: {
-      onBrokenMarkdownLinks: 'warn',
+      onBrokenMarkdownLinks: 'throw',
     },
   },
 

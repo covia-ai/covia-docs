@@ -31,13 +31,13 @@ pip install covia[dev]
 from covia import Grid
 
 # Connect using a URL
-venue = Grid.connect("https://venue-test.covia.ai")
+venue = Grid.connect("https://venue-3.covia.ai")
 
 # Connect using a DID
-venue = Grid.connect("did:web:venue-test.covia.ai")
+venue = Grid.connect("did:web:venue-3.covia.ai")
 
 # Use as a context manager for automatic cleanup
-with Grid.connect("https://venue-test.covia.ai") as venue:
+with Grid.connect("https://venue-3.covia.ai") as venue:
     status = venue.status()
     print(status.name)
 ```
@@ -45,7 +45,7 @@ with Grid.connect("https://venue-test.covia.ai") as venue:
 ### Invoking Operations
 
 ```python
-with Grid.connect("https://venue-test.covia.ai") as venue:
+with Grid.connect("https://venue-3.covia.ai") as venue:
     # Invoke and get a Job for tracking
     job = venue.invoke("my-operation", {"prompt": "hello"})
     job.wait(timeout=60)
@@ -121,7 +121,7 @@ from covia import Grid
 from covia.auth import BearerAuth
 
 venue = Grid.connect(
-    "https://venue-test.covia.ai",
+    "https://venue-3.covia.ai",
     auth=BearerAuth("your-token-here")
 )
 ```
@@ -132,7 +132,7 @@ venue = Grid.connect(
 from covia.auth import BasicAuth
 
 venue = Grid.connect(
-    "https://venue-test.covia.ai",
+    "https://venue-3.covia.ai",
     auth=BasicAuth("username", "password")
 )
 ```
@@ -142,7 +142,7 @@ venue = Grid.connect(
 ```python
 from covia.auth import NoAuth
 
-venue = Grid.connect("https://venue-test.covia.ai", auth=NoAuth())
+venue = Grid.connect("https://venue-3.covia.ai", auth=NoAuth())
 ```
 
 This is the default when `auth` is not specified.
@@ -155,16 +155,16 @@ Authenticate with a self-issued EdDSA JWT using an Ed25519 key pair. This is the
 from covia.auth import Ed25519Auth
 
 # Generate a new key pair
-auth = Ed25519Auth.generate(audience="https://venue-test.covia.ai")
+auth = Ed25519Auth.generate(audience="https://venue-3.covia.ai")
 print(auth.did)  # did:key:z6Mk...
 
 # Or create from an existing seed (deterministic)
 auth = Ed25519Auth.from_seed(
     seed=b"32-byte-seed-value-here-12345678",
-    audience="https://venue-test.covia.ai"
+    audience="https://venue-3.covia.ai"
 )
 
-venue = Grid.connect("https://venue-test.covia.ai", auth=auth)
+venue = Grid.connect("https://venue-3.covia.ai", auth=auth)
 ```
 
 The `audience` is automatically set from the venue URL when using `Grid.connect()`. Tokens are short-lived and refreshed automatically.
@@ -294,11 +294,11 @@ Venues expose standard discovery endpoints for interoperability.
 ```python
 # DID Document (W3C Decentralized Identifier)
 doc = venue.did_document()
-print(doc.id)       # "did:web:venue-test.covia.ai"
+print(doc.id)       # "did:web:venue-3.covia.ai"
 print(doc.context)  # "https://www.w3.org/ns/did/v1"
 
 # Cached DID (fetched once, then cached)
-did = venue.did     # "did:web:venue-test.covia.ai"
+did = venue.did     # "did:web:venue-3.covia.ai"
 
 # MCP Discovery (Model Context Protocol)
 mcp = venue.mcp_discovery()
@@ -318,7 +318,7 @@ import asyncio
 from covia.async_api import AsyncGrid
 
 async def main():
-    async with AsyncGrid.connect("https://venue-test.covia.ai") as venue:
+    async with AsyncGrid.connect("https://venue-3.covia.ai") as venue:
         # All methods are awaitable
         status = await venue.status()
         result = await venue.run("my-operation", {"prompt": "hello"})
@@ -335,7 +335,7 @@ Some sync properties become async methods. For example, `venue.did` (sync) becom
 
 ```python
 async def run_parallel():
-    async with AsyncGrid.connect("https://venue-test.covia.ai") as venue:
+    async with AsyncGrid.connect("https://venue-3.covia.ai") as venue:
         # Launch multiple operations concurrently
         jobs = await asyncio.gather(
             venue.invoke("op-a", {"x": 1}),
@@ -359,7 +359,7 @@ from covia.async_api import AsyncGrid
 from covia.auth import BearerAuth
 
 async with AsyncGrid.connect(
-    "https://venue-test.covia.ai",
+    "https://venue-3.covia.ai",
     auth=BearerAuth("token")
 ) as venue:
     ...
@@ -396,7 +396,7 @@ from covia import (
 )
 
 try:
-    with Grid.connect("https://venue-test.covia.ai") as venue:
+    with Grid.connect("https://venue-3.covia.ai") as venue:
         result = venue.run("my-operation", {"x": 1}, timeout=30)
 except AssetNotFoundError as e:
     print(f"Asset not found: {e.asset_id}")
@@ -430,14 +430,14 @@ except ConnectionError:
 
 ```python
 # Custom timeout (applies to connect, read, and write)
-venue = Grid.connect("https://venue-test.covia.ai", timeout=60)
+venue = Grid.connect("https://venue-3.covia.ai", timeout=60)
 ```
 
 ### Custom Headers
 
 ```python
 venue = Grid.connect(
-    "https://venue-test.covia.ai",
+    "https://venue-3.covia.ai",
     headers={"X-Request-ID": "abc123"}
 )
 ```
@@ -448,7 +448,7 @@ venue = Grid.connect(
 from covia.auth import BearerAuth
 
 venue = Grid.connect(
-    "did:web:venue-test.covia.ai",
+    "did:web:venue-3.covia.ai",
     timeout=30,
     headers={"X-Tenant": "acme"},
     auth=BearerAuth("token"),

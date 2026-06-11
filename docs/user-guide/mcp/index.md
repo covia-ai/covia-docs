@@ -39,7 +39,7 @@ Add this to your MCP client configuration (e.g., Claude Desktop):
 {
   "mcpServers": {
     "covia-venue": {
-      "url": "https://venue-test.covia.ai/mcp"
+      "url": "https://venue-3.covia.ai/mcp"
     }
   }
 }

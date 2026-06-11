@@ -1,0 +1,33 @@
+# Docs CI — builds the site on every push to develop and every PR.
+# The Docusaurus build fails on broken internal links, anchors, and
+# markdown links (onBrokenLinks/onBrokenAnchors/onBrokenMarkdownLinks
+# are all set to 'throw'), so a green build means link integrity holds.
+name: Docs CI
+
+on:
+  push:
+    branches: ["develop"]
+  pull_request:
+    branches: ["develop", "master"]
+  workflow_dispatch:
+
+concurrency:
+  group: docs-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Enable pnpm (via Corepack)
+        run: corepack enable
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build site (fails on broken links/anchors)
+        run: pnpm build
