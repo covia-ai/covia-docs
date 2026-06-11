@@ -149,6 +149,10 @@ JWTs signed by the venue's own key pair, typically issued after OAuth login. The
 
 RS256 JWTs from configured OAuth providers, verified against the provider's JWKS endpoint. This allows clients that already have a provider-issued token to authenticate directly.
 
+### UCAN Capability Tokens
+
+A bearer token may also be a **UCAN** — a signed capability token. When the venue recognises one, the token's issuer (`iss`) becomes the caller DID and the token's capabilities are carried into the request as proofs. This works on both the REST API and the MCP endpoint and is what enables fine-grained, delegable, cross-user access. Authentication (identity) and capabilities (authorisation) are separate concerns — see [Capabilities](../user-guide/capabilities) for the authorisation model, `ucan:issue`, and the `{with, can}` grant shape.
+
 ## User Database
 
 Authenticated users are stored in the venue's lattice-backed user database. User records are keyed by a sanitised user ID derived from the email address (e.g. `alice_gmail_com`) and contain:
@@ -162,6 +166,20 @@ Authenticated users are stored in the venue's lattice-backed user database. User
 | `updated` | Timestamp of last update |
 
 User records can be queried via the `/api/v1/users` API endpoint.
+
+## Checking the Caller
+
+The `auth:whoami` operation reports how the venue resolved the current request — useful for debugging client auth:
+
+```json
+{ "operation": "auth:whoami" }
+```
+
+```json
+{ "caller": "did:key:z6Mk...", "authenticated": true, "internal": false }
+```
+
+`caller` is the resolved caller DID (or `null` for anonymous), `authenticated` is true when a caller DID is present, and `internal` is true only when the request originates from the venue itself.
 
 ## Example Configuration
 

@@ -4,68 +4,18 @@ sidebar_position: 1
 
 # Operator Guide
 
-This section provides comprehensive information for those who want to run their own venue.
+This section is for people who want to **run their own venue** — a node on the Covia [Grid](../overview/grid) that hosts operations, runs agents, and persists state. Running a venue lets you control local resources, install custom adapters, hold your own data, and federate with other venues under your own governance.
 
-## What is a Covia Operator?
+Operators remain fully in control of their own infrastructure, resources, and data. Each venue decides its own access policy and keeps its data where it is governed.
 
-A Covia Operator is an individual or organisation that runs and maintains computational infrastructure within the Covia network. 
+## In this guide
 
-Operators maintain **Venues** that act as nodes on the covia grid. Venues control access the physical and virtual resources that power the decentralised computing grid, enabling the execution of AI workloads, data processing tasks, and other computational services.
+- **[Venue Quick Start](./venue-start)** — get a venue running locally, via Docker, or from source, and point clients at it.
+- **[Authentication](./auth)** — public access, OAuth login providers, and bearer/UCAN tokens.
+- **[Persistence](./persistence)** — how venue state is stored, the durability model, and recovery.
 
-## Benefits of Being an Operator
+## Related
 
-Operating in the Covia ecosystem offers several advantages:
-
-- **Revenue Streams**: Earn rewards for providing computational resources
-- **Flexible Participation**: Choose your level of involvement and resource commitment
-- **Decentralized Control**: Maintain autonomy over your infrastructure
-- **Community Participation**: Contribute to the growth of the ecosystem
-- **Technical Innovation**: Access to cutting-edge distributed computing technology
-
-Operators remain fully in control of their own infrastructure, resources and data.
-
-## Key Responsibilities
-
-As a Covia Operator, you will be responsible for:
-
-- **Infrastructure Management**: Setting up and maintaining venues
-- **Resource Allocation**: Managing CPU, GPU, memory, and storage resources
-- **Service Provisioning**: Offering specialized computational services
-- **Network Participation**: Contributing to the peer-to-peer network
-- **Quality Assurance**: Ensuring reliable and secure service delivery
-- **Revenue Generation**: Earning rewards for providing computational resources
-
-
-
-## Getting Started
-
-To begin your journey as a Covia Operator:
-
-1. **Understand the Basics**: Learn about the Covia protocol and ecosystem
-2. **Assess Your Resources**: Evaluate your available computational infrastructure
-3. **Choose Your Role**: Decide on your preferred level of participation
-4. **Set Up Infrastructure**: Configure your computational nodes
-5. **Join the Network**: Connect to the Covia peer-to-peer network
-6. **Start Earning**: Begin providing services and earning rewards
-
-## Operator Types
-
-Covia supports various types of operators:
-
-- **Full Node Operators**: Run complete computational nodes with full protocol support
-- **Specialized Service Providers**: Offer specific computational services (AI inference, data processing, etc.)
-- **Resource Contributors**: Provide raw computational resources to the network
-- **Infrastructure Partners**: Large-scale operators managing multiple nodes
-
-## Next Steps
-
-This guide will be expanded with detailed sections covering:
-
-- **Setup Guide**: Step-by-step instructions for setting up your infrastructure
-- **Resource Management**: Best practices for managing computational resources
-- **Service Configuration**: How to configure and offer services
-- **Network Integration**: Connecting to and participating in the network
-- **Revenue Optimization**: Strategies for maximizing your earnings
-- **Troubleshooting**: Common issues and solutions
-
-Stay tuned for these detailed guides as they become available. 
+- [Capabilities](../user-guide/capabilities) — the authorisation model you enforce on callers
+- [Adapters](../user-guide/adapters/) — the operations a venue can offer
+- [Venues](../overview/venues) — what a venue is, conceptually

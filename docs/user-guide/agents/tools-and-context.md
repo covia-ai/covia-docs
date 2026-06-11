@@ -5,7 +5,7 @@ sidebar_position: 6
 
 # Tools and Context
 
-Every agent turn, the context builder assembles the complete input for the LLM — system prompt, tools, loaded context, and conversation history. Understanding this pipeline helps you configure agents effectively and debug unexpected behaviour.
+Every agent turn, the context builder assembles the complete input for the LLM — system prompt, tools, loaded context, and the session conversation. Understanding this pipeline helps you configure agents effectively and debug unexpected behaviour.
 
 ## Context Assembly Pipeline
 
@@ -17,8 +17,8 @@ Each turn, the context is rebuilt fresh (never frozen from the first turn):
 4. **Context entries** — from `config.context` array, resolved and rendered
 5. **Loaded paths** — from `context_load` calls, rendered at assigned budgets
 6. **Pending results** — completions of outbound jobs the agent is waiting on
-7. **Inbox messages** — ephemeral notifications
-8. **Transcript** — conversation history (LLM Agent) or current frame (Goal Tree)
+7. **Session messages** — ephemeral notifications delivered to the session
+8. **Conversation** — the session conversation (LLM Agent) or current frame (Goal Tree)
 
 ## Tool Resolution
 
@@ -35,6 +35,12 @@ Tools in the `config.tools` array are resolved to grid operations at runtime:
 **String entries** resolve directly to an operation in the venue's catalog. The tool name presented to the LLM is derived from the operation path (e.g., `v/ops/covia/read` becomes `covia_read`).
 
 **Map entries** allow you to customise the tool name and description shown to the LLM, while still pointing to the same underlying operation.
+
+### Tool Naming
+
+Tool names follow a consistent **snake_case** convention. Venue operations are written as `adapter:op` or as a lattice path (`v/ops/covia/read`); when presented to an LLM the colons and slashes become underscores (`covia_read`, `agent_request`). The framework maps the snake_case name back to the operation when dispatching the call.
+
+The built-in **harness tools** are already snake_case: `complete_task`, `fail_task`, `context_load`, `context_unload` (LLM Agent), plus `subgoal`, `complete`, `fail`, `compact`, `more_tools` (Goal Tree).
 
 ### Runtime Discovery
 
@@ -71,7 +77,7 @@ During execution, agents can manage their own loaded context:
 { "name": "context_unload", "input": { "path": "w/reports/Q1" } }
 ```
 
-Loaded paths persist in `state.loads` and are re-rendered fresh each turn.
+Loaded paths persist across turns and are re-rendered fresh each turn.
 
 ### One-Shot Reads
 
@@ -146,15 +152,16 @@ Deep path navigation is supported: `w/records/123/name`, `g/agent/timeline/0/end
 
 ## Inbound Channels
 
-Agents receive work through three channels:
+Agents receive work through three channels. Tasks, chats, and messages all attach to a [session](./sessions) — the persistent conversation thread the run loop processes one at a time.
 
 | Channel | Persistence | Tracking | Use for |
 |---------|-------------|----------|---------|
 | **Tasks** (via `agent:request`) | Persistent — survive restarts | Each is a Job with status | Formal requests requiring a response |
-| **Messages** (via `agent:message`) | Ephemeral — consumed on next run | Recorded in timeline | One-way notifications |
+| **Chats** (via `agent:chat`) | Per-session | A chat Job awaiting the next reply | Conversational, back-and-forth interaction |
+| **Messages** (via `agent:message`) | Queued on the session, consumed on next run | Recorded in the timeline | One-way notifications |
 | **Pending results** | Persistent | Linked to outbound Job IDs | Completions of work the agent delegated |
 
-Tasks persist until completed or rejected. Messages are drained after processing. Pending results wake the agent automatically when the outbound job completes.
+Tasks persist until completed or failed. Messages are drained after processing. Pending results wake the agent automatically when the outbound job completes.
 
 ## Related
 

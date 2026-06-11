@@ -12,9 +12,11 @@ Covia agents are persistent, stateful AI actors that live on a venue. They recei
 An agent is more than a chat session. It is a durable record with:
 
 - **Configuration** — system prompt, tools, capabilities, LLM backend
-- **State** — conversation history and user-defined data that persists across runs
-- **Tasks** — a queue of inbound requests from humans, other agents, or systems
+- **Sessions** — persistent conversation threads; each holds its own messages, conversation, and scratch data that persist across runs
+- **Tasks** — tracked requests (Jobs) from humans, other agents, or systems
 - **Timeline** — an append-only audit trail of every completed run
+
+See [Sessions](./sessions) for how work flows into an agent.
 
 Agents are created by callers and scoped to their owner. Two different users can each have an agent named "Alice" without collision.
 
@@ -29,9 +31,9 @@ agent:request        -->    llmagent:chat        -->    langchain:anthropic
 agent:message               (custom)                    langchain:ollama
 ```
 
-**Level 1 (Framework)** manages the agent lifecycle — reading inbound tasks, invoking the transition function, recording results in the timeline, and persisting state. It never inspects the conversation or user data.
+**Level 1 (Framework)** manages the agent lifecycle — picking up inbound tasks and session messages, invoking the transition function, recording results in the timeline, and persisting state. It never inspects the conversation or user data.
 
-**Level 2 (Domain Logic)** manages conversation history, tool call loops, and context assembly. Two built-in options:
+**Level 2 (Domain Logic)** manages the session conversation, tool call loops, and context assembly. Two built-in options:
 
 | Adapter | Operation | Best for |
 |---------|-----------|----------|
@@ -81,20 +83,20 @@ POST /api/v1/invoke
     "agentId": "Alice",
     "config": {
       "systemPrompt": "You are Alice, a helpful research assistant.",
-      "model": "gpt-4o",
+      "model": "gpt-5.4-mini",
       "tools": ["v/ops/covia/read", "v/ops/covia/list"]
     }
   }
 }
 
-// 2. Send a task and wait
+// 2. Send a task (waits up to timeout ms for the result)
 POST /api/v1/invoke
 {
   "operation": "agent:request",
   "input": {
     "agentId": "Alice",
-    "input": { "question": "Summarise the vendor records" },
-    "wait": true
+    "input": { "task": "Summarise the vendor records" },
+    "timeout": 30000
   }
 }
 ```
@@ -103,7 +105,7 @@ Or via MCP tools in Claude Desktop:
 
 ```
 agent_create  agentId: "Alice"  config: { systemPrompt: "...", tools: [...] }
-agent_request agentId: "Alice"  input: { question: "Summarise the vendor records" }  wait: true
+agent_request agentId: "Alice"  input: { task: "Summarise the vendor records" }  timeout: 30000
 ```
 
 ## What's Next

@@ -4,43 +4,31 @@ sidebar_position: 4
 
 # SDK
 
-The Covia Software Development Kit (SDK) provides developers with the tools and libraries needed to build applications that integrate with the Covia protocol.
+Covia ships client SDKs so you can connect to a venue, invoke operations, manage jobs and assets, and drive agents from your own code. Every SDK can connect by URL, DNS name, or DID and supports Ed25519 keypair and bearer authentication.
 
-## What is the SDK?
+| Language | Package | Status |
+|----------|---------|--------|
+| TypeScript / JavaScript | [`@covia/covia-sdk`](https://www.npmjs.com/package/@covia/covia-sdk) | Published |
+| Python | [`covia`](https://pypi.org/project/covia/) | Published |
+| Java | `ai.covia:covia-core` | Build from source |
+| Rust | — | Planned |
 
-The Covia SDK is a comprehensive development toolkit that includes:
+A minimal example (TypeScript):
 
-- **Client Libraries**: Language-specific libraries for Python, JavaScript, Go, and other popular languages
-- **Development Tools**: Command-line tools, debugging utilities, and testing frameworks
-- **Documentation**: Comprehensive API documentation, tutorials, and code examples
-- **Sample Applications**: Pre-built examples demonstrating common use cases
+```typescript
+import { Grid } from "@covia/covia-sdk";
 
-## SDK Components
+const venue = await Grid.connect("https://venue-3.covia.ai");
+const result = await venue.operations.run("v/ops/schema/infer", {
+  value: { name: "Ada", age: 36 },
+});
+venue.close();
+```
 
-### Core Libraries
-- **Protocol Client**: Low-level protocol implementation for direct Grid communication
-- **Agent Framework**: High-level abstractions for building AI agents
-- **Data Management**: Tools for working with Universal Data Assets (UDAs)
-- **Security Utilities**: Cryptographic primitives and security helpers
+No SDK for your language? Every venue exposes the same [REST API](../user-guide/api/), so you can call it directly with any HTTP client.
 
-### Development Tools
-- **CLI Tools**: Command-line interface for common development tasks
-- **Testing Framework**: Unit and integration testing utilities
-- **Debugging Tools**: Network monitoring, message tracing, and performance analysis
-- **Code Generators**: Templates and scaffolding for common application patterns
+## Where to go next
 
-### Language Support
-- **Python**: Primary SDK with full protocol support
-- **JavaScript/TypeScript**: Web and Node.js applications
-- **Go**: High-performance applications and services
-- **Rust**: Systems programming and performance-critical applications
-
-## Getting Started with the SDK
-
-This section will provide detailed documentation on:
-- Installing and configuring the SDK
-- Building your first application
-- API reference documentation
-- Best practices and patterns
-
-*Documentation coming soon...* 
+- [SDK reference](../user-guide/sdk/) — full surface for each language (operations, jobs, assets, agents, secrets, UCAN)
+- [Quick Start](../user-guide/quick-start) — zero to your first operation
+- [REST API](../user-guide/api/) — the underlying HTTP interface

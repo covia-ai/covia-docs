@@ -1,5 +1,6 @@
 {
   "label": "Adapters",
+  "position": 5,
   "link": {
     "type": "generated-index",
     "description": "Integration adapters for connecting Covia with various protocols, frameworks, and services."

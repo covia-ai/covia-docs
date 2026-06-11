@@ -110,7 +110,7 @@ await venue.agents.create({
   agentId: "Alice",
   config: {
     systemPrompt: "You are a helpful assistant.",
-    model: "gpt-4o",
+    model: "gpt-5.4-mini",
     tools: ["v/ops/covia/read", "v/ops/covia/list"]
   }
 });

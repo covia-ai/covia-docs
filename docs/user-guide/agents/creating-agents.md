@@ -20,7 +20,7 @@ The simplest possible agent has just an ID:
 }
 ```
 
-This creates an agent with default settings: `llmagent:chat` transition, `langchain:openai` backend, `gpt-4o` model, and the platform's default tool set. It will respond conversationally to any task.
+This creates an agent with default settings: `llmagent:chat` transition, `langchain:openai` backend, `gpt-5.4-mini` model, and the platform's default tool set. It will respond conversationally to any task.
 
 ## Configuration
 
@@ -34,7 +34,7 @@ The `config` field controls agent behaviour. All fields are optional — default
     "config": {
       "operation": "v/ops/goaltree/chat",
       "systemPrompt": "You are Bob, an AP Data Enricher...",
-      "model": "gpt-4o-mini",
+      "model": "gpt-5.4-mini",
       "llmOperation": "v/ops/langchain/openai",
       "tools": [
         "v/ops/covia/read",
@@ -72,14 +72,14 @@ The `config` field controls agent behaviour. All fields are optional — default
 |-------|------|---------|-------------|
 | `operation` | string | `v/ops/llmagent/chat` | Level 2 transition function. Use `v/ops/goaltree/chat` for goal tree. |
 | `systemPrompt` | string | Generic assistant | The system message defining the agent's role and instructions. |
-| `model` | string | `gpt-4o` | LLM model name passed to the backend. |
+| `model` | string | `gpt-5.4-mini` | LLM model name passed to the backend. |
 | `llmOperation` | string | `v/ops/langchain/openai` | Level 3 LLM operation. See [LLM Backends](./llm-backends). |
 | `tools` | array | — | Operations the agent can call. Strings or `{operation, name, description}` maps. |
 | `defaultTools` | boolean | `true` | Include the platform's default tools (workspace CRUD, agent management, assets, schemas). Set `false` for explicit control. |
 | `caps` | array | — | Capability restrictions. Each entry: `{with: "path/", can: "crud/read"}`. |
 | `context` | array | — | Lattice paths to load into context every turn. |
 | `outputs` | object | — | Typed output schemas for `complete` and `fail` (Goal Tree only). |
-| `responseFormat` | object | — | JSON Schema for structured responses. |
+| `responseFormat` | string / object | — | `"text"`, `"json"`, or `{name, schema}` for strict structured responses. |
 
 ### Tools
 
@@ -154,6 +154,8 @@ When using the Goal Tree adapter, you can enforce structured output via `outputs
 
 This wraps the `complete` and `fail` harness tools with strict JSON schema enforcement via the LLM's structured output mode.
 
+**Per-request override:** a caller can pass a `responseSchema` on [`agent:request`](./operations#agent-request) to get typed output from any agent for a single call — no `outputs` config required. It overrides the agent's default output schema for that request.
+
 ## Templates
 
 Instead of inline config, you can reference a template:
@@ -167,6 +169,8 @@ Instead of inline config, you can reference a template:
   }
 }
 ```
+
+A `template:<name>` reference resolves to the venue's template catalog at `v/agents/templates/<name>`.
 
 ### Standard Templates
 
@@ -194,7 +198,7 @@ Store a config map in the workspace and reference it:
     "value": {
       "operation": "v/ops/goaltree/chat",
       "systemPrompt": "You are an invoice scanner...",
-      "model": "gpt-4o-mini",
+      "model": "gpt-5.4-mini",
       "defaultTools": false,
       "outputs": { "complete": { "schema": { ... } } }
     }
@@ -211,7 +215,15 @@ Store a config map in the workspace and reference it:
 }
 ```
 
-Templates can also be stored as assets (immutable, versioned) or referenced by DID URL for cross-venue use.
+A `config` string reference can be any of:
+
+- a **template** name — `template:worker` (resolves to `v/agents/templates/worker`)
+- a **workspace path** — `w/templates/invoice-scanner`
+- an **asset reference** — `a/<hash>` (immutable, content-addressed)
+- a **DID URL** — for a template hosted on another venue (cross-venue use)
+- a **venue operation name**
+
+Explicit fields you pass alongside the reference are merged on top of the resolved config.
 
 ## Initial State
 
@@ -225,7 +237,7 @@ An agent can be created with pre-populated state by including a `state` field at
     "config": { "operation": "v/ops/goaltree/chat" },
     "state": {
       "config": {
-        "model": "gpt-4o-mini",
+        "model": "gpt-5.4-mini",
         "systemPrompt": "You are Alice...",
         "tools": ["v/ops/covia/read"]
       }
@@ -268,7 +280,7 @@ The AP Invoice Audit Trail demo creates a team of specialised agents:
   "agentId": "Alice",
   "config": { "operation": "v/ops/goaltree/chat" },
   "state": { "config": {
-    "model": "gpt-4o-mini",
+    "model": "gpt-5.4-mini",
     "defaultTools": false,
     "systemPrompt": "You are Alice, an AP Invoice Scanner...",
     "outputs": { "complete": { "schema": { ... } } }
@@ -280,7 +292,7 @@ The AP Invoice Audit Trail demo creates a team of specialised agents:
   "agentId": "Bob",
   "config": { "operation": "v/ops/goaltree/chat" },
   "state": { "config": {
-    "model": "gpt-4.1-mini",
+    "model": "gpt-5.4-mini",
     "tools": ["v/ops/covia/read", "v/ops/covia/write", "v/ops/covia/list"],
     "caps": [
       { "with": "w/vendor-records/", "can": "crud/read" },
@@ -298,7 +310,7 @@ The AP Invoice Audit Trail demo creates a team of specialised agents:
   "agentId": "Carol",
   "config": { "operation": "v/ops/goaltree/chat" },
   "state": { "config": {
-    "model": "gpt-4o",
+    "model": "gpt-5.4-mini",
     "tools": ["v/ops/covia/read", "v/ops/covia/write", "v/ops/covia/list"],
     "caps": [
       { "with": "w/", "can": "crud/read" },
@@ -315,4 +327,5 @@ Each agent has the minimum tools and capabilities needed for its role — follow
 
 - [Agent Operations](./operations) — full lifecycle reference (trigger, request, fork, etc.)
 - [Tools and Context](./tools-and-context) — tool resolution, context loading, budgets
-- [LLM Backends](./llm-backends) — configuring OpenAI, Anthropic, Ollama
+- [LLM Backends](./llm-backends) — configuring OpenAI, Anthropic, Ollama, xAI
+- [Capabilities](../capabilities) — the UCAN capability model behind the `caps` field

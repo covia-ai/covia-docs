@@ -39,6 +39,22 @@ The HTTP adapter makes outbound HTTP requests to external APIs and web services,
 
 The `method` parameter defaults to POST but can be set to `PUT`, `DELETE`, or `PATCH`.
 
+### Bearer authentication via a secret
+
+To call an API that needs a bearer token without putting the token in plaintext, set `bearerSecret` to a secret reference. The venue resolves it from the caller's [secret store](../sdk/) at invocation time and sends it as `Authorization: Bearer <token>` — the token never appears in the operation input or the job record:
+
+```json
+{
+  "operation": "http:get",
+  "input": {
+    "url": "https://api.example.com/private",
+    "bearerSecret": "s/EXAMPLE_API_TOKEN"
+  }
+}
+```
+
+For a plaintext token, set the `Authorization` header directly via `headers` instead.
+
 ### Response Format
 
 Both operations return:
@@ -62,6 +78,7 @@ The `body` is always a string — JSON responses must be parsed by the caller.
 | `headers` | object | No | Request headers as key-value pairs |
 | `queryParams` | object | No | Query parameters (URL-encoded automatically) |
 | `body` | object | No | Request body (JSON-serialised automatically) |
+| `bearerSecret` | string | No | Secret reference (e.g. `s/MY_TOKEN`) resolved and sent as `Authorization: Bearer <token>` |
 
 ## Timeouts
 

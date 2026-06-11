@@ -5,22 +5,22 @@ sidebar_position: 4
 
 # LLM Agent
 
-The LLM Agent adapter (`llmagent:chat`) provides a simple conversational agent model with flat conversation history and a tool call loop. It is the default transition function for new agents.
+The LLM Agent adapter (`llmagent:chat`) provides a simple conversational agent model with a flat per-session conversation and a tool call loop. It is the default transition function for new agents.
 
 ## How It Works
 
-On each run, the LLM Agent:
+On each run, the LLM Agent processes one [session](./sessions) and:
 
-1. **Assembles context** — system prompt, loaded context paths, pending job results, inbox messages, and conversation transcript
+1. **Assembles context** — system prompt, loaded context paths, pending job results, session messages, and the session conversation
 2. **Calls the LLM** — sends messages and tool definitions to the Level 3 backend
 3. **Processes tool calls** — if the LLM requests tool calls, executes each as a grid operation and appends results
 4. **Loops** — repeats steps 2-3 until the LLM returns a text response (no tool calls), up to 20 iterations
-5. **Persists transcript** — stores new conversation turns in agent state
+5. **Persists the conversation** — stores new turns into the session
 
 ```
          ┌──────────────────────────────────────┐
          │  Assemble context                     │
-         │  (system prompt + transcript + tools) │
+         │  (system prompt + conversation + tools)│
          └──────────────┬───────────────────────┘
                         │
                         v
@@ -50,24 +50,26 @@ Use `llmagent:chat` by omitting the `operation` field (it is the default) or set
     "config": {
       "operation": "v/ops/llmagent/chat",
       "systemPrompt": "You are a helpful assistant.",
-      "model": "gpt-4o",
+      "model": "gpt-5.4-mini",
       "tools": ["v/ops/covia/read", "v/ops/covia/list"]
     }
   }
 }
 ```
 
-## Transcript Model
+## Conversation & Context
 
-The LLM Agent separates **persistent transcript** from **ephemeral context**:
+The LLM Agent separates the **persistent session conversation** from **ephemeral context**:
 
-- **Transcript** (`state.transcript`) — real conversation turns only: user messages, assistant responses, and tool call/result pairs. Persisted across runs.
-- **Ephemeral context** — system prompt, loaded context paths, pending job results, inbox messages. Rebuilt fresh each turn from current config and lattice state.
+- **Conversation** — real turns only: user messages, assistant responses, and tool call/result pairs. Stored on the session and persisted across runs.
+- **Ephemeral context** — system prompt, loaded context paths, pending job results, session messages. Rebuilt fresh each turn from current config and lattice state.
 
 This means:
-- Updates to the system prompt take effect immediately (not frozen from first turn)
+- Updates to the system prompt take effect immediately (not frozen from the first turn)
 - Context paths reflect current data, not stale snapshots
-- The transcript doesn't bloat with repeated system messages
+- The conversation doesn't bloat with repeated system messages
+
+Each [session](./sessions) keeps its own conversation, so the same agent can hold several independent threads.
 
 ## Built-in Tools
 

@@ -36,7 +36,7 @@ Ancestor frames are visible as progressively summarised context — the parent a
     "config": {
       "operation": "v/ops/goaltree/chat",
       "systemPrompt": "You are an invoice processor...",
-      "model": "gpt-4o",
+      "model": "gpt-5.4-mini",
       "tools": ["v/ops/covia/read", "v/ops/covia/write"],
       "defaultTools": false,
       "outputs": {

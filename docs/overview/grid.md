@@ -4,41 +4,20 @@ sidebar_position: 2
 
 # Grid
 
-The Grid is the decentralised backbone that enables distributed AI orchestration across organisational boundaries.
+The **Grid** is the federated network that Covia venues form together. Each [venue](./venues) is a node that hosts operations and persists state; venues talk to each other, so a workflow running on one venue can invoke an operation on another — in a different cloud or jurisdiction — while the data stays where it's governed and only results cross the boundary.
 
-It's a public utility network: making AI accessible and pluggable for the whole world.
+There is no central coordinator. A venue has a DID identity, exposes the same multi-protocol surface (REST, MCP, A2A), and federates with peers directly.
 
-## What is the Grid?
+## What the Grid gives you
 
-The Grid represents the core networking and coordination layer of the Covia protocol, providing:
+- **Federated execution** — call an operation on a remote venue exactly as you'd call a local one, with caller identity propagated for audit and access control. See the [Grid adapter](../user-guide/adapters/grid-adapter) (`grid:run`, `grid:invoke`).
+- **Content-addressed assets** — operations, artifacts, and data are identified by their CAD3 hash, so the same asset is the same everywhere on the Grid.
+- **Verifiable state** — built on [lattice technology](https://docs.convex.world/docs/overview/lattice), state merges deterministically and every job leaves an auditable record.
+- **Governance at the edge** — each venue enforces its own [authentication](../operator-guide/auth) and [capabilities](../user-guide/capabilities); trust is established between venues, not delegated to a centre.
 
-- **Distributed Compute Resources**: Access to AI models, data processing, and computational power across the network
-- **Peer-to-Peer Communication**: Direct agent-to-agent messaging with built-in security and privacy
-- **Resource Discovery**: Automatic discovery and registration of available AI services and data sources
-- **Load Balancing**: Intelligent distribution of computational workloads across the network
+## Where to go next
 
-## Grid Architecture
-
-### Network Topology
-
-The Grid operates as a decentralized network where each node can:
-- Host AI models and services
-- Provide computational resources
-- Store and serve data assets
-- Participate in consensus and governance
-
-### Security Model
-- End-to-end encryption for all communications
-- Zero-knowledge proofs for privacy-preserving computations
-- Cryptographic attestation of compute integrity
-- Reputation-based trust scoring
-
-## Getting Started with the Grid
-
-This section will provide detailed documentation on:
-- Setting up a Grid node
-- Connecting to the network
-- Deploying AI services
-- Managing resources and permissions
-
-*Documentation coming soon...* 
+- [Venues](./venues) — what a single node is and does
+- [Grid adapter](../user-guide/adapters/grid-adapter) — invoking operations across venues
+- [Quick Start](../user-guide/quick-start) — call a live venue in a few minutes
+- [Protocol](../protocol/) — the COG specifications behind the Grid

@@ -19,6 +19,16 @@ This will launch a local venue with a default configuration, suitable for testin
 
 Each venue also includes a web presence for diagnostics and discovery of server capabilities. This will appear at [http://localhost:8080](http://localhost:8080) (The same URL you can use to connect in the Covia App). For an example of this web site, see the [Test Venue](https://venue-test.covia.ai)
 
+### With Docker
+
+A published container image is available if you'd rather not install Java:
+
+```bash
+docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest
+```
+
+Mount a volume and point `store` at it (see [Configuring the Venue](#configuring-the-venue)) to persist state across container restarts.
+
 ### Building the venue server
 
 The venue server is a Maven project in Java.
@@ -38,3 +48,5 @@ A venue can be configured with a JSON / JSON5 config file to enable or disable f
 - Start `covia.jar` with an explicit configuration like `java -jar covia.jar my-config.json`
 
 An [example configuration file](https://github.com/covia-ai/covia/blob/master/venue/config-example.json) is available as a documented template.
+
+By default a venue with no `store` configured keeps state in an ephemeral temporary store that is wiped on exit. For a venue you intend to keep, set `store` to a file path — see [Persistence](./persistence) for the durability model, and [Authentication](./auth) for locking down access. The repository's `deploy/` directory contains cloud provisioning examples (e.g. an Azure VM setup and deploy workflow) you can adapt.

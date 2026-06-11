@@ -22,14 +22,14 @@ COGs (Covia Open Grid specifications) are the formal technical specifications th
 
 - **[COG-1](./cogs/COG-001)** - Architecture
 - **[COG-2](./cogs/COG-002)** - Decentralised ID
-- **[COG-3](./cogs/COG-003)** - Authentication
+- **[COG-3](./cogs/COG-003)** - Authentication Mechanisms
 - **[COG-4](./cogs/COG-004)** - Grid Lattice
 - **[COG-5](./cogs/COG-005)** - Asset Metadata
 - **[COG-6](./cogs/COG-006)** - Artifacts
 - **[COG-7](./cogs/COG-007)** - Operations
 - **[COG-8](./cogs/COG-008)** - Jobs
 - **[COG-9](./cogs/COG-009)** - Agent Messaging
-- **[COG-10](./cogs/COG-010)** - Authentication (Detailed)
+- **[COG-10](./cogs/COG-010)** - Venue Authentication & Access Control
 - **[COG-11](./cogs/COG-011)** - Agent Lifecycle *(exploratory draft)*
 - **[COG-12](./cogs/COG-012)** - Orchestrations
 - **[COG-13](./cogs/COG-013)** - Agent Capabilities

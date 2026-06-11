@@ -6,36 +6,30 @@ sidebar_label: MCP
 
 # MCP Adapter
 
-Covia is natively integrated with the [Model Context Protocol Protocol (MCP)](https://modelcontextprotocol.io/) to enhance your AI applications with real-time data and context.
+The MCP adapter lets a venue **call external [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers as grid operations** — discovering their tools and invoking them like any other operation.
 
-## Overview
+> Looking for the other direction — exposing *your* venue's operations to an AI assistant as MCP tools? A venue is automatically an MCP server. See [Venues as MCP Servers](../mcp/venues-as-mcp-servers).
 
-The Model Context Protocol (MCP) is a standard for connecting AI models to external data sources and tools. Covia's integration with MCP allows you to:
+## Operations
 
-- Access real-time data from various sources
-- Provide contextual information to AI models
-- Enable dynamic data retrieval during conversations
-- Maintain secure and controlled data access
+| Operation | Purpose |
+|-----------|---------|
+| `mcp:tools:list` | List the tools a remote MCP server offers |
+| `mcp:tools:call` | Invoke a tool on a remote MCP server |
 
-## MCP Server Capabilities
+A server is addressed by URL or by DID (resolved from the DID document's service entries). See [Calling MCP Tools](../mcp/calling-mcp-tools) for the full input/output reference, authentication options, and orchestration patterns.
 
-Every venue on the Covia grid is **automatically** functional as an MCP server. So you don't need to do anything special to tap into MCP capabilities: just run your venue and connect with standard MCP tools.
+## Why go through the Grid?
 
-To enable the MCP server, simple include an `"mcp"` property in your venue configuration, e.g.:
+Calling an MCP server *through* a venue, rather than wiring it into your client directly, gives you:
 
-```json
-{
-  "name":"My Venue",
-  ...
-  "mcp":{
-    "enabled":true
-  }
-}
-```
+- **Plug-and-play orchestration** — compose MCP tools with other grid operations, agents, and [orchestrations](./orchestrator).
+- **A system of record** — every call is a [Job](../api/) with an auditable record on your venue.
+- **Controlled credentials** — API keys live in the venue's [secret store](../capabilities), not in the client.
 
-## MCP Grid operations
+## Related
 
-The MCP adapter lets you utilise MCP servers and tools as grid operations. Compared to integrating with an MCP server directly, this gives a number of unique advantages:
-- Plug-and-play orchestration with other grid operations and services
-- Having a system of record / audit trail maintained within your own venue
-- Handling authentication / API keys in a controlled manner
+- [Calling MCP Tools](../mcp/calling-mcp-tools) — detailed reference for `mcp:tools:list` / `mcp:tools:call`
+- [Venues as MCP Servers](../mcp/venues-as-mcp-servers) — the inbound side (your venue as an MCP server)
+- [MCP Integration](../mcp/) — the full MCP section
+- [Orchestrator](./orchestrator) — composing MCP tools into workflows

@@ -53,9 +53,11 @@ Returns venue status information including DID, available assets, and operationa
 
 ### Assets
 
+Across the API and in operation inputs (e.g. `asset:get`, the `file:write` `asset` field, grid operation references), an asset can be referenced by **bare hex hash**, by `a/<hash>`, or by `/a/<hash>` — these are equivalent. The `a/` form matches the per-user namespace convention used elsewhere (`w/`, `o/`).
+
 #### `GET /api/v1/assets`
 
-Lists assets available on the venue.
+Lists the **caller's own pinned assets** (the per-user `a/` namespace) — not every asset on the venue. The venue's operation catalog is discovered via `GET /api/v1/operations` (or the `covia:functions` / `covia:inspect` operations), not here.
 
 **Query Parameters:**
 

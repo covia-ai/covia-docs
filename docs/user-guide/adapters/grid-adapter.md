@@ -104,6 +104,8 @@ Returns the operation's output directly, or errors if the job failed.
 | `grid:jobStatus` | `id`, `venue?` | Poll job status |
 | `grid:jobResult` | `id`, `venue?` | Wait for job completion, return result |
 
+The `input` passed to `grid:run` / `grid:invoke` may be **any JSON value** — object, array, string, number, boolean, or null — not just an object. It is passed through to the target operation, which validates it against its own input schema.
+
 ## Operation References
 
 The `operation` parameter accepts multiple formats:
