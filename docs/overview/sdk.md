@@ -27,6 +27,16 @@ venue.close();
 
 No SDK for your language? Every venue exposes the same [REST API](../user-guide/api/), so you can call it directly with any HTTP client.
 
+## Compatibility
+
+Each artifact versions independently; the platform version names the product generation. Current pairings:
+
+| Platform (venue) | TypeScript SDK | Python SDK |
+|------------------|---------------|------------|
+| 0.1.0 | ≥ 1.5.0 | ≥ 0.2.0 |
+
+Older SDK versions generally keep working against newer venues (the REST surface is additive pre-1.0), but new operations and fields need the SDK version shown. This table gains a row per platform release.
+
 ## Where to go next
 
 - [SDK reference](../user-guide/sdk/) — full surface for each language (operations, jobs, assets, agents, secrets, UCAN)

@@ -7,7 +7,7 @@ sidebar_position: 1
 
 You can use the Covia grid simply through the online web app or the SDK as a user. But for more powerful capabilities, such as controlling local resources and installing custom adapters, you may want to create your own venue.
 
-A venue is implemented as a server process that you can run by obtaining the latest `covia.jar` from the [latest-snapshot release](https://github.com/covia-ai/covia/releases/tag/latest-snapshot) on GitHub. This snapshot is automatically built and updated on every push to the develop branch.
+A venue is implemented as a server process that you can run by obtaining `covia.jar` from the [latest release](https://github.com/covia-ai/covia/releases/tag/latest) on GitHub (see [Release channels](#release-channels) below for the options).
 
 Running a venue requires Java 21+ installed. The venue can be launched with:
 
@@ -21,13 +21,24 @@ Each venue also includes a web presence for diagnostics and discovery of server 
 
 ### With Docker
 
-A published container image is available if you'd rather not install Java:
+A published container image is available if you'd rather not install Java (the image ships its own Java runtime, currently the latest LTS):
 
 ```bash
-docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest
+docker run -p 8080:8080 ghcr.io/covia-ai/covia:stable
 ```
 
 Mount a volume and point `store` at it (see [Configuring the Venue](#configuring-the-venue)) to persist state across container restarts.
+
+### Release channels
+
+Pick the channel that matches how much churn you want:
+
+| Channel | JAR | Docker image | Built from |
+|---------|-----|--------------|------------|
+| **Release** (recommended) | [`latest`](https://github.com/covia-ai/covia/releases/tag/latest) or a [versioned release](https://github.com/covia-ai/covia/releases) | `:stable`, or pinned `:0.1.0` | `master`, versioned releases |
+| **Development** | [`latest-snapshot`](https://github.com/covia-ai/covia/releases/tag/latest-snapshot) | `:latest` | every push to `develop` |
+
+For production, pin a specific version (a release tag for the JAR, `:0.1.0`-style image tags for Docker) and upgrade deliberately. The development channel tracks `develop` and may change under you — it's the right choice only if you're following new features or contributing. See the [CHANGELOG](https://github.com/covia-ai/covia/blob/master/CHANGELOG.md) for what each release contains.
 
 ### Building the venue server
 
