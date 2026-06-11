@@ -1,30 +1,52 @@
 # Covia
 
-**Imagine a world where any organization, big or small, can tap into the global power of AI—securely, openly, and at scale.**
+> Covia is an open-source runtime for federated AI orchestration. A **venue** is a grid node that hosts self-describing **operations**, runs stateful **agents**, and keeps an immutable, auditable **job** record for every invocation. Venues federate across organisational boundaries: data stays where it is governed and only results cross. Built on the Convex lattice for content-addressed, cryptographically verifiable state. Speaks REST, MCP, A2A, and DID.
 
-Covia is not just another protocol. It's a revolution: the open standard for **federated orchestration of AI supply chains**. 
-Think of it as the "HTTP for AI"—a universal language for data, compute, and intelligence to flow freely and securely across the digital world.
+Key facts for agents and tools:
 
-## What is Covia?
+- Every venue serves the same REST API under `/api/v1/` (OpenAPI at `/swagger`). Invoke an operation: `POST /api/v1/invoke` with `{"operation": "v/ops/schema/infer", "input": {...}, "wait": true}` — the response is a job record whose `output` carries the result.
+- Operations are addressed by catalog path `v/ops/<adapter>/<op>` (e.g. `v/ops/schema/infer`, `v/ops/langchain/openai`) or short form `adapter:op`. List them: `GET /api/v1/operations`.
+- Every venue is an **MCP server** at `POST /mcp` (operations exposed as snake_case tools) and an **A2A v1.0 agent** at `POST /a2a`.
+- Machine discovery on every venue: `/.well-known/did.json`, `/.well-known/mcp.json`, `/.well-known/agent-card.json`.
+- Live public venue for testing (no signup): https://venue-test.covia.ai
+- Run your own venue: `docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest` (or `java -jar covia.jar`, Java 21+).
+- SDKs: TypeScript `@covia/covia-sdk` (npm), Python `covia` (PyPI), Java `ai.covia:covia-core` (build from source).
+- Authorisation is capability-based (UCAN): `{with, can}` grants presented as bearer tokens and enforced per call.
+- Status: open source (EPL-2.0), pre-1.0; APIs may change.
+- All documentation as one markdown file: https://docs.covia.ai/llms-full.txt — and each docs page is mirrored as raw markdown (append `.md` to its path).
 
-- A utility grid for AI
-- An open protocol for agents
+## Getting started
 
-## How to Get Started
+- [Overview](https://docs.covia.ai/docs/overview/): What Covia is, how it works, what you can build
+- [Quick Start](https://docs.covia.ai/docs/user-guide/quick-start): Zero to first operation — curl, TypeScript, Python, Docker
+- [REST API reference](https://docs.covia.ai/docs/user-guide/api/): All endpoints — assets, invoke, jobs, SSE, secrets, discovery
+- [SDK reference](https://docs.covia.ai/docs/user-guide/sdk/): TypeScript, Python, and Java client libraries
 
-1. **Read the Covia Protocol Docs:** Learn about assets, venues, agents, and orchestration at `/docs/white-paper` or `/docs/intro`.
-2. **Register Your Agent:** Follow the Covia protocol to register your venue or agent on Convex for public discovery and trust.
-3. **Interact with Covia:** Use the Covia driver libraries (Python, JS, Java) to:
-   - Publish and discover assets
-   - Execute operations and orchestrations
-   - Validate provenance and integrity
-4. **Join the Community:** Collaborate, innovate, and help shape the future of open AI.
+## Agents
 
-## Resources
+- [Agents overview](https://docs.covia.ai/docs/user-guide/agents/): Persistent, stateful, tool-using agents — three-level architecture
+- [Sessions](https://docs.covia.ai/docs/user-guide/agents/sessions): Conversation threads, task vs chat jobs, the run loop
+- [Agent operations](https://docs.covia.ai/docs/user-guide/agents/operations): agent:create, agent:request, agent:chat, agent:message and the full lifecycle
+- [Creating agents](https://docs.covia.ai/docs/user-guide/agents/creating-agents): Configuration, templates, typed outputs, capabilities
+- [Capabilities (UCAN)](https://docs.covia.ai/docs/user-guide/capabilities): The authorisation model — grants, delegation, least privilege
 
-- [Covia White Paper](https://docs.covia.ai/docs/white-paper)
-- [Covia Overview](https://docs.covia.ai/docs/overview)
-- Protocol Toolbox: [Coming Soon]
-- [Community](https://discord.com/invite/xfYGq4CT7v)
+## Integration
 
-> "Covia is your gateway to a new era of open, decentralized AI. Welcome to the movement!" 
+- [Adapters](https://docs.covia.ai/docs/user-guide/adapters/): All built-in operation families — LLMs, HTTP, files, scheduling, orchestration
+- [Venues as MCP servers](https://docs.covia.ai/docs/user-guide/mcp/venues-as-mcp-servers): Point any MCP client at a venue's /mcp endpoint
+- [Calling MCP tools](https://docs.covia.ai/docs/user-guide/mcp/calling-mcp-tools): Use external MCP servers as grid operations
+- [A2A](https://docs.covia.ai/docs/user-guide/adapters/covia-with-a2a): Inbound A2A v1.0 server and outbound a2a:* operations
+- [Orchestrator](https://docs.covia.ai/docs/user-guide/adapters/orchestrator): Multi-step DAG workflows across venues
+
+## Running a venue
+
+- [Venue quick start](https://docs.covia.ai/docs/operator-guide/venue-start): Local, Docker, or build from source
+- [Authentication](https://docs.covia.ai/docs/operator-guide/auth): Public access, OAuth providers, bearer and UCAN tokens
+- [Persistence](https://docs.covia.ai/docs/operator-guide/persistence): Durability model, recovery, store configuration
+
+## Optional
+
+- [Whitepaper](https://docs.covia.ai/docs/protocol/whitepaper): Vision and architecture (draft)
+- [Protocol specifications (COGs)](https://docs.covia.ai/docs/protocol/cogs-overview): Open draft standards for the grid
+- [GitHub](https://github.com/covia-ai/covia): Source code, issues, discussions
+- [Discord](https://discord.gg/fywdrKd8QT): Community chat

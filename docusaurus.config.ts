@@ -72,6 +72,37 @@ const config: Config = {
         ],
       },
     ],
+    [
+      'docusaurus-plugin-llms',
+      {
+        // llms.txt is hand-curated in static/llms.txt — don't overwrite it
+        generateLLMsTxt: false,
+        // Full concatenated docs for LLM ingestion at /llms-full.txt
+        generateLLMsFullTxt: true,
+        // Per-page markdown mirrors (llmstxt.org spec)
+        generateMarkdownFiles: true,
+        docsDir: 'docs',
+        title: 'Covia',
+        description:
+          'Covia is an open-source runtime for federated AI orchestration: venues host self-describing operations, run stateful agents, and keep an auditable job record. Speaks REST, MCP, A2A, and DID.',
+        includeOrder: [
+          'overview/index*',
+          'overview/grid*',
+          'overview/venues*',
+          'overview/*',
+          'user-guide/quick-start*',
+          'user-guide/api/*',
+          'user-guide/sdk/*',
+          'user-guide/agents/*',
+          'user-guide/capabilities*',
+          'user-guide/adapters/*',
+          'user-guide/mcp/*',
+          'operator-guide/*',
+          'protocol/*',
+        ],
+        includeUnmatchedLast: true,
+      },
+    ],
   ],
 
   themeConfig: {
