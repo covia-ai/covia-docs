@@ -294,11 +294,11 @@ Venues expose standard discovery endpoints for interoperability.
 ```python
 # DID Document (W3C Decentralized Identifier)
 doc = venue.did_document()
-print(doc.id)       # "did:web:venue-3.covia.ai"
+print(doc.id)       # "did:key:z6MkovQ9..."
 print(doc.context)  # "https://www.w3.org/ns/did/v1"
 
 # Cached DID (fetched once, then cached)
-did = venue.did     # "did:web:venue-3.covia.ai"
+did = venue.did     # "did:key:z6MkovQ9..."
 
 # MCP Discovery (Model Context Protocol)
 mcp = venue.mcp_discovery()

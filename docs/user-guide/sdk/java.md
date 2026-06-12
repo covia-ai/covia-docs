@@ -8,20 +8,34 @@ The Java SDK provides the reference implementation for Covia Grid clients, offer
 
 ## Installation
 
+The Java SDK is not yet published to Maven Central. Build it from source (requires Java 21+ and Maven) and install it into your local Maven repository:
+
+```bash
+git clone https://github.com/covia-ai/covia.git
+cd covia
+mvn clean install -DskipTests
+```
+
+Then add the dependency:
+
 ### Maven
 
 ```xml
 <dependency>
     <groupId>ai.covia</groupId>
     <artifactId>covia-core</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'ai.covia:covia-core:0.0.2-SNAPSHOT'
+repositories {
+    mavenLocal()
+}
+
+implementation 'ai.covia:covia-core:0.2.0-SNAPSHOT'
 ```
 
 ## Quick Start

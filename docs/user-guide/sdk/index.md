@@ -15,7 +15,7 @@ SDKs are available for major language ecosystems.
 
 | Language | Package | GitHub | Status |
 | -------- | ------- | ------ | ------ |
-| [Java](./java) | `covia-core` | [covia-ai/covia](https://github.com/covia-ai/covia) | Available |
+| [Java](./java) | `covia-core` | [covia-ai/covia](https://github.com/covia-ai/covia) | Build from source |
 | [Python](./python) | `covia` | [covia-ai/covia-sdk-py](https://github.com/covia-ai/covia-sdk-py) | Available |
 | [TypeScript](./typescript) | `@covia/covia-sdk` | [covia-ai/covia-sdk](https://github.com/covia-ai/covia-sdk) | Available |
 | [Rust](./rust) | — | — | Planned |
@@ -42,28 +42,28 @@ Here's a simple example showing the common pattern across all SDKs:
 
 ```java
 // Java
-Venue venue = Grid.connect("did:web:venue.covia.ai");
-Object result = venue.run("my-operation", Map.of("query", "hello world"));
+Venue venue = Grid.connect("did:web:venue-3.covia.ai");
+Object result = venue.run("v/ops/schema/infer", Map.of("value", Map.of("name", "Ada")));
 ```
 
 ```python
 # Python
 from covia import Grid
 
-with Grid.connect("did:web:venue.covia.ai") as venue:
-    result = venue.run("my-operation", {"query": "hello world"})
+with Grid.connect("did:web:venue-3.covia.ai") as venue:
+    result = venue.run("v/ops/schema/infer", {"value": {"name": "Ada"}})
 ```
 
 ```typescript
 // TypeScript
-const venue = await Grid.connect("did:web:venue.covia.ai");
-const result = await venue.operations.run("my-operation", { query: "hello world" });
+const venue = await Grid.connect("did:web:venue-3.covia.ai");
+const result = await venue.operations.run("v/ops/schema/infer", { value: { name: "Ada" } });
 ```
 
 ```rust
 // Rust (planned)
-let venue = Grid::connect("did:web:venue.covia.ai").await?;
-let result = venue.run("my-operation", json!({"query": "hello world"})).await?;
+let venue = Grid::connect("did:web:venue-3.covia.ai").await?;
+let result = venue.run("v/ops/schema/infer", json!({"value": {"name": "Ada"}})).await?;
 ```
 
 ## Choosing an SDK

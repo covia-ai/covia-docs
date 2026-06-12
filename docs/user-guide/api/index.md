@@ -39,15 +39,20 @@ Returns venue status information including DID, available assets, and operationa
 **Response:**
 ```json
 {
-  "did": "did:web:venue-3.covia.ai",
-  "url": "https://venue-3.covia.ai/api/v1/",
+  "url": "https://venue-3.covia.ai",
+  "ts": 1781255878753,
+  "status": "OK",
+  "name": "Covia Venue (EC2)",
+  "did": "did:key:z6MkovQ9NpjTsbVrSaAKEX2d3zXztSnYHjNxTi5oFs8qcrwx",
   "stats": {
-    "assets": 42,
-    "users": 101,
-    "ops": 15
+    "assets": 130,
+    "users": 0,
+    "ops": 116
   }
 }
 ```
+
+The `did` is the venue's persistent `did:key` identity, also published in its [DID document](#get-well-knowndidjson).
 
 ---
 
@@ -347,16 +352,26 @@ Returns the DID document for the venue, following W3C DID specification.
 ```json
 {
   "@context": "https://www.w3.org/ns/did/v1",
-  "id": "did:web:venue-3.covia.ai",
+  "id": "did:key:z6MkovQ9NpjTsbVrSaAKEX2d3zXztSnYHjNxTi5oFs8qcrwx",
   "service": [
     {
-      "id": "did:web:venue-3.covia.ai#covia",
       "type": "Covia.API.v1",
-      "serviceEndpoint": "https://venue-3.covia.ai/api/v1/"
+      "serviceEndpoint": "https://venue-3.covia.ai/api/v1"
     }
-  ]
+  ],
+  "verificationMethod": [
+    {
+      "id": "did:key:z6MkovQ9...#z6MkovQ9...",
+      "type": "Multikey",
+      "controller": "did:key:z6MkovQ9...",
+      "publicKeyMultibase": "z6MkovQ9NpjTsbVrSaAKEX2d3zXztSnYHjNxTi5oFs8qcrwx"
+    }
+  ],
+  "authentication": ["did:key:z6MkovQ9...#z6MkovQ9..."]
 }
 ```
+
+The document `id` is the venue's persistent `did:key`; the same key is also listed under `assertionMethod`, `capabilityDelegation` and `capabilityInvocation`. The venue remains reachable by `did:web:<host>` references — this endpoint is what resolves them to the API `serviceEndpoint`.
 
 #### `GET /.well-known/mcp.json`
 

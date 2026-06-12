@@ -63,9 +63,9 @@ const output = await job.result({ timeout: 60000 });
 
 ```typescript
 const status = await venue.status();
-console.log(status.did);     // "did:web:venue-3.covia.ai"
-console.log(status.name);    // "Test Venue"
-console.log(status.stats);   // { assets: 42, users: 10, ops: 15 }
+console.log(status.did);     // "did:key:z6MkovQ9..."
+console.log(status.name);    // "Covia Venue (EC2)"
+console.log(status.stats);   // { assets: 130, users: 0, ops: 116 }
 ```
 
 ## Managers
@@ -350,7 +350,7 @@ try {
 ```typescript
 // DID Document
 const doc = await venue.didDocument();
-console.log(doc.id);  // "did:web:venue-3.covia.ai"
+console.log(doc.id);  // "did:key:z6MkovQ9..."
 
 // MCP Discovery
 const mcp = await venue.mcpDiscovery();
