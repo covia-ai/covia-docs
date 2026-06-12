@@ -81,7 +81,7 @@ No 'store' configured — falling back to ephemeral temp Etch store; data will b
 
 ## A hosted venue rejects examples that work locally
 
-Use **venue-3.covia.ai** or **venue-4.covia.ai** — they are redeployed automatically from the latest development build. Other hosted venues may run older builds with a different operation surface; `GET /api/v1/status` and `GET /api/v1/operations` tell you what a venue actually is and offers.
+Use **venue-3.covia.ai** or **venue-4.covia.ai** — they are redeployed automatically from the latest development build, which these docs track. The stable venues (**venue-1.covia.ai**, **venue-2.covia.ai**, and the scratch venue **venue-test.covia.ai**) run the latest release, which may lag the docs; `GET /api/v1/status` and `GET /api/v1/operations` tell you what a venue actually is and offers.
 
 ## Where are the venue's logs?
 

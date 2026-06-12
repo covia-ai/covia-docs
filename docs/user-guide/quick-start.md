@@ -7,10 +7,17 @@ sidebar_position: 1
 
 The fastest way to try Covia is against a **hosted venue** — no install required. Every venue exposes the same REST API and SDK surface, so anything you do here works the same on a venue you run yourself.
 
-There are public example venues you can use right now, deployed automatically from the latest development build:
+There are public example venues you can use right now:
 
-- [venue-3.covia.ai](https://venue-3.covia.ai) (AWS) — `did:web:venue-3.covia.ai`
-- [venue-4.covia.ai](https://venue-4.covia.ai) (Azure) — `did:web:venue-4.covia.ai`
+| Venue | Cloud | Build |
+|-------|-------|-------|
+| [venue-1.covia.ai](https://venue-1.covia.ai) | Google Cloud | Stable — latest release |
+| [venue-2.covia.ai](https://venue-2.covia.ai) | Google Cloud | Stable — latest release |
+| [venue-3.covia.ai](https://venue-3.covia.ai) | AWS | Development — latest development build |
+| [venue-4.covia.ai](https://venue-4.covia.ai) | Azure | Development — latest development build |
+| [venue-test.covia.ai](https://venue-test.covia.ai) | Google Cloud | Scratch venue for experiments — data may be cleared at any time |
+
+These docs track the development build, so the examples below use **venue-3** — they may occasionally be ahead of what the stable venues offer. Each venue's DID and stats are reported by `GET /api/v1/status`.
 
 Prefer a UI? The [Covia App](https://app.covia.ai) lets you connect to venues and run operations interactively.
 
