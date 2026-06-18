@@ -45,7 +45,7 @@ Every caller gets a private, persistent namespace on the venue. `w/` is your wor
 ```
 
 ```json
-{ "type": "Map", "keys": ["apollo", "borealis"], "count": 2, "exists": true }
+{ "type": "Map", "keys": ["apollo", "borealis"], "totalSize": 2, "exists": true }
 ```
 
 ## 3. Meet `covia:inspect` — the discovery tool

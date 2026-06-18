@@ -56,7 +56,7 @@ Creates the vector if it doesn't exist. Useful for event logs and audit trails.
 { "operation": "v/ops/covia/list", "input": { "path": "w/vendor-records", "limit": 20 } }
 ```
 
-**Response:** `{ "exists": true, "type": "map", "count": 42, "keys": ["acme", "globex", ...] }`
+**Response:** `{ "exists": true, "type": "Map", "totalSize": 42, "offset": 0, "keys": ["acme", "globex", ...] }`
 
 Supports pagination via `limit` and `offset`. Shows structure without fetching values.
 

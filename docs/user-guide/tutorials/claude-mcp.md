@@ -67,7 +67,7 @@ Now give Claude some memory:
 
 > *Use covia_write to save my project preferences to `w/notes/preferences`: I prefer British English, tabs over spaces, and concise commit messages.*
 
-Claude calls the tool and the venue answers `{"written": true}`. Then the payoff — **start a brand-new conversation** and ask:
+Claude calls the tool and the venue saves it — the write completes successfully (a write that creates a new branch answers `{"pathCreated": true}`; success itself is the job completing). Then the payoff — **start a brand-new conversation** and ask:
 
 > *Read `w/notes/preferences` from covia and follow them.*
 
