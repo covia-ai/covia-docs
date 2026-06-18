@@ -34,6 +34,7 @@ Each artifact versions independently; the platform version names the product gen
 | Platform (venue) | TypeScript SDK | Python SDK |
 |------------------|---------------|------------|
 | 0.1.0 | ≥ 1.5.0 | ≥ 0.2.0 |
+| 0.2.0 | ≥ 1.5.0 | ≥ 0.2.0 |
 
 Older SDK versions generally keep working against newer venues (the REST surface is additive pre-1.0), but new operations and fields need the SDK version shown. This table gains a row per platform release.
 

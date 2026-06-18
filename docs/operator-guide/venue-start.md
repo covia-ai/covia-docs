@@ -35,12 +35,12 @@ Pick the channel that matches how much churn you want:
 
 | Channel | JAR | Docker image | Built from |
 |---------|-----|--------------|------------|
-| **Release** (recommended) | [`latest`](https://github.com/covia-ai/covia/releases/tag/latest) or a [versioned release](https://github.com/covia-ai/covia/releases) | `:stable`, or pinned `:0.1.0` | `master`, versioned releases |
+| **Release** (recommended) | [`latest`](https://github.com/covia-ai/covia/releases/tag/latest) or a [versioned release](https://github.com/covia-ai/covia/releases) | `:stable`, or pinned `:0.2.0` | `master`, versioned releases |
 | **Development** | [`latest-snapshot`](https://github.com/covia-ai/covia/releases/tag/latest-snapshot) | `:latest` | every push to `develop` |
 
 The hosted example venues follow the same channels: [venue-1](https://venue-1.covia.ai) and [venue-2](https://venue-2.covia.ai) (Google Cloud) run the release channel, while [venue-3](https://venue-3.covia.ai) (AWS) and [venue-4](https://venue-4.covia.ai) (Azure) redeploy automatically from the development channel.
 
-For production, pin a specific version (a release tag for the JAR, `:0.1.0`-style image tags for Docker) and upgrade deliberately. The development channel tracks `develop` and may change under you — it's the right choice only if you're following new features or contributing. See the [CHANGELOG](https://github.com/covia-ai/covia/blob/master/CHANGELOG.md) for what each release contains.
+For production, pin a specific version (a release tag for the JAR, `:0.2.0`-style image tags for Docker) and upgrade deliberately. The development channel tracks `develop` and may change under you — it's the right choice only if you're following new features or contributing. See the [CHANGELOG](https://github.com/covia-ai/covia/blob/master/CHANGELOG.md) for what each release contains.
 
 ### Building the venue server
 
