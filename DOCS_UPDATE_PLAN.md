@@ -203,3 +203,48 @@ These are deliberately *not* asserted from commit messages — confirm exact nam
 - Sessions field names as persisted in `AgentState` / session records (`venue/src/main/java/covia/lattice/Covia.java` and the agent adapters).
 - Current default model constants and the full xAI/Grok model id list.
 - Whether capabilities warrant a dedicated user-guide page or just an `operator-guide/auth.md` section (COG-013 is the spec reference).
+
+---
+
+## 9. Pending SDK / venue releases (staged — do **not** document until shipped)
+
+> Added 2026-06-22 after an SDK review (covia-sdk-py + covia-sdk). These changes
+> are on the SDKs' `develop` or are filed venue issues — they are **not in the
+> released SDKs / running venue yet**, so per §2 ("honest about maturity; verify
+> against shipped") they're tracked here and written when each lands.
+>
+> **Applied this pass** (already shipped, were missing/stale): `sdk/python.md`
+> Python `3.10+ → 3.11+` and the 0.2.0 managers section (`venue.agents` /
+> `secrets` / `workspace` / `ucan`); `sdk/typescript.md` license `MIT →
+> Apache-2.0`.
+
+### When the next SDK versions release (covia-sdk-py + covia-sdk `develop`)
+
+Both SDK pages will need:
+
+- **Audience binding** — the JWT `aud` is now the venue's **reported DID**, not
+  the connection string. In `sdk/python.md`: rewrite "the `audience` is
+  automatically set from the venue URL" and update the custom-`Auth` example
+  signature to `apply(self, headers, audience=None)`. In `sdk/typescript.md`:
+  add an audience note (TS previously sent no `aud`). Cross-ref covia#149.
+- **Readiness** — `Venue.wait_until_ready()` / `venue.waitUntilReady()`.
+- **DID / lattice-path helpers** — `covia.did` (`did_url`, `parse_did_url`,
+  `Namespace`, `asset_hash`, `did_web_to_url`/`url_to_did_web`) and the TS
+  `did.ts` equivalents.
+- **`AsyncAsset`** — `AsyncVenue.get_asset/register` return an awaitable asset.
+- **`ucans=` on the typed managers** — `workspace.*` and `secrets.extract`
+  accept a capability proof for cross-DID access (TS: trailing `ucans` arg).
+- **`get_asset` by lattice address** — accepts `a/<hash>`, `w/…`, `o/…`,
+  `<DID>/…` (depends on the venue change below — covia#150).
+- **Typed `UCANIssueResult`** (py) — `venue.ucan.issue(...).token` replaces the
+  raw `result["token"]` dict access shown in the new managers section.
+
+### When the venue implements the filed issues
+
+- **covia#149** (validate JWT audience) → `operator-guide/auth.md`: document the
+  `auth.audience: verify | require` policy (default `verify`; mismatch always
+  rejected; the public-access caveat). Today's auth.md is correct — it does not
+  claim audience enforcement, so no change until this lands.
+- **covia#150** (retrieve assets by lattice address) → `user-guide/api/index.md`
+  + `sdk/*`: asset GET accepts a lattice address (`a/<hash>` canonical), bare
+  hash as shorthand.

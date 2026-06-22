@@ -8,7 +8,7 @@ The TypeScript SDK provides a fully-typed client for the Covia Grid, with manage
 
 - **Package:** `@covia/covia-sdk`
 - **Node.js:** 18+
-- **License:** MIT
+- **License:** Apache-2.0
 - **Source:** [covia-ai/covia-sdk](https://github.com/covia-ai/covia-sdk)
 
 ## Installation

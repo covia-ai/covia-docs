@@ -7,7 +7,7 @@ sidebar_position: 3
 The Python SDK provides a Pythonic interface to the Covia Grid with full type safety, sync and async support, and idiomatic error handling.
 
 - **Package:** `covia`
-- **Python:** 3.10+
+- **Python:** 3.11+
 - **License:** Apache-2.0
 - **Source:** [covia-ai/covia-sdk-py](https://github.com/covia-ai/covia-sdk-py)
 
@@ -287,6 +287,73 @@ job = venue.invoke("abc123def456...")
 job = venue.invoke("did:key:z6Mk.../a/abc123def456...")
 ```
 
+## Agents, Secrets, Workspace & UCANs
+
+The venue exposes typed managers for the `v/ops/*` operations as lazy
+properties: `venue.agents`, `venue.secrets`, `venue.workspace`, `venue.ucan`.
+
+### Agents
+
+```python
+# Create (or update in place with overwrite=True)
+venue.agents.create("Alice", config={
+    "systemPrompt": "You are a helpful assistant.",
+    "model": "gpt-5.4-mini",
+    "tools": ["v/ops/covia/read", "v/ops/covia/list"],
+}, overwrite=True)
+
+# Session-scoped chat — omit session_id on the first call, then reuse it
+reply = venue.agents.chat("Alice", "Hi Alice")
+follow = venue.agents.chat("Alice", "And the next step?", session_id=reply.sessionId)
+
+# Task request (wait=True blocks for the result)
+result = venue.agents.request("Alice", {"question": "Summarise the records"}, wait=True)
+
+# Inspection and lifecycle
+info = venue.agents.query("Alice")   # status, state, config, tasks
+venue.agents.suspend("Alice")
+venue.agents.resume("Alice")
+venue.agents.delete("Alice")
+```
+
+### Secrets
+
+```python
+venue.secrets.set("OPENAI_API_KEY", "sk-...")
+names = venue.secrets.list()
+venue.secrets.delete("OPENAI_API_KEY")
+# extract requires a UCAN capability grant
+value = venue.secrets.extract("OPENAI_API_KEY").value
+```
+
+### Workspace (lattice)
+
+```python
+venue.workspace.write("w/config", {"theme": "dark"})
+result = venue.workspace.read("w/config")
+print(result.value)                       # {"theme": "dark"}
+listing = venue.workspace.list("w/")      # keys / values under a path
+venue.workspace.append("w/events", {"type": "invoice_received"})
+venue.workspace.slice("w/events", offset=0, limit=10)
+venue.workspace.delete("w/config")
+```
+
+Paths resolve against the caller's own DID; see [Capabilities](../capabilities)
+for the cross-user access model.
+
+### UCAN delegation
+
+```python
+from covia import UCANAttenuation
+
+result = venue.ucan.issue(
+    "did:key:z6MkBob...",                                       # audience (delegatee) DID
+    [UCANAttenuation(with_="did:key:z6MkAlice.../w/shared", can="crud/read")],
+    expiry=2_000_000_000,                                       # unix seconds
+)
+token = result["token"]
+```
+
 ## Discovery
 
 Venues expose standard discovery endpoints for interoperability.
@@ -488,7 +555,8 @@ logging.getLogger("covia").addHandler(handler)
 ```
 covia
 ├── Grid                 # Entry point — Grid.connect()
-├── Venue                # Venue interaction (assets, jobs, operations, discovery)
+├── Venue                # Venue interaction; typed managers: venue.agents,
+│                        #   venue.secrets, venue.workspace, venue.ucan
 ├── Job                  # Job lifecycle (wait, result, cancel, stream)
 ├── Asset                # Asset metadata and content
 ├── JobStatus            # Status enum (PENDING, STARTED, COMPLETE, ...)
