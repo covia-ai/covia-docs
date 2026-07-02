@@ -195,6 +195,26 @@ The short `adapter:op` style (e.g. `http:get`) is the operation's *name* as used
 }
 ```
 
+Invocation is **asynchronous by default**: the response is the job record, and you poll `GET /api/v1/jobs/{id}` (or subscribe via `.../sse`) until the job reaches a terminal status carrying its output. The `Location` header names the job to poll.
+
+**Waiting for the result inline.** Pass `wait` (query parameter `?wait=…` or a body field) for a synchronous response:
+
+| `wait` | Behaviour |
+|--------|-----------|
+| absent / `false` | Asynchronous — `201` with a job record to poll (the default) |
+| `true` | Block up to the 120s cap; return the finished record with `200` if it completes |
+| `<integer>` | Block up to that many **milliseconds** (clamped to the 120s cap) |
+
+If the job finishes within the window you get the completed record (`200`); otherwise the current record (`201`) and you continue polling. A malformed `wait` value is rejected with `400`. The 120s cap is a server resource limit — for longer waits, poll or use SSE.
+
+```bash
+# Fire-and-poll (default)
+curl -X POST .../api/v1/invoke -d '{"operation":"v/ops/http/get","input":{"url":"..."}}'
+
+# Wait inline, up to 30 seconds
+curl -X POST '.../api/v1/invoke?wait=30000' -d '{"operation":"...","input":{...}}'
+```
+
 ---
 
 ### Jobs
