@@ -22,7 +22,7 @@ npm install @covia/covia-sdk
 ### Connecting to a Venue
 
 ```typescript
-import { Grid, BearerAuth, KeyPairAuth } from "@covia/covia-sdk";
+import { Grid, BearerAuth, Ed25519Auth } from "@covia/covia-sdk";
 
 // Connect using a URL
 const venue = await Grid.connect("https://venue-3.covia.ai");
@@ -36,7 +36,7 @@ const venue = await Grid.connect("https://venue-3.covia.ai",
 );
 
 // With Ed25519 key pair (self-issued JWT)
-const auth = KeyPairAuth.generate();
+const auth = Ed25519Auth.generate();
 console.log(`Your DID: ${auth.getDID()}`);
 const venue = await Grid.connect("https://venue-3.covia.ai", auth);
 ```
@@ -135,7 +135,7 @@ console.log(follow.response);
 await venue.agents.message("Alice", { event: "new-invoice" });
 
 // Query state
-const info = await venue.agents.query("Alice");
+const info = await venue.agents.info("Alice");
 console.log(info.status);  // "SLEEPING"
 
 // List all agents
@@ -233,7 +233,7 @@ await job.sendMessage({ action: "continue" });
 
 ```typescript
 // Store
-await venue.secrets.put("OPENAI_API_KEY", "sk-...");
+await venue.secrets.set("OPENAI_API_KEY", "sk-...");
 
 // List names
 const names = await venue.secrets.list();
@@ -273,23 +273,25 @@ const venue = await Grid.connect("https://venue.covia.ai",
 );
 ```
 
-### KeyPairAuth (Ed25519 Self-Issued JWT)
+### Ed25519Auth (Ed25519 Self-Issued JWT)
 
 ```typescript
-import { KeyPairAuth } from "@covia/covia-sdk";
+import { Ed25519Auth } from "@covia/covia-sdk";
 
 // Generate a new key pair
-const auth = KeyPairAuth.generate();
+const auth = Ed25519Auth.generate();
 console.log(auth.getDID());        // did:key:z6Mk...
 console.log(auth.getPublicKey());  // Uint8Array
 
 // Or from an existing private key (hex)
-const auth = KeyPairAuth.fromHex("abcdef0123456789...");
+const auth = Ed25519Auth.fromHex("abcdef0123456789...");
 
 const venue = await Grid.connect("https://venue.covia.ai", auth);
 ```
 
 Tokens are generated fresh per request with a configurable lifetime (default: 300 seconds).
+
+> **Renamed:** this provider was previously `KeyPairAuth`. That name still works as a deprecated alias, but new code should use `Ed25519Auth` (matching the Python SDK).
 
 ## Job Lifecycle
 

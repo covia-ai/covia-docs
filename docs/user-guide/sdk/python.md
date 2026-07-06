@@ -310,7 +310,7 @@ follow = venue.agents.chat("Alice", "And the next step?", session_id=reply.sessi
 result = venue.agents.request("Alice", {"question": "Summarise the records"}, wait=True)
 
 # Inspection and lifecycle
-info = venue.agents.query("Alice")   # status, state, config, tasks
+info = venue.agents.info("Alice")   # lightweight summary: status, config, timelineLength, task count
 venue.agents.suspend("Alice")
 venue.agents.resume("Alice")
 venue.agents.delete("Alice")
@@ -373,7 +373,7 @@ print(mcp.mcp_version)
 
 # A2A Agent Card
 card = venue.agent_card()
-print(card.agentProvider)
+print(card.name, card.provider)   # A2A v1.0 fields: name, provider, capabilities, skills, ...
 ```
 
 ## Async API

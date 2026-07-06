@@ -73,7 +73,7 @@ Pass a `taskId` to continue an existing remote Task instead of starting a new on
 
 ### Authentication
 
-The venue's agent card does not yet advertise an A2A `securityScheme`; inbound auth is handled at the transport/middleware layer (see the [operator auth guide](../../operator-guide/auth)). The outbound adapter currently calls remote agents without attaching credentials — for authenticated remotes, place the venue behind an appropriately configured gateway.
+The venue's agent card does not yet advertise A2A `securitySchemes`; inbound auth is handled at the transport/middleware layer (see the [operator auth guide](../../operator-guide/auth)). The outbound adapter currently calls remote agents without attaching credentials — for authenticated remotes, place the venue behind an appropriately configured gateway.
 
 ## Related
 
