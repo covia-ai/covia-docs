@@ -33,6 +33,7 @@ COGs (Covia Open Grid specifications) are the formal technical specifications th
 - **[COG-11](./cogs/COG-011)** - Agent Lifecycle *(exploratory draft)*
 - **[COG-12](./cogs/COG-012)** - Orchestrations
 - **[COG-13](./cogs/COG-013)** - Agent Capabilities
+- **[COG-14](./cogs/COG-014)** - A2A Agent Interoperability *(exploratory draft)*
 
 ## COG Development Process
 
