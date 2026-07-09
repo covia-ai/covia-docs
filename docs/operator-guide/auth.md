@@ -139,7 +139,7 @@ API requests are authenticated via `Authorization: Bearer <token>` headers. The 
 
 ### Self-Issued EdDSA JWTs
 
-Clients with their own Ed25519 key pair can create self-issued JWTs. The `sub` claim must be a `did:key` matching the signing key in the `kid` header. This allows agents and automated clients to authenticate without OAuth.
+Clients with their own Ed25519 key pair can create self-issued JWTs. The `sub` claim must be a `did:key` matching the signing key in the `kid` header. This allows agents and automated clients to authenticate without OAuth. See [Embedded Venue](./embedded-venue) for the single-owner, loopback deployment shape built on this.
 
 ### Venue-Signed JWTs
 
