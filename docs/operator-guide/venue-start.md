@@ -17,6 +17,8 @@ java -jar covia.jar
 
 This will launch a local venue with a default configuration, suitable for testing and development. You can connect to it with the Covia web app at [http://localhost:8080](http://localhost:8080).
 
+To configure the venue, pass a JSON5 config file (`java -jar covia.jar config.json`); see the [Configuration Reference](./configuration) for all keys.
+
 Each venue also includes a web presence for diagnostics and discovery of server capabilities. This will appear at [http://localhost:8080](http://localhost:8080) (The same URL you can use to connect in the Covia App). For an example of this web site, see the hosted [Test Venue](https://venue-test.covia.ai)
 
 ### With Docker

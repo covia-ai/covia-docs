@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # Persistence
 
-Covia venues persist all state — assets, jobs, agents, secrets, workspace data, and DLFS drives — to an on-disk Etch store backed by lattice technology. This page explains how persistence works, what operators need to configure, and what to expect during shutdown and recovery.
+Covia venues persist all state — assets, jobs, agents, secrets, workspace data, and DLFS drives — to an on-disk Etch store backed by lattice technology. This page explains how persistence works, what operators need to configure, and what to expect during shutdown and recovery. See the [Configuration Reference](./configuration) for the `store`, `seed`, and `storage` keys.
 
 ## How It Works
 

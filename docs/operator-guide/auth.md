@@ -7,7 +7,7 @@ sidebar_position: 3
 
 Covia venues support flexible authentication and access control. By default, venues allow anonymous (public) access, which is suitable for development and testing. For production deployments, you can configure OAuth login providers and restrict access to authenticated users.
 
-All authentication settings live under the `"auth"` key in your venue configuration.
+All authentication settings live under the `"auth"` key in your venue configuration. For the complete list of venue config keys, see the [Configuration Reference](./configuration).
 
 ## Public Access
 

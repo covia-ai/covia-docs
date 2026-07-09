@@ -140,6 +140,7 @@ The app's responsibilities, in turn:
 
 ## See also
 
+- [Configuration Reference](./configuration) — every venue config key and its default.
 - [Authentication](./auth) — the auth primitives this recipe composes:
   [self-issued JWTs](./auth#self-issued-eddsa-jwts) and
   [public access](./auth#public-access).
