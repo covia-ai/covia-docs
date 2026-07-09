@@ -13,7 +13,7 @@ Authentication answers *who you are* (see the [operator auth guide](../operator-
 
 A capability is a `{with, can}` pair:
 
-- **`with`** — the resource, as a path or URI: a lattice path like `o/shared/` or `w/reports/`, or a typed resource such as `file://workspace/` or `dlfs://notes/`.
+- **`with`** — the resource, as a path or URI: a lattice path like `o/shared/`, `w/reports/`, or `dlfs/notes/` (DLFS drives are a DID-scoped namespace alongside `w/`; the legacy `dlfs://notes/` scheme form is still accepted for your *own* drives), or a typed resource such as `file://workspace/`.
 - **`can`** — the ability: `crud/read`, `crud/write`, `crud/delete`, or `*` for all.
 
 ```json
@@ -50,6 +50,8 @@ This works on both the REST API and the MCP endpoint. The token's issuer (`iss`)
 
 This is what enables **cross-user access**: if Alice issues Bob a UCAN granting `{with: "o/shared/", can: "crud/read"}`, Bob can present it to read under Alice's `o/shared/` namespace — access he wouldn't otherwise have. The venue trusts the verified proof, not Bob's bare identity.
 
+Verification checks the **root of the delegation chain**: a grant over Alice's resources must be rooted by Alice herself (an owner-signed, *self-sovereign* grant — verifiable by **any** venue, which is what makes capabilities work across venue boundaries) or by the venue that hosts the data (venue-issued grants, e.g. from `ucan:issue`). A chain can pass through intermediaries (Alice → Bob → Carol) as long as each hop only narrows the grant; an escalating hop is refused.
+
 ## Issuing a UCAN
 
 The `ucan:issue` operation mints a venue-signed UCAN delegating capabilities to an audience:
@@ -75,9 +77,11 @@ The `ucan:issue` operation mints a venue-signed UCAN delegating capabilities to 
 
 The result is a JWT the audience presents as a bearer token. Because UCANs attenuate, the audience can in turn delegate a *narrower* subset onward, but never more than it holds.
 
+A resource owner with their own `did:key` keypair can equally sign grants over their own namespace **directly** — no venue involvement. Such self-sovereign grants verify on any venue that holds the data.
+
 ## Capability-gated adapters
 
-Capability checks apply across the venue. In particular, the [`file:`](./adapters/file) and [`dlfs:`](./adapters/dlfs) adapters are gated on typed resources (`file://<root>/<path>`, `dlfs://<drive>/<path>`), so a grant can scope filesystem access down to a single root or path.
+Capability checks apply across the venue. In particular, the [`file:`](./adapters/file) adapter is gated on typed resources (`file://<root>/<path>`) and the [`dlfs:`](./adapters/dlfs) adapter on DID-scoped drive paths (`dlfs/<drive>/<path>`, owner-prefixed for cross-user access: `did:key:zAlice.../dlfs/<drive>/<path>`), so a grant can scope filesystem access down to a single root, drive, or path.
 
 ## Related
 

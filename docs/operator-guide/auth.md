@@ -153,6 +153,8 @@ RS256 JWTs from configured OAuth providers, verified against the provider's JWKS
 
 A bearer token may also be a **UCAN** — a signed capability token. When the venue recognises one, the token's issuer (`iss`) becomes the caller DID and the token's capabilities are carried into the request as proofs. This works on both the REST API and the MCP endpoint and is what enables fine-grained, delegable, cross-user access. Authentication (identity) and capabilities (authorisation) are separate concerns — see [Capabilities](../user-guide/capabilities) for the authorisation model, `ucan:issue`, and the `{with, can}` grant shape.
 
+An unauthenticated request may also carry an **identity token** in its `ucans` proof array — a UCAN with an empty attenuation list, audienced to this venue, signed by the caller. The venue verifies the caller's own signature and treats the issuer as the caller. This is how relayed cross-venue requests keep the original caller's identity: the relaying venue forwards the token, this venue trusts the signature, not the relay. An `Authorization` header always takes precedence. See [COG-3 §6](../protocol/cogs/COG-003) for the exact rules.
+
 ## User Database
 
 Authenticated users are stored in the venue's lattice-backed user database. User records are keyed by a sanitised user ID derived from the email address (e.g. `alice_gmail_com`) and contain:
