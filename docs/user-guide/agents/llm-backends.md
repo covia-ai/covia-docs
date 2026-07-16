@@ -67,6 +67,31 @@ API keys are resolved from the per-user secret store at invocation time — they
 
 A backend that needs a key but can't resolve one **fails fast** with a clear error naming the secret it looked for (e.g. `s/OPENAI_API_KEY`) — it does not silently fall back. Ollama needs no key.
 
+### Sampling parameters
+
+`temperature` and `topP` in the op input pass through to every backend —
+`temperature: 0` gives (near-)deterministic output for extraction pipelines.
+Omitted parameters use the provider's defaults. `maxTokens` bounds the output
+on the Anthropic backend (its API requires a bound; the client default
+applies otherwise).
+
+### Where Ollama lives (Docker vs host)
+
+When the op input carries no `url`, the Ollama base URL resolves venue-side:
+`adapters.langchain.ollamaUrl` in venue config, then the `OLLAMA_BASE_URL`
+environment variable, then `http://localhost:11434`. Keep agents
+topology-agnostic — set the venue-level knob, not per-agent URLs:
+
+| Topology | Setting |
+|----------|---------|
+| Host venue + host Ollama | nothing — the localhost default works |
+| Docker venue + host Ollama | `adapters.langchain.ollamaUrl` (or `OLLAMA_BASE_URL`) = `http://host.docker.internal:11434`, and start Ollama with `OLLAMA_HOST=0.0.0.0 ollama serve` |
+| Both in one compose network | `http://<ollama-service-name>:11434` |
+
+A connect failure names the resolved URL and this knob — if you see
+`Ollama not reachable at http://localhost:11434` from a containerised venue,
+that's the second row.
+
 ### Structured outputs
 
 When an agent uses typed outputs (Goal Tree `outputs` config, a per-request `responseSchema`, or `responseFormat`), the OpenAI backend enables strict JSON-schema mode so the response conforms to the schema. See [Creating Agents](./creating-agents) and [Goal Tree](./goal-tree).
