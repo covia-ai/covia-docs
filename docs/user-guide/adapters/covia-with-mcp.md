@@ -12,12 +12,26 @@ The MCP adapter lets a venue **call external [Model Context Protocol (MCP)](http
 
 ## Operations
 
-| Operation | Purpose |
-|-----------|---------|
-| `mcp:tools:list` | List the tools a remote MCP server offers |
-| `mcp:tools:call` | Invoke a tool on a remote MCP server |
+| Operation | Catalog path | Purpose |
+|-----------|--------------|---------|
+| `mcp:tools:list` | `v/ops/mcp/tools-list` | List the tools a remote MCP server offers |
+| `mcp:tools:call` | `v/ops/mcp/tools-call` | Invoke a tool on a remote MCP server |
+| `mcp:tool:add` | `v/ops/mcp/add-tool` | Curate a single remote tool as a catalog operation at a path you choose |
+| `mcp:server:add` | `v/ops/mcp/add-server` | Mirror ALL of a server's tools into the catalog |
+| `mcp:server:remove` | `v/ops/mcp/remove-server` | Remove a mirrored server's tools and registry entry |
+| `mcp:server:refresh` | `v/ops/mcp/refresh` | Re-sync bridged tools against the live server (mirror or curated mode) |
 
 A server is addressed by URL or by DID (resolved from the DID document's service entries). See [Calling MCP Tools](../mcp/calling-mcp-tools) for the full input/output reference, authentication options, and orchestration patterns.
+
+## Bridging: remote tools as catalog operations
+
+Beyond one-off calls, the adapter can **bridge** remote MCP tools into the
+operation catalog, where they behave exactly like native operations —
+capability grants, gates, job records, schema validation, and agent tool
+palettes all apply. Curate individual tools from different servers into
+groups at catalog paths of your choosing, or mirror a whole server. See
+[Calling MCP Tools § Bridging](../mcp/calling-mcp-tools#bridging-mcp-tools-into-the-catalog)
+for the full guide.
 
 ## Why go through the Grid?
 
