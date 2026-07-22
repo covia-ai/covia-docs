@@ -15,10 +15,11 @@ Each turn, the context is rebuilt fresh (never frozen from the first turn):
 2. **Config tools** — resolved from `config.tools` array
 3. **Default tools** — 19 standard operations (when `defaultTools: true`)
 4. **Context entries** — from `config.context` array, resolved and rendered
-5. **Loaded paths** — from `context_load` calls, rendered at assigned budgets
-6. **Pending results** — completions of outbound jobs the agent is waiting on
-7. **Session messages** — ephemeral notifications delivered to the session
-8. **Conversation** — the session conversation (LLM Agent) or current frame (Goal Tree)
+5. **Skills index** — one line per skill offered by `config.skills` sources
+6. **Loaded paths** — from `context_load` and `skill_load` calls, rendered at assigned budgets
+7. **Pending results** — completions of outbound jobs the agent is waiting on
+8. **Session messages** — ephemeral notifications delivered to the session
+9. **Conversation** — the session conversation (LLM Agent) or current frame (Goal Tree)
 
 ## Tool Resolution
 
@@ -82,6 +83,30 @@ Loaded paths persist across turns and are re-rendered fresh each turn.
 ### One-Shot Reads
 
 For data needed once, agents can call `covia:read` directly — this returns the value in the tool result without persisting it in the context across turns.
+
+## Skills
+
+Where `config.context` pins knowledge the agent always needs, **skills** are the on-demand complement: named bundles of instructions, context, and tools that the agent loads mid-task.
+
+```json
+"skills": ["w/skills", "v/skills"]
+```
+
+Each entry is a source — a directory of skills, or a single skill asset. Sources are searched in order, so a same-named skill in `w/skills` shadows the venue's. Declaring any source does two things: it injects a compact index (one `- name — description` line per skill) into every turn, and it offers the agent the `skill_load` harness tool.
+
+Loading a skill injects its body, loads its bundled context entries, and adds its tools to the palette — all as one entry in the same loads tier `context_load` uses, so budgets, the Context Map, eviction, and `context_unload` all apply unchanged. Bodies re-resolve each turn, so editing a skill takes effect on the next turn of every agent carrying it.
+
+Loading grants no authority: a skill's tools are still capability-checked at invocation, exactly as before it was loaded.
+
+```json
+// The agent acquires a capability it wasn't configured with
+{ "name": "skill_load", "input": { "name": "workspace" } }
+
+// ...and puts it down when finished
+{ "name": "context_unload", "input": { "path": "v/skills/workspace" } }
+```
+
+Anyone can browse the same skills with the `v/ops/skills` operation (`list` and `read`), without an agent. See the [Teach an Agent a New Skill](../tutorials/skills) tutorial and [COG-18](../../protocol/cogs/COG-018).
 
 ## Context Budgets
 
@@ -166,6 +191,7 @@ Tasks persist until completed or failed. Messages are drained after processing. 
 ## Related
 
 - [Creating Agents](./creating-agents) — configuration reference
+- [Teach an Agent a New Skill](../tutorials/skills) — skills end to end
 - [LLM Agent](./llm-agent) — simple conversational model
 - [Goal Tree](./goal-tree) — hierarchical goal decomposition
 - [LLM Backends](./llm-backends) — configuring the Level 3 provider

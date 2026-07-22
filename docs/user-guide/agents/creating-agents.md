@@ -78,6 +78,7 @@ The `config` field controls agent behaviour. All fields are optional — default
 | `defaultTools` | boolean | `true` | Include the platform's default tools (workspace CRUD, agent management, assets, schemas). Set `false` for explicit control. |
 | `caps` | array | — | Capability restrictions. Each entry: `{with: "path/", can: "crud/read"}`. |
 | `context` | array | — | Lattice paths to load into context every turn. |
+| `skills` | array | — | Skill sources (`w/skills`, `v/skills`, `a/<hash>`). Injects the skills index and offers `skill_load`. See [Skills](./tools-and-context#skills). |
 | `outputs` | object | — | Typed output schemas for `complete` and `fail` (Goal Tree only). |
 | `responseFormat` | string / object | — | `"text"`, `"json"`, or `{name, schema}` for strict structured responses. |
 
@@ -178,6 +179,7 @@ Every venue provides these built-in templates:
 
 | Template | Tools | Purpose |
 |----------|-------|---------|
+| `template:skilled` | read, list + [skills](./tools-and-context#skills) | **Recommended default** — lean base, capabilities loaded on demand |
 | `template:minimal` | None | Pure reasoning, no side effects |
 | `template:reader` | read, list, slice | Read-only data analysis |
 | `template:worker` | CRUD operations | General data processing |
