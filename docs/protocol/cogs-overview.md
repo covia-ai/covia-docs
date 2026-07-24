@@ -38,6 +38,7 @@ COGs (Covia Open Grid specifications) are the formal technical specifications th
 - **[COG-16](./cogs/COG-016)** - Human-in-the-Loop Requests
 - **[COG-17](./cogs/COG-017)** - Capability Granting
 - **[COG-18](./cogs/COG-018)** - Agent Skills
+- **[COG-19](./cogs/COG-019)** - HITL Self-Sovereign Token Transport *(draft)*
 
 ## COG Development Process
 
