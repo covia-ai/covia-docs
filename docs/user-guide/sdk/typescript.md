@@ -249,7 +249,7 @@ await venue.secrets.delete("OPENAI_API_KEY");
 const token = await venue.ucan.issue(
   "did:key:z6Mk...",              // audience DID
   [{ with: "w/data/", can: "crud/read" }],  // attenuations
-  Date.now() + 3600000             // expiry (1 hour)
+  Math.floor(Date.now() / 1000) + 3600  // expiry (1 hour, unix seconds)
 );
 ```
 

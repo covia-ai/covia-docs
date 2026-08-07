@@ -9,7 +9,7 @@ Key facts for agents and tools:
 - Every venue is an **MCP server** at `POST /mcp` (operations exposed as snake_case tools) and an **A2A v1.0 agent** at `POST /a2a`.
 - Machine discovery on every venue: `/.well-known/did.json`, `/.well-known/mcp.json`, `/.well-known/agent-card.json`.
 - Live public venues for testing (no signup): https://venue-3.covia.ai and https://venue-4.covia.ai (development build — matches these docs); https://venue-1.covia.ai and https://venue-2.covia.ai (stable release, Google Cloud); https://venue-test.covia.ai (scratch venue, data may be cleared)
-- Run your own venue: `docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest` (or `java -jar covia.jar`, Java 21+).
+- Run your own venue: `docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest` (or `java -jar covia.jar`, Java 21+). `:latest` is the development channel matching these docs; `:stable` is the release build.
 - SDKs: TypeScript `@covia/covia-sdk` (npm), Python `covia` (PyPI), Java `ai.covia:covia-core` (build from source).
 - Authorisation is capability-based (UCAN): `{with, can}` grants presented as bearer tokens and enforced per call.
 - Status: open source (EPL-2.0), pre-1.0; APIs may change.
@@ -21,6 +21,14 @@ Key facts for agents and tools:
 - [Quick Start](https://docs.covia.ai/docs/user-guide/quick-start): Zero to first operation — curl, TypeScript, Python, Docker
 - [REST API reference](https://docs.covia.ai/docs/user-guide/api/): All endpoints — assets, invoke, jobs, SSE, secrets, discovery
 - [SDK reference](https://docs.covia.ai/docs/user-guide/sdk/): TypeScript, Python, and Java client libraries
+- [Troubleshooting](https://docs.covia.ai/docs/user-guide/troubleshooting): Common errors verbatim, with fixes
+
+## Tutorials
+
+- [Claude + Covia](https://docs.covia.ai/docs/user-guide/tutorials/claude-mcp): Give Claude your own tools in five minutes over MCP
+- [Running agents](https://docs.covia.ai/docs/user-guide/tutorials/running-agents): Create, task, and chat with a stateful agent via the REST API
+- [Federation](https://docs.covia.ai/docs/user-guide/tutorials/federation): Run two venues locally and call operations across them
+- [Agent skills](https://docs.covia.ai/docs/user-guide/tutorials/skills): Teach an agent a new skill and watch it load on demand
 
 ## Agents
 
@@ -41,8 +49,10 @@ Key facts for agents and tools:
 ## Running a venue
 
 - [Venue quick start](https://docs.covia.ai/docs/operator-guide/venue-start): Local, Docker, or build from source
+- [Configuration reference](https://docs.covia.ai/docs/operator-guide/configuration): Every venue config key and its default
 - [Authentication](https://docs.covia.ai/docs/operator-guide/auth): Public access, OAuth providers, bearer and UCAN tokens
 - [Persistence](https://docs.covia.ai/docs/operator-guide/persistence): Durability model, recovery, store configuration
+- [Embedded venue](https://docs.covia.ai/docs/operator-guide/embedded-venue): Loopback, self-authenticated venue bundled inside an app
 
 ## Optional
 

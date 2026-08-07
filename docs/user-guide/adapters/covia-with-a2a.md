@@ -10,7 +10,7 @@ Covia speaks the [Agent-to-Agent protocol (A2A)](https://a2a-protocol.org/) **bo
 
 ## Inbound: a venue as an A2A server
 
-Every venue exposes an A2A endpoint and an agent card:
+A venue configured with an `a2a` block (see the [Configuration Reference](../../operator-guide/configuration)) exposes an A2A endpoint and an agent card:
 
 | Endpoint | Purpose |
 |----------|---------|

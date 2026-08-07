@@ -161,7 +161,7 @@ Uploads content for an artifact asset. The content hash must match the `content.
 
 ---
 
-### Operations
+### Invocation
 
 #### `POST /api/v1/invoke`
 
@@ -189,7 +189,7 @@ The short `adapter:op` style (e.g. `http:get`) is the operation's *name* as used
 ```json
 {
   "id": "0x12345678901234567890123456789012",
-  "status": "pending",
+  "status": "PENDING",
   "created": 1706367600000,
   "operation": "0x7a8b9c0d..."
 }
@@ -221,7 +221,7 @@ curl -X POST '.../api/v1/invoke?wait=30000' -d '{"operation":"...","input":{...}
 
 #### `GET /api/v1/jobs`
 
-Lists all jobs on the venue.
+Lists the caller's own job ids (the per-user `j/` namespace).
 
 **Response:**
 ```json
@@ -245,7 +245,7 @@ Gets the current status of a job.
 ```json
 {
   "id": "0x12345678901234567890123456789012",
-  "status": "completed",
+  "status": "COMPLETE",
   "created": 1706367600000,
   "updated": 1706367601000,
   "operation": "0x7a8b9c0d...",
@@ -465,7 +465,7 @@ See [DLFS Adapter](/docs/user-guide/adapters/dlfs) for details.
 
 ---
 
-### Authentication
+### Authentication Endpoints
 
 #### Login
 

@@ -11,7 +11,7 @@ All authentication settings live under the `"auth"` key in your venue configurat
 
 ## Public Access
 
-The `auth.public` setting controls whether unauthenticated requests are allowed to API endpoints. When disabled, all API, MCP, and A2A requests require a valid bearer token.
+The `auth.public.enabled` setting controls whether unauthenticated requests are allowed on API endpoints. When disabled, all API, MCP, and A2A requests require a valid bearer token.
 
 ```json5
 "auth": {
@@ -39,7 +39,7 @@ Venue-issued JWTs (returned after OAuth login) have a configurable expiry:
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `auth.tokenExpiry` | `86400` | JWT token expiry in seconds (default: 24 hours) |
+| `auth.tokenExpiry` | `86400` | Expiry of venue-issued JWTs, in seconds (24 hours) |
 
 ## OAuth Providers
 
@@ -84,7 +84,7 @@ The base URL is derived from the venue's `hostname` and `port` configuration, or
 
 ```json5
 {
-  "hostname": "0.0.0.0",
+  "hostname": "venue.example.com",
   "port": 8080,
   "baseUrl": "https://venue.example.com",
   "auth": {
@@ -100,12 +100,12 @@ When OAuth providers are configured, the venue exposes:
 | Endpoint | Description |
 |----------|-------------|
 | `/login` | Login page listing available providers |
-| `/auth/{provider}` | Redirects to the provider's authorization page |
+| `/auth/{provider}` | Redirects to the provider's authorisation page |
 | `/auth/{provider}/callback` | Handles the OAuth callback and issues a venue JWT |
 
 After a successful OAuth login, the venue:
 
-1. Exchanges the authorization code for tokens from the provider
+1. Exchanges the authorisation code for tokens from the provider
 2. Extracts the user's identity (email, name, subject)
 3. Creates or updates the user record in the venue's user database
 4. Issues a venue-signed JWT containing the user's DID
@@ -121,7 +121,7 @@ After a successful OAuth login, the venue:
 
 #### Microsoft
 
-- Uses Microsoft Identity Platform (Azure AD)
+- Uses Microsoft Identity Platform (Microsoft Entra ID, formerly Azure AD)
 - Scopes: `openid`, `email`, `profile`
 - Supports multi-tenant configurations
 - User identity derived from email address
@@ -135,7 +135,7 @@ After a successful OAuth login, the venue:
 
 ## Bearer Token Authentication
 
-API requests are authenticated via `Authorization: Bearer <token>` headers. The venue's auth middleware supports three types of bearer tokens:
+API requests are authenticated via `Authorization: Bearer <token>` headers. The venue's auth middleware supports four types of bearer tokens:
 
 ### Self-Issued EdDSA JWTs
 
@@ -143,7 +143,7 @@ Clients with their own Ed25519 key pair can create self-issued JWTs. The `sub` c
 
 ### Venue-Signed JWTs
 
-JWTs signed by the venue's own key pair, typically issued after OAuth login. The `sub` claim contains the user's DID (e.g. `did:covia:venue:u:alice_gmail_com`).
+JWTs signed by the venue's own key pair, typically issued after OAuth login. The `sub` claim contains the user's venue-managed DID (e.g. `did:web:venue.example.com:u:alice_gmail_com`).
 
 ### External Provider RS256 JWTs
 
@@ -190,7 +190,7 @@ A complete auth configuration for a production venue:
 ```json5
 {
   "name": "Production Venue",
-  "hostname": "0.0.0.0",
+  "hostname": "venue.example.com",
   "port": 8080,
   "baseUrl": "https://venue.example.com",
 

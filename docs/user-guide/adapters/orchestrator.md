@@ -34,7 +34,7 @@ Orchestrations are defined as operation assets with an `orchestrator` adapter:
         "input": {
           "agentId": ["const", "Alice"],
           "input": ["input", "invoice"],
-          "wait": ["const", true]
+          "timeout": ["const", 60000]
         }
       },
       {
@@ -42,7 +42,7 @@ Orchestrations are defined as operation assets with an `orchestrator` adapter:
         "input": {
           "agentId": ["const", "Bob"],
           "input": [0, "output"],
-          "wait": ["const", true]
+          "timeout": ["const", 60000]
         }
       },
       {
@@ -50,7 +50,7 @@ Orchestrations are defined as operation assets with an `orchestrator` adapter:
         "input": {
           "agentId": ["const", "Carol"],
           "input": [1, "output"],
-          "wait": ["const", true]
+          "timeout": ["const", 60000]
         }
       }
     ],
@@ -130,9 +130,9 @@ Chain agents where each processes the previous one's output:
 
 ```json
 "steps": [
-  { "op": "v/ops/agent/request", "input": { "agentId": ["const", "Scanner"], "input": ["input"], "wait": ["const", true] } },
-  { "op": "v/ops/agent/request", "input": { "agentId": ["const", "Enricher"], "input": [0, "output"], "wait": ["const", true] } },
-  { "op": "v/ops/agent/request", "input": { "agentId": ["const", "Approver"], "input": [1, "output"], "wait": ["const", true] } }
+  { "op": "v/ops/agent/request", "input": { "agentId": ["const", "Scanner"], "input": ["input"], "timeout": ["const", 60000] } },
+  { "op": "v/ops/agent/request", "input": { "agentId": ["const", "Enricher"], "input": [0, "output"], "timeout": ["const", 60000] } },
+  { "op": "v/ops/agent/request", "input": { "agentId": ["const", "Approver"], "input": [1, "output"], "timeout": ["const", 60000] } }
 ]
 ```
 

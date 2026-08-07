@@ -133,7 +133,7 @@ Empty timeline, no sessions, no tasks — a newborn agent, fully transparent.
 
 ## 6. Give it work
 
-`agent:request` sends a tracked task. It waits up to `timeout` ms for the agent to finish; on timeout you get a snapshot with a job id to poll via `v/ops/grid/jobResult`:
+`agent:request` sends a tracked task. It waits up to `timeout` ms for the agent to finish; on timeout you get a snapshot with a job id to poll via `v/ops/grid/job-result`:
 
 ```json
 { "operation": "v/ops/agent/request",

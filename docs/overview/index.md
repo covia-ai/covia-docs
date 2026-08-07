@@ -38,6 +38,8 @@ Three minutes more gets you a venue of your own:
 docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest
 ```
 
+(`:latest` tracks the development channel, which these docs follow; use `:stable` for the release build — see [Release channels](../operator-guide/venue-start#release-channels).)
+
 → **[Quick Start](../user-guide/quick-start)** — zero to your first operation in TypeScript or Python.
 
 ## Why federation?
@@ -48,7 +50,7 @@ Covia's bet is that the missing piece is **infrastructure, not another framework
 
 ## How it works — and what's different
 
-| | |
+| Principle | What it means |
 |---|---|
 | **Sovereign by construction** | Each [venue](./venues) is operated independently with its own identity (DID), [authentication](../operator-guide/auth), and policy. Federation never requires surrendering control of data or infrastructure. |
 | **Self-describing operations** | Every capability carries JSON Schema in/out and is discoverable — by developers *and* by agents. One integration surface for humans and machines. |
@@ -63,6 +65,8 @@ Covia's bet is that the missing piece is **infrastructure, not another framework
 - **Governed agent teams** — persistent, tool-using [agents](../user-guide/agents/) with scoped capabilities and a complete audit trail, like the [AP invoice pipeline](../user-guide/agents/creating-agents#ap-demo-example) where three agents scan, enrich, and approve under least privilege.
 - **One capability, every protocol** — publish an operation once and it is callable via REST, as an MCP tool from any AI assistant, and as an A2A task from any agent framework.
 - **Sovereign data services** — user-signed, portable file systems ([DLFS](../user-guide/adapters/dlfs)) and per-user encrypted secrets, hosted on infrastructure you control.
+- **Teachable agents** — package know-how as portable, self-describing [skills](../user-guide/tutorials/skills) ([COG-18](../protocol/cogs/COG-018)) that agents discover and load at run time.
+- **Human-in-the-loop control** — pause a workflow for human review, approval, or a capability grant ([COG-16](../protocol/cogs/COG-016)), inside the same audited job record.
 
 ## Where the project is
 

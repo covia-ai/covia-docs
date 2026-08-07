@@ -17,11 +17,11 @@ The MCP adapter lets a venue **call external [Model Context Protocol (MCP)](http
 | `mcp:tools:list` | `v/ops/mcp/tools-list` | List the tools a remote MCP server offers |
 | `mcp:tools:call` | `v/ops/mcp/tools-call` | Invoke a tool on a remote MCP server |
 | `mcp:tool:add` | `v/ops/mcp/add-tool` | Curate a single remote tool as a catalog operation at a path you choose |
-| `mcp:server:add` | `v/ops/mcp/add-server` | Mirror ALL of a server's tools into the catalog |
+| `mcp:server:add` | `v/ops/mcp/add-server` | Mirror **all** of a server's tools into the catalog |
 | `mcp:server:remove` | `v/ops/mcp/remove-server` | Remove a mirrored server's tools and registry entry |
 | `mcp:server:refresh` | `v/ops/mcp/refresh` | Re-sync bridged tools against the live server (mirror or curated mode) |
 
-A server is addressed by URL or by DID (resolved from the DID document's service entries). See [Calling MCP Tools](../mcp/calling-mcp-tools) for the full input/output reference, authentication options, and orchestration patterns.
+A server is addressed by URL or by DID (resolved from the DID document's service entries). See [Calling MCP Tools](../mcp/calling-mcp-tools) for worked examples, authentication options, and orchestration patterns.
 
 ## Bridging: remote tools as catalog operations
 
@@ -39,7 +39,7 @@ Calling an MCP server *through* a venue, rather than wiring it into your client 
 
 - **Plug-and-play orchestration** — compose MCP tools with other grid operations, agents, and [orchestrations](./orchestrator).
 - **A system of record** — every call is a [Job](../api/) with an auditable record on your venue.
-- **Controlled credentials** — API keys live in the venue's [secret store](../capabilities), not in the client.
+- **Controlled credentials** — API keys live in the venue's [secret store](../api/#secrets), not in the client.
 
 ## Related
 

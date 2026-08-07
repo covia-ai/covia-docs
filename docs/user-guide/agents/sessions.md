@@ -52,7 +52,7 @@ All three intake operations attach to a session (minting one if you don't supply
 | [`agent:chat`](./operations#agent-chat) | A **chat Job** | The agent's next response on the session | Conversational, back-and-forth interaction |
 | [`agent:message`](./operations#agent-message) | _(nothing — no Job)_ | Just `{ delivered: true }` | Fire-and-forget, one-way notifications |
 
-- A **task Job** stays open until the transition calls `agent_complete_task` / `agent_fail_task` (or hits its output schema). It survives restarts and is polled with `grid:jobResult`.
+- A **task Job** stays open until the transition calls `complete_task` / `fail_task` (or until it returns a value matching the task's output schema, which completes it implicitly). It survives restarts and is polled with `grid:jobResult`.
 - A **chat Job** completes implicitly with the agent's next turn output on that session. Only one chat may be in flight per session at a time.
 - A **message** is appended to the session's `pending` queue and consumed on the next run — there's no Job and no reply.
 

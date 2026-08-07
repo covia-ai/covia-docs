@@ -36,7 +36,7 @@ Every request then authenticates as the app owner's DID; there is no shared
 
 ## The recipe
 
-Three configuration settings turn a default venue into this shape:
+Two configuration settings change a default venue into this shape, and a third default is worth stating explicitly:
 
 ```json5
 {
@@ -51,11 +51,11 @@ Three configuration settings turn a default venue into this shape:
 
 | Setting | Value | What it closes |
 |---------|-------|----------------|
-| `bindAddress` | `127.0.0.1` | Binds the HTTP listener to loopback only, so the venue is unreachable from the LAN. (Omitted, a venue binds all interfaces.) |
+| `bindAddress` | `127.0.0.1` | Binds the HTTP listener to loopback only, so the venue is unreachable from the LAN. (If omitted, a venue binds to all interfaces.) |
 | `allowPrivateNetwork` | `false` (default) | Suppresses the `Access-Control-Allow-Private-Network` header, so a public web origin **cannot** reach the venue on localhost from the browser. |
 | `auth.public.enabled` | `false` | Removes the anonymous/shared `public` identity. Every request must carry a valid bearer token; an unauthenticated request gets `401`. |
 
-With all three set, the only way to reach the venue is a process on the same
+With these in place, the only way to reach the venue is a process on the same
 machine presenting a bearer token the venue accepts — i.e. the owner app.
 
 :::note bindAddress vs hostname
@@ -83,7 +83,7 @@ pre-populates the per-user encrypted secret stores at startup, keyed by DID:
 ```
 
 Top-level keys resolve as follows: `"venue"` → the venue's own DID, `"public"` →
-the `public` identity, and anything else verbatim as a literal DID. Because the
+the `<venueDID>:public` identity, and anything else verbatim as a literal DID. Because the
 app authenticates as its owner DID, secret references (`s/ANTHROPIC_API_KEY`)
 resolve under that identity at invocation time. Nothing lands under `public`, so
 there is no shared credential surface.

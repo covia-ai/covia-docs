@@ -14,7 +14,7 @@ Adapters are how a venue gets its capabilities. Each adapter contributes a famil
 |---------|-----------|--------------|
 | [LangChain](./langchain-adapter) | `langchain:*` | Call LLMs — OpenAI, Anthropic, Ollama, xAI, and OpenAI-compatible endpoints |
 | [Grid](./grid-adapter) | `grid:*` | Invoke operations on local or remote venues (federation) |
-| [Orchestrator](./orchestrator) | `orchestrator:*` | Multi-step DAG workflows with dependencies |
+| [Orchestrator](./orchestrator) | *(adapter, not ops)* | Multi-step DAG workflows, defined as operation assets and run via `grid:run` |
 | [MCP](./covia-with-mcp) | `mcp:*` | Call external MCP servers as grid operations |
 | [A2A](./covia-with-a2a) | `a2a:*` | Call remote A2A agents; serve A2A inbound |
 | [HTTP](./http-adapter) | `http:*` | SSRF-protected outbound HTTP requests |

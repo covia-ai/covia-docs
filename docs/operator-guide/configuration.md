@@ -119,7 +119,7 @@ Rarely needed; sensible defaults apply.
 }
 ```
 
-**Production** (public, OAuth) — see [Authentication](./auth#example-configuration):
+**Production** (internet-facing, authenticated, OAuth) — see [Authentication](./auth#example-configuration):
 
 ```json5
 {

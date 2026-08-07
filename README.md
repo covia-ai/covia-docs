@@ -4,7 +4,7 @@ The Docusaurus-based documentation site published at [docs.covia.ai](https://doc
 
 Active development happens on `develop`; pushing to `master` deploys the site.
 
-
+Requires Node.js 18+ with pnpm (via Corepack: `corepack enable`).
 
 ## Installation
 
@@ -26,7 +26,7 @@ This command starts a local development server and opens up a browser window. Mo
 pnpm run build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+This command generates static content into the `build` directory, which can be served from any static hosting service. The build fails on broken internal links and anchors — it doubles as the docs link-integrity check (enforced in CI).
 
 ## Deployment
 

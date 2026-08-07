@@ -6,7 +6,7 @@ sidebar_label: Scheduler
 
 # Scheduler Adapter
 
-The Scheduler adapter runs an operation **later** — at an absolute time or after a delay. It's how a venue defers work: a reminder, a periodic sweep, or an agent that should wake at a set time. Scheduled invocations run with the **authority of whoever scheduled them**, captured at schedule time and replayed unchanged when they fire.
+The Scheduler adapter runs an operation **later** — at an absolute time or after a delay. It's how a venue defers work: a reminder, a delayed clean-up, or an agent that should wake at a set time. (There is no built-in recurrence — a repeating job re-schedules itself as its last action.) Scheduled invocations run with the **authority of whoever scheduled them**, captured at schedule time and replayed unchanged when they fire.
 
 ## Operations
 

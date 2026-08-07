@@ -13,7 +13,7 @@ The MCP adapter enables you to invoke tools from any MCP server as Grid operatio
 
 ## Built-in MCP Operations
 
-Every Covia venue includes two built-in MCP operations:
+Every Covia venue includes six built-in MCP operations — two for one-off calls (below), and four for [bridging](#bridging-mcp-tools-into-the-catalog) remote tools into the catalog:
 
 ### `mcp:tools:list` - List Available Tools
 
@@ -88,7 +88,7 @@ Call a specific tool on an MCP server:
 
 ## Bridging MCP Tools into the Catalog
 
-One-off `tools-call` invocations work well inside orchestrations, but the
+One-off `v/ops/mcp/tools-call` invocations work well inside orchestrations, but the
 adapter can also **bridge** remote tools into your operation catalog, where
 they become ordinary operations: invocable by path, subject to capability
 grants and gates, recorded as jobs, validated against their schema, and
@@ -98,7 +98,7 @@ The tool is the entity — the server is just where it lives.
 
 ### Curating individual tools
 
-`v/ops/mcp/add-tool` bridges ONE tool at a catalog path you choose:
+`v/ops/mcp/add-tool` bridges **one** tool at a catalog path you choose:
 
 ```json
 {
@@ -152,7 +152,7 @@ purpose-shaped one:
 ```
 
 Callers (and agents) now see a tool that needs only `title` and `body` —
-the defaulted keys leave the schema's `required` list. Defaults may be any
+the defaulted keys are removed from the schema's `required` list. Defaults may be any
 value type, and a caller-supplied value always wins: this is
 purpose-shaping, **not** access control. When an argument value must be
 enforced, use a capability gate instead. The mechanism is generic
@@ -162,7 +162,7 @@ for you.
 
 ### Mirroring a whole server
 
-`v/ops/mcp/add-server` bridges ALL of a server's tools in one call:
+`v/ops/mcp/add-server` bridges **all** of a server's tools in one call:
 
 ```json
 {
@@ -300,7 +300,7 @@ Combine MCP tool calls with other operations in orchestrations:
 
 ```json
 {
-  "name": "Search and Summarize",
+  "name": "Search and Summarise",
   "operation": {
     "adapter": "orchestrator",
     "steps": [
@@ -317,7 +317,7 @@ Combine MCP tool calls with other operations in orchestrations:
       },
       {
         "op": "v/ops/langchain/openai",
-        "name": "Summarize Results",
+        "name": "Summarise Results",
         "input": {
           "prompt": ["concat", "Summarise the following search results:\n", [0, "content", 0, "text"]]
         }
@@ -340,7 +340,7 @@ Use MCP to call tools on other Covia venues:
   "operation": "v/ops/mcp/tools-call",
   "input": {
     "server": "did:web:venue-4.covia.ai",
-    "toolName": "analyze-sentiment",
+    "toolName": "analyze_sentiment",
     "arguments": {
       "text": "This product is amazing!"
     }
@@ -433,7 +433,7 @@ This example shows a complete workflow using multiple MCP tools:
         }
       },
       {
-        "name": "Summarize",
+        "name": "Summarise",
         "op": "v/ops/langchain/openai",
         "input": { "prompt": ["concat", "Summarise this page:\n", [1, "content"]] }
       }

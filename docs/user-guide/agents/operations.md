@@ -44,7 +44,7 @@ Poll for the result with `grid:jobResult` (`grid_job_result`), passing that `id`
 
 ### agent:chat {#agent-chat}
 
-Send a message and synchronously await the agent's next response on the session. The A2A `message/send` analogue — use it for conversational interactions where you want a reply.
+Send a message and synchronously await the agent's next response on the session. The A2A `SendMessage` analogue — use it for conversational interactions where you want a reply.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -69,7 +69,7 @@ Only one chat may be in flight per session — concurrent calls on the same sess
 
 ### agent:message {#agent-message}
 
-Send a fire-and-forget notification. The message is delivered into the session and consumed on the agent's next run — **no response is returned** and no Job is created.
+Send a fire-and-forget notification. The message is delivered into the session and consumed on the agent's next run — **no agent response is returned** (the call acknowledges with `{ "delivered": true }`) and no Job is created.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -110,7 +110,7 @@ These are framework tools an agent transition calls (typically as an LLM tool ca
 
 ### agent:complete-task
 
-Marks the in-scope task complete and delivers the result to the caller. Exposed to LLMs as the tool **`agent_complete_task`**.
+Marks the in-scope task complete and delivers the result to the caller. Exposed to LLMs as the harness tool **`complete_task`**.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -118,7 +118,7 @@ Marks the in-scope task complete and delivers the result to the caller. Exposed 
 
 ### agent:fail-task
 
-Marks the in-scope task failed. Exposed to LLMs as the tool **`agent_fail_task`**.
+Marks the in-scope task failed. Exposed to LLMs as the harness tool **`fail_task`**.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -293,8 +293,8 @@ Each successful run appends a timeline entry:
 
 ```json
 {
-  "start": 1712930400000,
-  "end": 1712930412000,
+  "start": 1782864000000,
+  "end": 1782864012000,
   "op": "v/ops/goaltree/chat",
   "tasks": [{ "task": "Summarise vendor records" }],
   "messages": [],
@@ -324,4 +324,4 @@ When an agent transition fails:
 - [Sessions](./sessions) — the session model and run loop
 - [Creating Agents](./creating-agents) — configuration and templates
 - [Tools and Context](./tools-and-context) — how tools and context are assembled
-- [COG-004: Agents](/docs/protocol/cogs/COG-004) — Protocol specification
+- [COG-11: Agent Lifecycle](/docs/protocol/cogs/COG-011) — Protocol specification for agents

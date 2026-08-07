@@ -59,7 +59,7 @@ Ancestor frames are visible as progressively summarised context — the parent a
 
 ## Harness Tools
 
-The Goal Tree provides built-in harness tools that the agent opts in to via `config.tools`:
+The Goal Tree provides built-in harness tools, available to the agent regardless of `config.tools`:
 
 ### subgoal
 
@@ -69,7 +69,7 @@ Open a child frame to pursue a sub-task.
 { "name": "subgoal", "input": { "description": "Extract line items from the invoice" } }
 ```
 
-The child inherits all parent tools, loaded context paths, and tool definitions. Its conversation is independent — the parent doesn't see it. Returns `{status: "complete", result: ...}` or `{status: "failed", error: ...}`.
+The child inherits the parent's tool definitions and loaded context paths. Its conversation is independent — the parent doesn't see it. Returns `{status: "complete", result: ...}` or `{status: "failed", error: ...}`.
 
 ### complete
 
@@ -146,7 +146,7 @@ Without `outputs`, the `complete` tool accepts any JSON object.
 | Conversation model | Flat history | Hierarchical frame stack |
 | Subgoals | Not supported | Built-in `subgoal` tool |
 | Context from ancestors | N/A | Progressive summarisation |
-| Typed outputs | Not supported | `complete`/`fail` with JSON Schema |
+| Typed outputs | Via `responseFormat` config or per-request `responseSchema` | Also `outputs` on `complete`/`fail` with JSON Schema |
 | Compaction | Not supported | Built-in `compact` tool |
 | Implicit complete | N/A | Text response auto-completes |
 | Best for | Simple conversation | Complex multi-step tasks |

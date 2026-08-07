@@ -5,7 +5,7 @@ sidebar_position: 7
 
 # LLM Backends
 
-The Level 3 LLM call is a stateless operation that sends messages and tool definitions to a language model and returns the response. Covia is **model-agnostic** — it talks to several providers through the LangChain adapter, and the choice of provider and model is yours. The models shown below are illustrative examples, not recommendations.
+The Level 3 LLM call is a stateless operation that sends messages and tool definitions to a language model and returns the response. Covia is **model-agnostic** — it talks to several providers through the LangChain adapter, and the choice of provider and model is yours. The default models below are what a backend uses when you don't set `model` — a fallback, not a recommendation.
 
 ## Available Backends
 
@@ -21,7 +21,7 @@ Each operation supplies a **default model** when you don't set one, but you can 
 | Backend | Default model | Secret |
 |---------|---------------|--------|
 | OpenAI | `gpt-5.4-mini` | `OPENAI_API_KEY` |
-| Anthropic | `claude-sonnet-4-5` | `ANTHROPIC_API_KEY` |
+| Anthropic | `claude-sonnet-4-6` | `ANTHROPIC_API_KEY` |
 | Ollama | `qwen` | _(none)_ |
 | xAI | `grok-4` | `XAI_API_KEY` |
 
@@ -50,7 +50,7 @@ Set the backend via `llmOperation` in agent config. The `model` is optional — 
     "agentId": "claude-agent",
     "config": {
       "llmOperation": "v/ops/langchain/anthropic",
-      "model": "claude-sonnet-4-5",
+      "model": "claude-sonnet-4-6",
       "systemPrompt": "You are a helpful assistant."
     }
   }

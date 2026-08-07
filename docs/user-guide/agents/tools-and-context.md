@@ -13,7 +13,7 @@ Each turn, the context is rebuilt fresh (never frozen from the first turn):
 
 1. **System prompt** — from `config.systemPrompt`, plus capability disclosure and lattice namespace reference
 2. **Config tools** — resolved from `config.tools` array
-3. **Default tools** — 19 standard operations (when `defaultTools: true`)
+3. **Default tools** — the standard operation palette (when `defaultTools: true`)
 4. **Context entries** — from `config.context` array, resolved and rendered
 5. **Skills index** — one line per skill offered by `config.skills` sources
 6. **Loaded paths** — from `context_load` and `skill_load` calls, rendered at assigned budgets

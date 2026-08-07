@@ -321,9 +321,9 @@ venue.agents.delete("Alice")
 ```python
 venue.secrets.set("OPENAI_API_KEY", "sk-...")
 names = venue.secrets.list()
-venue.secrets.delete("OPENAI_API_KEY")
 # extract requires a UCAN capability grant
 value = venue.secrets.extract("OPENAI_API_KEY").value
+venue.secrets.delete("OPENAI_API_KEY")
 ```
 
 ### Workspace (lattice)

@@ -1,6 +1,6 @@
 ---
 title: Persistence
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Persistence
@@ -9,7 +9,7 @@ Covia venues persist all state — assets, jobs, agents, secrets, workspace data
 
 ## How It Works
 
-Venue state is persisted via a two-phase background sweep:
+Venue state is persisted by a background sweep:
 
 ```
 Component writes → in-memory fork → (every 100ms) → signed root cursor → Etch store (disk)

@@ -94,7 +94,7 @@ if (job.isComplete()) {
     ACell output = job.getOutput();
     System.out.println("Result: " + output);
 } else if (job.isFailed()) {
-    System.err.println("Error: " + job.getErrorMsg());
+    System.err.println("Error: " + job.getErrorMessage());
 }
 ```
 
@@ -154,7 +154,7 @@ venue.putContent(assetId, content);
 ```java
 Job job = operation.invoke(input).get();
 
-while (!job.isTerminal()) {
+while (!job.isFinished()) {
     Thread.sleep(100);
     job = venue.getJob(job.getId());
 }
@@ -178,7 +178,7 @@ try {
     Job job = operation.invoke(input).get();
 
     if (job.isFailed()) {
-        String error = job.getError();
+        String error = job.getErrorMessage();
         // Handle operation-level error
     }
 } catch (ExecutionException e) {

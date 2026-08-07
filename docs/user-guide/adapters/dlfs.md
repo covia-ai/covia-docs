@@ -6,7 +6,7 @@ sidebar_position: 8
 
 # DLFS (Decentralised Lattice File System)
 
-DLFS provides self-sovereign, decentralised file storage on Covia venues. Each user gets per-user drives that are cryptographically signed with their own Ed25519 key, stored in an independent lattice region, and portable across venues.
+DLFS provides self-sovereign, decentralised file storage on Covia venues. Each user gets their own named drives; every write is signed with the user's own Ed25519 key, stored in an independent lattice region, and portable across venues.
 
 ## Key Properties
 
@@ -231,7 +231,7 @@ Because drives are signed by the user's key rather than the venue's:
 2. Import it on another venue
 3. Access your drives unchanged
 
-The venue cannot lock users in via cryptographic ownership.
+Because ownership is cryptographic rather than administrative, a venue cannot lock users in.
 
 ## Merge Semantics
 

@@ -4,14 +4,14 @@ sidebar_position: 4
 
 # SDK
 
-Covia ships client SDKs so you can connect to a venue, invoke operations, manage jobs and assets, and drive agents from your own code. Every SDK can connect by URL, DNS name, or DID and supports Ed25519 keypair and bearer authentication.
+Covia ships client SDKs so you can connect to a venue, invoke operations, manage jobs and assets, and drive agents from your own code. Each published SDK connects by URL or DID (`did:web:…`) and supports Ed25519 keypair and bearer authentication.
 
 | Language | Package | Status |
 |----------|---------|--------|
 | TypeScript / JavaScript | [`@covia/covia-sdk`](https://www.npmjs.com/package/@covia/covia-sdk) | Published |
 | Python | [`covia`](https://pypi.org/project/covia/) | Published |
 | Java | `ai.covia:covia-core` | Build from source |
-| Rust | — | Planned |
+| [Rust](../user-guide/sdk/rust) | — | Planned |
 
 A minimal example (TypeScript):
 

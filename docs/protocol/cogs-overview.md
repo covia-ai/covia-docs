@@ -4,17 +4,16 @@ sidebar_position: 4
 
 # COG Specifications
 
-COGs (Covia Open Grid specifications) are formal  documents that define the technical standards, protocols, and governance mechanisms of the grid ecosystem. Each COG represents a specific aspect of the system that has been formally specified and approved through the community governance process.
+COGs (Covia Open Grid specifications) are formal documents that define the technical standards, protocols, and governance mechanisms of the grid ecosystem. Each COG specifies one aspect of the system and progresses through the [community governance process](./governance). All COGs are currently at Draft status; none has yet been formally approved.
 
 ## What are COGs?
 
-COGs (Covia Open Grid specifications) are the formal technical specifications that define:
+COGs are the formal technical specifications that define:
 
 - **Protocol Standards**: Core protocol specifications and message formats
-- **Security Standards**: Cryptographic primitives, authentication, and authorization
-- **Network Standards**: Peer-to-peer networking, discovery, and routing
-- **Data Standards**: Universal Data Assets (UDA) formats and metadata
-- **Governance Standards**: Decision-making processes and community participation
+- **Security Standards**: Cryptographic primitives, authentication, and authorisation
+- **Network Standards**: Federation, discovery, and cross-venue routing
+- **Data Standards**: Asset formats, artifacts, and metadata
 
 ## Available COGs
 
@@ -30,15 +29,15 @@ COGs (Covia Open Grid specifications) are the formal technical specifications th
 - **[COG-8](./cogs/COG-008)** - Jobs
 - **[COG-9](./cogs/COG-009)** - Agent Messaging
 - **[COG-10](./cogs/COG-010)** - Venue Authentication & Access Control
-- **[COG-11](./cogs/COG-011)** - Agent Lifecycle *(exploratory draft)*
+- **[COG-11](./cogs/COG-011)** - Agent Lifecycle *(exploratory draft — superseded in practice by session-based agents; see [Sessions](../user-guide/agents/sessions))*
 - **[COG-12](./cogs/COG-012)** - Orchestrations
 - **[COG-13](./cogs/COG-013)** - Agent Capabilities
-- **[COG-14](./cogs/COG-014)** - A2A Agent Interoperability *(exploratory draft)*
+- **[COG-14](./cogs/COG-014)** - A2A Agent Interoperability *(not yet implemented)*
 - **[COG-15](./cogs/COG-015)** - Cross-Venue Federation
 - **[COG-16](./cogs/COG-016)** - Human-in-the-Loop Requests
 - **[COG-17](./cogs/COG-017)** - Capability Granting
 - **[COG-18](./cogs/COG-018)** - Agent Skills
-- **[COG-19](./cogs/COG-019)** - HITL Self-Sovereign Token Transport *(draft)*
+- **[COG-19](./cogs/COG-019)** - HITL Self-Sovereign Token Transport
 
 ## COG Development Process
 
@@ -62,11 +61,12 @@ To contribute to COG development:
 
 ## COG Status
 
-Each COG has a status indicating its development stage:
+Each COG carries a status indicating its development stage. The stages currently in use are:
 
-- **Draft**: Under development and community review
-- **Proposed**: Ready for community voting
-- **Approved**: Formally adopted and implemented
-- **Deprecated**: Superseded by newer specifications
+- **Exploratory Draft**: An early sketch that may be substantially revised or superseded
+- **Draft (Work in Progress)**: Actively being written; sections may be incomplete
+- **Draft**: A complete draft under community review
 
-*Note: COG specifications are expected to evolve based on community feedback and real-world implementation experience.* 
+Later stages — **Proposed** (ready for community decision), **Approved** (formally adopted), and **Deprecated** (superseded) — are defined by the [governance process](./governance); no COG has yet reached them.
+
+*Note: COG specifications are expected to evolve based on community feedback and real-world implementation experience.*

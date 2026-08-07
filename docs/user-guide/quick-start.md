@@ -79,7 +79,7 @@ A Java SDK (`ai.covia:covia-core`, currently built from source) is also availabl
 To control local resources, install custom adapters, or hold your own data, run a venue yourself — it's a single self-contained server:
 
 ```bash
-docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest
+docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest   # :latest = dev channel; use :stable for the release build
 ```
 
 Point the examples above at `http://localhost:8080`. See the [Operator Guide](../operator-guide/venue-start) for configuration, persistence, and authentication.

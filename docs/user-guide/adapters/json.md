@@ -12,7 +12,7 @@ The JSON adapter provides four pure data manipulation primitives for composing s
 
 ### json:merge — Deep Merge
 
-Merges a vector of maps using [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch semantics. Later values win on key conflict; nested maps merge recursively; `null` values delete keys.
+Merges an array of maps using [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch semantics. Later values win on key conflict; nested maps merge recursively; `null` values delete keys.
 
 ```json
 {

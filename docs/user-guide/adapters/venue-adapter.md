@@ -102,7 +102,7 @@ Renders data as a compact preview, truncated to fit the byte budget (default 500
 | `v/ops/` | Read | Venue operations catalog |
 | `v/info/` | Read | Venue metadata |
 
-Framework-managed namespaces (`g/`, `s/`, `j/`, `v/`) are read-only via the Covia adapter. Use dedicated operations (e.g., `agent:create`, `secret:set`) to modify them.
+Framework-managed namespaces (`n/`, `g/`, `s/`, `j/`, `v/`) are read-only via the Covia adapter. Use dedicated operations (e.g., `agent:create`, `secret:set`) to modify them.
 
 ## Related
 

@@ -1,6 +1,11 @@
 # Covia Docs Update Plan
 
-> **Status:** Draft for review · **Date:** 2026-06-10
+> **Status (2026-08-06): HISTORICAL — largely executed.** Phases 0–4 shipped in June 2026
+> (the checkboxes below were never ticked). Still open from §9: the Python SDK
+> audience-handling rewrite, `wait_until_ready` docs, and asset retrieval by lattice
+> address (covia#150). Kept for reference; do not treat as a live plan.
+
+> **Original status:** Draft for review · **Date:** 2026-06-10
 > **Baseline:** docs last meaningfully updated 2026-04-12; ~168 commits to `covia` (`develop`) since.
 > **Goal:** bring `covia-docs` into line with the current Covia engine — accurate, complete, and free of pre-OSS-push placeholders — without losing the parts that are already good (SDK reference, REST API reference, DLFS, orchestrator).
 

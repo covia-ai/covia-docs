@@ -29,7 +29,7 @@ The protocol continues to evolve based on real-world implementation experience, 
 - Security considerations paramount
 - Performance impact analysis
 
-### 3. Decentralised Decision Making
+### 3. Decentralised Decision-Making
 - Multi-stakeholder governance
 - Distributed voting mechanisms
 - Prevention of capture by any single entity
@@ -37,31 +37,31 @@ The protocol continues to evolve based on real-world implementation experience, 
 
 ## Governance Process
 
-### COG proposals 
+### COG Proposals
 
-0. **Proposal Stage**
+1. **Proposal Stage**
    - Initial proposal submission
    - Community discussion and feedback
    - Appointment of editor / maintainer
    - Assignment of COG-XXX number
 
-1. **Draft Stage**
+2. **Draft Stage**
    - Technical specification development
    - Development of reference implementation
-   - Development of test suite 
+   - Development of test suite
    - Publication of draft documentation
 
-2. **Review Stage**
+3. **Review Stage**
    - Formal technical review
    - Security analysis
    - Community impact assessment
 
-3. **Acceptance Stage**
+4. **Acceptance Stage**
    - Consensus gathering
    - Final specification
    - Implementation planning
 
-4. **Implementation Stage**
+5. **Implementation Stage**
    - Reference implementation
    - Testing and validation
    - Deployment coordination
@@ -71,7 +71,7 @@ The protocol continues to evolve based on real-world implementation experience, 
 ### Core Protocol
 - Protocol specification maintenance
 - Security reviews
-- Performance optimization
+- Performance optimisation
 - Backward compatibility
 
 ### Implementation
@@ -88,9 +88,9 @@ The protocol continues to evolve based on real-world implementation experience, 
 
 ## Getting Involved
 
-1. Join the discussion on [GitHub](https://github.com/covia-ai)
+1. Join the discussion on [GitHub Discussions](https://github.com/orgs/covia-ai/discussions)
 2. Participate in working group meetings
-3. Submit or review Protocol Improvement Proposals
+3. Submit or review [COG proposals](./cogs-overview)
 4. Contribute to implementation and testing
 
 ## Current Governance Status
@@ -102,4 +102,4 @@ The protocol is currently in its initial phase with a focus on:
 - Growing the contributor community
 - Developing governance processes
 
-We welcome participation from individuals and organizations committed to advancing the future of federated AI orchestration. 
+We welcome participation from individuals and organisations committed to advancing the future of federated AI orchestration.

@@ -3,9 +3,9 @@ title: Venue Quick Start
 sidebar_position: 1
 ---
 
-## Running a Venue
+# Venue Quick Start
 
-You can use the Covia grid simply through the online web app or the SDK as a user. But for more powerful capabilities, such as controlling local resources and installing custom adapters, you may want to create your own venue.
+As a user you can work with the Covia Grid through the online web app or the SDK alone. But for more powerful capabilities, such as controlling local resources and installing custom adapters, you may want to create your own venue.
 
 A venue is implemented as a server process that you can run by obtaining `covia.jar` from the [latest release](https://github.com/covia-ai/covia/releases/tag/latest) on GitHub (see [Release channels](#release-channels) below for the options).
 
@@ -19,9 +19,9 @@ This will launch a local venue with a default configuration, suitable for testin
 
 To configure the venue, pass a JSON5 config file (`java -jar covia.jar config.json`); see the [Configuration Reference](./configuration) for all keys.
 
-Each venue also includes a web presence for diagnostics and discovery of server capabilities. This will appear at [http://localhost:8080](http://localhost:8080) (The same URL you can use to connect in the Covia App). For an example of this web site, see the hosted [Test Venue](https://venue-test.covia.ai)
+Each venue also includes a web presence for diagnostics and discovery of server capabilities. This will appear at [http://localhost:8080](http://localhost:8080) — the same URL you use to connect from the Covia app. For an example of this website, see the hosted [Test Venue](https://venue-test.covia.ai).
 
-### With Docker
+## With Docker
 
 A published container image is available if you'd rather not install Java (the image ships its own Java runtime, currently the latest LTS):
 
@@ -31,7 +31,7 @@ docker run -p 8080:8080 ghcr.io/covia-ai/covia:stable
 
 Mount a volume and point `store` at it (see [Configuring the Venue](#configuring-the-venue)) to persist state across container restarts.
 
-### Release channels
+## Release channels
 
 Pick the channel that matches how much churn you want:
 
@@ -44,23 +44,27 @@ The hosted example venues follow the same channels: [venue-1](https://venue-1.co
 
 For production, pin a specific version (a release tag for the JAR, `:0.2.0`-style image tags for Docker) and upgrade deliberately. The development channel tracks `develop` and may change under you — it's the right choice only if you're following new features or contributing. See the [CHANGELOG](https://github.com/covia-ai/covia/blob/master/CHANGELOG.md) for what each release contains.
 
-### Building the venue server
+## Building the venue server
 
 The venue server is a Maven project in Java.
 
 You can build it with Maven 3.5+ using the following command in a clone of the [Covia repo](https://github.com/covia-ai/covia) root directory:
 
-```
+```bash
 mvn clean install
 ```
 
-This will build the project, including the full Venue `.jar` at `venue/target/covia.jar`
+This will build the project, including the full venue `.jar` at `venue/target/covia.jar`.
 
-### Configuring the Venue
+## Configuring the Venue
 
-A venue can be configured with a JSON / JSON5 config file to enable or disable features, add adapaters and more. To set a configuration file for your venue either:
-- Place it in the user's home directory at `~/.covia/config.json`
-- Start `covia.jar` with an explicit configuration like `java -jar covia.jar my-config.json`
+A venue can be configured with a JSON / JSON5 config file to enable or disable features, add adapters, and more. Pass the config file path as the first argument when launching:
+
+```bash
+java -jar covia.jar my-config.json
+```
+
+With no config file, the venue starts with a built-in local-test configuration.
 
 An [example configuration file](https://github.com/covia-ai/covia/blob/master/venue/config-example.json) is available as a documented template.
 

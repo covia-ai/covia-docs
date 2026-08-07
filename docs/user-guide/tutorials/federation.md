@@ -7,7 +7,7 @@ sidebar_position: 3
 
 This is the demo that makes Covia *Covia*: two independent venues — separate identities, separate data, separate audit trails — collaborating on a task where **the data never leaves its home venue and only results cross the boundary**. You'll run both on your laptop in about ten minutes, then federate with a real venue in the cloud.
 
-**You'll need:** Java 21+ and the `covia.jar` from the [latest release](https://github.com/covia-ai/covia/releases/tag/latest-snapshot) (or build from source). No API keys.
+**You'll need:** Java 21+ and the `covia.jar` from the [latest development build](https://github.com/covia-ai/covia/releases/tag/latest-snapshot) (or build from source). No API keys.
 
 ## 1. Start two venues
 

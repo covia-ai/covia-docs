@@ -1,7 +1,5 @@
-# Workflow for building and deploying a Docusaurus site to GitHub Pages
-#
-# To get started with Next.js see: https://nextjs.org/docs/getting-started
-#
+# Builds the Docusaurus site and deploys it to GitHub Pages on every push
+# to master. docs.covia.ai is served from the Pages deployment.
 name: Deploy Docusaurus site to Pages
 
 on:

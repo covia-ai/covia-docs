@@ -4,7 +4,9 @@ sidebar_position: 2
 
 # Covia.ai White Paper
 
-THIS IS A DRAFT OF THE COVIA WHITE PAPER FOR DISCUSSION ONLY. NOT TO BE CONSIDERED FINAL.
+:::caution Draft
+This is a draft of the Covia white paper, for discussion only — not to be considered final. Parts of it predate the current protocol specifications; where they disagree, the [COGs](./cogs-overview) are authoritative.
+:::
 
 ## Vision
 
@@ -48,21 +50,21 @@ At the core of Covia’s architecture is the **Execution Graph Runtime**, suppor
 
 | Component | Purpose |
 | -- | -- | 
-|SDK/CLI | Developer tooling to definem simulate, test, and deploy orchestration graphs |
-| Execution Runtime | Resolves graph nodes, manages retries, memory, rollback, and concurrency | 
+| SDK/CLI | Developer tooling to define, simulate, test, and deploy orchestration graphs |
+| Execution Graph Runtime | Resolves graph nodes, manages retries, memory, rollback, and concurrency |
 | Policy Engine | Enforces runtime access, identity scope, fallback, and data handling constraints |
 | Venue Adapters | Interfaces for executing across clouds, SaaS tools, or partner agents | 
 | Audit + Trace Layer | Emits signed logs, verifiable execution traces, and runtime observability | 
 
 ### Federated by Design
 
-Each **Venue** (e.g., - workspace, AWS account, on-prem node, vendor endpoint) operates with its own policy context and identity boundary. Nodes within a graph may execute across venues, with:
+Each **Venue** (e.g. a workspace, AWS account, on-prem node, or vendor endpoint) operates with its own policy context and identity boundary. Nodes within a graph may execute across venues, with:
 - Isolated runtime sandboxes
 - Signed, policy-bound transitions
 - Encrypted memory scoped to actor identity
 - Unified trace collection and verification
 
-This allows Covia.ai to operate not just within an **organisation, but across organizational lines**, while maintaining runtime trust and governance.
+This allows Covia.ai to operate not just within an **organisation, but across organisational lines**, while maintaining runtime trust and governance.
 
 ## Key Concepts
 
@@ -70,20 +72,20 @@ This allows Covia.ai to operate not just within an **organisation, but across or
 
 Covia introduces the concept of a Universal Data Asset (UDA), a model that allows for the representation of *any* compute resource or data set in a standard form.
 
-An asset is defined the following:
+An asset is defined by the following:
 - Immutable metadata that describes the asset
 - Asset Content, defined by the type of asset
 
-Assets are **immutable**. It's possibly to modify assets, but this always creates a new asset version. This property is critical for multiple reasons:
+Assets are **immutable**. It is possible to modify assets, but this always creates a new asset version. This property is critical for multiple reasons:
 - Support for full cryptographic verification of asset integrity
 - Support trusted acquisition of assets from decentralised sources using cryptographic hashes as content-addressable IDs
-- Allow reliable distributed caching and replication (immutable data never becomes stale....)
+- Allow reliable distributed caching and replication (immutable data never becomes stale)
 
 Examples of assets:
 - A training data set used for model building
 - A set of records produced from a production system being sent for real-time processing
 - A compute service backed by a GPU system
-- A Data access service providing extracts
+- A data access service providing extracts
 
 ### Metadata
 
@@ -92,7 +94,7 @@ Asset metadata describes assets in their entirety.
 Asset metadata may include:
 - Human readable description of an asset
 - Authorship information
-- License for use (e.g. Creative Commons)
+- Licence for use (e.g. Creative Commons)
 - Cryptographic hashes for content (allowing verification and content acquisition)
 - Asset provenance (e.g. references to input data sets used for model training etc.)
 
@@ -115,10 +117,10 @@ A venue is a logical location that manages assets.
 Typically, venues are aligned with some organisation or group within an organisation that controls sets of related data. An example might be a predictive modelling team that builds AI models based on consumer behavioural data. The venue would be used for storing training data and predictive models as assets, and offering services that allow other parts of the organisation or trusted partners to request pseudonymised output data sets.
 
 Venues, by design, may differ in a number of important ways:
-- The types of compute facilities or services or data services provides
+- The types of compute facilities, services, or data services provided
 - Physical limitations, such as storage capacity
 - Different governance arrangements or access control rules
-- Scale can be anything from a single network connected server up to a global virtual network spanning multiple data centres
+- Scale can be anything from a single network-connected server up to a global virtual network spanning multiple data centres
 
 
 ### References
@@ -135,7 +137,7 @@ It is possible for multiple venues to possess a copy of the same asset. This can
 
 References are possible in multiple formats:
 
-```
+```text
 // Covia protocol scheme:
 
 cdp:v/mycompany.analytics.venue-101
@@ -151,8 +153,8 @@ https://data.mycompany.com/cdp/api/v1/v/mycompany.analytics.venue-101
 // JSON reference:
 
 {
-  venue: "mycompany.analytics.venue-101",
-  asset: "0c1aee860be175d66152388a6513fd4fa11449c1612cbd04dca92ec92e3d0cca"
+  "venue": "mycompany.analytics.venue-101",
+  "asset": "0c1aee860be175d66152388a6513fd4fa11449c1612cbd04dca92ec92e3d0cca"
 }
 
 // DLFS Drive path
@@ -183,7 +185,7 @@ Agents SHOULD implement access control appropriate to the venues they represent.
 - Internal (authorised teams within organisations)
 - Restricted (no access to most assets except through highly controlled operations)
 
-Covia provides opens source reference implementations for agents, however any ecosystem participant is free to develop their own custom agents providing these follow the standard protocol.
+Covia provides open source reference implementations for agents, however any ecosystem participant is free to develop their own custom agents providing these follow the standard protocol.
 
 ### Drivers
 
@@ -198,7 +200,7 @@ Drivers MUST offer a set of standard functionality, most importantly:
 - Upload an asset (to a venue which authorises this)
 - Invoke a compute service
 
-Additional, drivers MAY offer additional functionality as extensions:
+Additionally, drivers MAY offer further functionality as extensions:
 - Ability to manage access control / governance for specific venues
 - Ability to create a temporary working venue for short term collaboration / development purposes
 - Advanced search capabilities
@@ -265,7 +267,7 @@ The protocol enables an open, peer-to-peer ecosystem of service providers offeri
 As such, the protocol is flexible and can support any business model chosen by participants. We anticipate:
 - Collaboration between trusted organisations on a contractual basis
 - Services offered publicly on a pay-as-you-go basis
-- Marketplaces of assets with licenses for sale
+- Marketplaces of assets with licences for sale
 - A wide variety of free data assets open to all
 
 It is possible to configure agents to allow access to any existing data assets via the Covia protocol, so that existing data ecosystems are opened up to Covia users in a standard, interoperable way. As such, the protocol serves as a "bridge" between different islands of public and private data. 
@@ -274,7 +276,7 @@ It is possible to configure agents to allow access to any existing data assets v
 
 The Covia roadmap is based around building interoperable components that implement the Covia protocol.
 
-Many of these will be made available as open source reference implementations, that anyone can user freely or customise for their project. Companies in the ecosystem are free to offer commercially supported versions of these or create their own solutions as long as they remain consistent with the open standard protocol.
+Many of these will be made available as open source reference implementations, that anyone can use freely or customise for their project. Companies in the ecosystem are free to offer commercially supported versions of these or create their own solutions as long as they remain consistent with the open standard protocol.
 
 ### Universal Protocol Toolbox
 
@@ -293,7 +295,7 @@ The driver libraries provide client support for all Covia protocol operations. I
 
 We will initially target three major language ecosystems widely used in the enterprise software / data / AI space:
 - Python
-- Javascript
+- JavaScript
 - Java
 
 #### Reference Agents
@@ -319,7 +321,7 @@ Key enterprise adapters will include:
 - SQL / ODBC databases
 - NoSQL databases
 - GPU / compute clusters
-- Enterprise Service Busses and middleware platforms
+- Enterprise Service Buses and middleware platforms
 - Enterprise application software (e.g. SAP)
 
 Similar to the reference agents, enterprise adapters offer the ability to customise access control rules. This may be used to offer an additional layer of security on top of the security implemented in the underlying enterprise systems.
@@ -365,7 +367,4 @@ This solution is based on combining several important technologies:
 - Locality-sensitive hashing (LSH)
 - Vector similarity search
 
-Decentralised vector database options can also be used directly with the Covia protocol, because database nodes are themselves Covia agents! So a vector similarity search can easily be included in a Covia based orchestration as part a larger AI process pipeline.
-
-
- 
+Decentralised vector database options can also be used directly with the Covia protocol, because database nodes are themselves Covia agents! So a vector similarity search can easily be included in a Covia-based orchestration as part of a larger AI process pipeline.

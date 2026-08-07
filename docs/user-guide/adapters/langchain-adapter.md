@@ -15,7 +15,7 @@ This adapter powers the Level 3 (LLM call) layer in the [agent architecture](/do
 | Operation | Provider | Default Model | API Key Secret |
 |-----------|----------|---------------|----------------|
 | `langchain:openai` | OpenAI | `gpt-5.4-mini` | `OPENAI_API_KEY` |
-| `langchain:anthropic` | Anthropic | `claude-sonnet-4-5` | `ANTHROPIC_API_KEY` |
+| `langchain:anthropic` | Anthropic | `claude-sonnet-4-6` | `ANTHROPIC_API_KEY` |
 | `langchain:ollama` | Ollama (local) | `qwen` | None required |
 | `langchain:xai` | xAI (Grok) | `grok-4` | `XAI_API_KEY` |
 
@@ -54,7 +54,7 @@ Keys are resolved from the caller's secret store at invocation time. A backend t
 {
   "operation": "v/ops/langchain/anthropic",
   "input": {
-    "model": "claude-sonnet-4-5",
+    "model": "claude-sonnet-4-6",
     "messages": [
       { "role": "system", "content": "You are a helpful assistant." },
       { "role": "user", "content": "Explain lattice technology in one paragraph." }

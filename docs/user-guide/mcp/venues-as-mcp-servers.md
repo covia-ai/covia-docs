@@ -8,7 +8,7 @@ Every Covia venue can function as an MCP (Model Context Protocol) server, automa
 
 ## Enabling MCP
 
-MCP is enabled by default on Covia venues. To explicitly configure it, include an `mcp` property in your venue configuration:
+The MCP endpoint registers when an `mcp` block is present in the venue configuration — the built-in default configuration (and the published Docker image) includes one, so a stock venue serves MCP out of the box. To configure it explicitly:
 
 ```json
 {
@@ -27,27 +27,28 @@ The MCP endpoint is available at `/mcp` on your venue:
 https://your-venue.example.com/mcp
 ```
 
-This endpoint supports the standard MCP protocol over HTTP/SSE transport.
+This endpoint implements the MCP **Streamable HTTP** transport: JSON-RPC over `POST /mcp`, an optional SSE stream via `GET /mcp` for server-to-client notifications, and `DELETE /mcp` to close a session (see the [REST API reference](../api/#mcp-endpoints)).
 
 ## Connecting AI Assistants
 
-### Claude Desktop
+### Claude (claude.ai and Claude Desktop)
 
-Add this to your Claude Desktop configuration file (`claude_desktop_config.json`):
+Remote venues are added as **custom connectors**: go to **Settings → Connectors → Add custom connector** and paste your venue's `/mcp` URL. Custom connectors require a public HTTPS endpoint — a `http://localhost:8080/mcp` venue won't work here. See the [Claude tutorial](../tutorials/claude-mcp) for a full walkthrough.
 
-```json
-{
-  "mcpServers": {
-    "my-venue": {
-      "url": "https://your-venue.example.com/mcp"
-    }
-  }
-}
+### Claude Code
+
+```bash
+claude mcp add --transport http my-venue https://your-venue.example.com/mcp
 ```
 
-### With Authentication
+For a venue that requires authentication, add a bearer token header:
 
-If your venue requires authentication, include the API key:
+```bash
+claude mcp add --transport http my-venue https://your-venue.example.com/mcp \
+  --header "Authorization: Bearer your-api-key"
+```
+
+### Clients using a generic MCP config file
 
 ```json
 {
@@ -62,9 +63,11 @@ If your venue requires authentication, include the API key:
 }
 ```
 
+(The `headers` block is only needed when the venue requires authentication.)
+
 ### Other MCP Clients
 
-Any MCP-compatible client can connect using the standard HTTP/SSE transport. Consult your client's documentation for configuration details.
+Any MCP client that supports the Streamable HTTP transport can connect. Consult your client's documentation for configuration details.
 
 ## How Operations Become Tools
 
@@ -109,7 +112,7 @@ Operations are discovered dynamically from the venue's adapter registries — an
 
 ```json
 {
-  "name": "web-search",
+  "name": "web_search",
   "description": "Search the web for information",
   "inputSchema": {
     "type": "object",
@@ -143,7 +146,7 @@ You can control which operations appear as MCP tools using the `operation.info` 
 {
   "name": "Internal Operation",
   "operation": {
-    "adapter": "internal",
+    "adapter": "http",
     "info": {
       "mcp": false
     }
@@ -185,9 +188,9 @@ When an AI assistant invokes a tool:
 AI Assistant                    Covia Venue
      |                               |
      |--- tools/list --------------->|
-     |<-- [web-search, ...] ---------|
+     |<-- [web_search, ...] ---------|
      |                               |
-     |--- tools/call(web-search) --->|
+     |--- tools/call(web_search) --->|
      |         {query: "AI news"}    |
      |                               |
      |<-- {results: [...]} ----------|
@@ -226,7 +229,7 @@ Review which operations should be exposed via MCP. Use the `"mcp": false` flag t
 
 ### Tool Design
 
-- **Clear Names**: Use descriptive, action-oriented names like `search-documents` rather than `doc_srch`
+- **Clear Names**: Name operations so the derived tool reads as an action — `search:documents` becomes `search_documents`, which beats `doc_srch`
 - **Helpful Descriptions**: Write descriptions that help AI understand when to use the tool
 - **Typed Parameters**: Use JSON Schema to fully describe parameters with types and descriptions
 

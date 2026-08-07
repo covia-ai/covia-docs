@@ -11,8 +11,10 @@ Operators remain fully in control of their own infrastructure, resources, and da
 ## In this guide
 
 - **[Venue Quick Start](./venue-start)** — get a venue running locally, via Docker, or from source, and point clients at it.
+- **[Configuration Reference](./configuration)** — every venue config key and its default.
 - **[Authentication](./auth)** — public access, OAuth login providers, and bearer/UCAN tokens.
 - **[Persistence](./persistence)** — how venue state is stored, the durability model, and recovery.
+- **[Embedded Venue](./embedded-venue)** — the loopback, single-owner deployment shape for bundling a venue inside an app.
 
 ## Related
 

@@ -111,6 +111,7 @@ agent_request agentId: "Alice"  input: { task: "Summarise the vendor records" } 
 ## What's Next
 
 - [Creating Agents](./creating-agents) — configuration, templates, and examples
+- [Sessions](./sessions) — conversation threads and the run loop
 - [Agent Operations](./operations) — full lifecycle reference
 - [LLM Agent](./llm-agent) — simple conversational agents
 - [Goal Tree](./goal-tree) — hierarchical goal decomposition
@@ -119,6 +120,5 @@ agent_request agentId: "Alice"  input: { task: "Summarise the vendor records" } 
 
 ## Related
 
-- [COG-004: Agents](/docs/protocol/cogs/COG-004) — Protocol specification
-- [COG-011: Agent Loops](/docs/protocol/cogs/COG-011) — Loop semantics
-- [COG-012: Orchestrations](/docs/protocol/cogs/COG-012) — Multi-agent orchestration
+- [COG-11: Agent Lifecycle](/docs/protocol/cogs/COG-011) — Protocol specification for agents
+- [COG-12: Orchestrations](/docs/protocol/cogs/COG-012) — Multi-agent orchestration

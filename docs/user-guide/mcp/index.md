@@ -8,6 +8,7 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open 
 
 1. **Venues as MCP Servers** - Every Covia venue can act as an MCP server, exposing its operations as tools that AI assistants can use
 2. **MCP Tools via the Grid** - Call any MCP server's tools as Grid operations, enabling orchestration, auditing, and federated access
+3. **Bridged MCP tools** - Mirror or curate remote MCP tools into your venue's operation catalog, where they behave exactly like native operations ([bridging](./calling-mcp-tools#bridging-mcp-tools-into-the-catalog))
 
 ## Why MCP + Covia?
 
@@ -21,7 +22,7 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open 
 
 - **Zero Configuration**: Operations you create are automatically available as MCP tools
 - **Consistent Experience**: Your operations work with any MCP-compatible AI assistant
-- **Secure Access**: Leverage Covia's authentication and authorization for tool access
+- **Secure Access**: Leverage Covia's authentication and authorisation for tool access
 
 ### For Enterprise
 
@@ -33,7 +34,7 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open 
 
 ### Connect AI Assistant to a Venue
 
-Add this to your MCP client configuration (e.g., Claude Desktop):
+For claude.ai / Claude Desktop, add the venue as a custom connector (**Settings → Connectors → Add custom connector**, paste `https://venue-3.covia.ai/mcp`). For clients that use a generic MCP config file:
 
 ```json
 {
@@ -45,7 +46,7 @@ Add this to your MCP client configuration (e.g., Claude Desktop):
 }
 ```
 
-Your AI assistant can now use all operations on that venue as tools.
+Your AI assistant can now use all operations on that venue as tools. See the [Claude tutorial](../tutorials/claude-mcp) for a step-by-step walkthrough.
 
 ### Call MCP Tools via the Grid
 
@@ -67,5 +68,7 @@ Use the Grid to invoke any MCP server's tools:
 ## Documentation
 
 - [Venues as MCP Servers](./venues-as-mcp-servers) - How to expose your venue's operations via MCP
-- [Calling MCP Tools](./calling-mcp-tools) - How to invoke external MCP tools through the Grid
+- [Calling MCP Tools](./calling-mcp-tools) - How to invoke external MCP tools through the Grid, and bridge them into the catalog
+- [Claude tutorial](../tutorials/claude-mcp) - Give Claude your own tools in five minutes
+- [MCP Adapter](../adapters/covia-with-mcp) - The adapter behind outbound MCP calls
 - [Agentic Economics](./agentic-economics) - AI agents as economic participants using Convex
