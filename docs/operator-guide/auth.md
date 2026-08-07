@@ -22,6 +22,9 @@ The `auth.public.enabled` setting controls whether unauthenticated requests are 
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `auth.public.enabled` | `true` | Allow unauthenticated access to API endpoints |
+| `auth.public.caps` | *(unset — secure read-only)* | The **public capability ceiling**: what anonymous callers may do. Unset grants read-only access (no `invoke` or mutating abilities); `"unrestricted"` removes the ceiling; an explicit capability array sets exactly that scope. See [COG-10](../protocol/cogs/COG-010). |
+
+Public access is therefore not all-or-nothing: even with `enabled: true`, anonymous callers are bounded by the capability ceiling, and widening it (e.g. to allow anonymous invocation) is a deliberate configuration step.
 
 When public access is disabled and a request arrives without a valid `Authorization: Bearer <token>` header, the venue returns `401 Authentication required`.
 
