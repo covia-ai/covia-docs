@@ -11,7 +11,7 @@ Work reaches an agent through a **session** — a persistent conversation thread
 
 ## Running Agents
 
-### agent:request {#agent-request}
+### agent:request {/* #agent-request */}
 
 Send a tracked task to an agent. The task is recorded as a Job. This is the primary tool for agent delegation. It is **best-effort synchronous**: it waits up to `timeout` ms for the agent to finish.
 
@@ -42,7 +42,7 @@ Send a tracked task to an agent. The task is recorded as a Job. This is the prim
 
 Poll for the result with `grid:jobResult` (`grid_job_result`), passing that `id` and a `timeout`. The response always carries the `sessionId` the task belonged to.
 
-### agent:chat {#agent-chat}
+### agent:chat {/* #agent-chat */}
 
 Send a message and synchronously await the agent's next response on the session. The A2A `SendMessage` analogue — use it for conversational interactions where you want a reply.
 
@@ -67,7 +67,7 @@ Send a message and synchronously await the agent's next response on the session.
 
 Only one chat may be in flight per session — concurrent calls on the same session are rejected.
 
-### agent:message {#agent-message}
+### agent:message {/* #agent-message */}
 
 Send a fire-and-forget notification. The message is delivered into the session and consumed on the agent's next run — **no agent response is returned** (the call acknowledges with `{ "delivered": true }`) and no Job is created.
 
@@ -256,7 +256,7 @@ List all agents owned by the caller.
 |-----------|------|---------|-------------|
 | `includeTerminated` | boolean | `false` | Include terminated agents |
 
-### agent:context {#agent-context}
+### agent:context {/* #agent-context */}
 
 Inspect the exact LLM context an agent would receive — the complete Level 3 input as assembled by the context builder. Requires the agent's transition adapter to support inspection (the built-in adapters do).
 
