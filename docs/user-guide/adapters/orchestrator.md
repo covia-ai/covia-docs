@@ -102,6 +102,7 @@ Resolution is recursive — maps and arrays within step inputs are resolved recu
 | `input` | object | No | Input with resolution expressions |
 | `venue` | string | No | Remote venue URL or DID (omit for local) |
 | `strict` | boolean | No | Validate output against operation schema |
+| `foreach` | object | No | Run the step once per element of a collection — see [Fan out over a collection](#fan-out-over-a-collection-foreach) |
 
 ## Result Composition
 
@@ -123,6 +124,27 @@ The `result` field defines what the orchestration returns, using the same resolu
 - Independent steps continue running even if a sibling fails (unless global strict mode is set)
 
 ## Patterns
+
+### Fan out over a collection (foreach)
+
+A step with a `foreach` object runs its operation once per element, as concurrent child jobs, and returns an ordered array of the per-element outputs:
+
+```json
+"steps": [
+  { "op": "v/ops/covia/read", "input": { "path": ["const", "w/invoices"] } },
+  {
+    "op": "v/ops/agent/request",
+    "foreach": { "in": [0, "value"], "maxConcurrency": 4 },
+    "input": {
+      "agentId": ["const", "Classifier"],
+      "input": { "invoice": ["item"], "position": ["index"] },
+      "timeout": ["const", 60000]
+    }
+  }
+]
+```
+
+Inside a foreach step's `input`, `["item"]` binds the current element (`["item", "field"]` for a path within it) and `["index"]` its zero-based position. Arrays iterate element-wise; maps iterate as `[key, value]` pairs. Output order matches source order regardless of completion order. The first failing element fails the step (in-flight elements finish), and the venue caps collection size and concurrency — see [COG-12 § Foreach Steps](/docs/protocol/cogs/COG-012#foreach-steps) for the full semantics.
 
 ### Agent Pipeline
 

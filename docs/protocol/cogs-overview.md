@@ -17,6 +17,8 @@ COGs are the formal technical specifications that define:
 
 ## Available COGs
 
+COG numbers identify topics, not chronology: numbers are assigned when a topic enters the process, and the specifications are written and revised at different times — a lower number does not imply an earlier or more mature document.
+
 ### Core Protocol Specifications
 
 - **[COG-1](./cogs/COG-001)** - Architecture
