@@ -14,7 +14,7 @@ Authentication answers *who you are* (see the [operator auth guide](../operator-
 A capability is a `{with, can}` pair:
 
 - **`with`** — the resource, as a path or URI: a lattice path like `o/shared/`, `w/reports/`, or `dlfs/notes/` (DLFS drives are a DID-scoped namespace alongside `w/`; the legacy `dlfs://notes/` scheme form is still accepted for your *own* drives), or a typed resource such as `file://workspace/`.
-- **`can`** — the ability: `crud/read`, `crud/write`, `crud/delete`, the umbrella `crud` (all three), or `*` for all.
+- **`can`** — the ability, a hierarchical path. The common family is `crud/read`, `crud/write`, `crud/delete` (with the umbrella `crud` covering all three); further families govern specific surfaces — e.g. `agent/create`, `asset/read`, `mcp/manage` (managing bridged MCP servers), `grant/…` (issuing grants) — and `*` covers everything.
 
 ```json
 { "with": "o/shared/", "can": "crud/read" }

@@ -4,6 +4,10 @@ sidebar_position: 4
 
 # Agentic Economics
 
+:::info Forward-looking
+This page mixes shipped mechanics (the `convex_query` / `convex_transact` tools) with a forward-looking vision. Code samples outside the tool invocations are illustrative sketches, not deployable examples.
+:::
+
 As AI agents become increasingly capable, they are evolving from passive tools into active economic participants. The combination of Covia's Grid infrastructure and the Convex blockchain creates a foundation for **agentic economics** - a paradigm where AI agents can engage in value exchange, manage assets, and even create new economic instruments on behalf of their human operators.
 
 ## The Vision

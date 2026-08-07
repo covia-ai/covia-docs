@@ -41,7 +41,7 @@ The `method` parameter defaults to POST but can be set to `PUT`, `DELETE`, or `P
 
 ### Bearer authentication via a secret
 
-To call an API that needs a bearer token without putting the token in plaintext, set `bearerSecret` to a secret reference. The venue resolves it from the caller's [secret store](../api/#secrets) at invocation time and sends it as `Authorization: Bearer <token>` — the token never appears in the operation input or the job record:
+To call an API that needs a bearer token without putting the token in plaintext, set `bearerSecret` to a secret reference. The venue resolves it from the caller's [secret store](./secret) at invocation time and sends it as `Authorization: Bearer <token>` — the token never appears in the operation input or the job record:
 
 ```json
 {

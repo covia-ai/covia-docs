@@ -21,6 +21,7 @@ Adapters are how a venue gets its capabilities. Each adapter contributes a famil
 | [File](./file) | `file:*` | Root-jailed local filesystem access |
 | [DLFS](./dlfs) | `dlfs:*` | Decentralised, user-signed file system (WebDAV) |
 | [Vault](./vault) | `vault:*` | Simplified, fixed-drive file access |
+| [Secrets](./secret) | `secret:*` | Per-user encrypted secret store; `s/NAME` references |
 | [Scheduler](./scheduler) | `scheduler:*` | Run operations later; deferred and agent wakes |
 | [Covia (Venue)](./venue-adapter) | `covia:*` | CRUD over the venue's lattice state |
 | [JSON](./json) | `json:*` | Pure JSON data manipulation (merge, select, …) |

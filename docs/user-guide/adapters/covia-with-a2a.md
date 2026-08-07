@@ -30,7 +30,7 @@ Responses use `Content-Type: application/a2a+json`. The implemented methods are:
 
 ### Agent card
 
-`GET /.well-known/agent-card.json` returns the venue's card — `name`, `description`, `version`, `provider`, `capabilities` (the server advertises `sendMessage`), a single JSON-RPC interface at `{baseUrl}/a2a` (protocol version `1.0`), and default input/output modes (`text/plain`, `application/json`). The `name`, `description`, provider, and version come from the venue's agent-info configuration.
+`GET /.well-known/agent-card.json` returns the venue's card — `name`, `description`, `version`, `provider`, `capabilities` (the venue advertises `streaming: true` — gating the streaming methods — and state-transition history), a single JSON-RPC interface at `{baseUrl}/a2a` (protocol version `1.0`), and default input/output modes (`text/plain`, `application/json`). The `name`, `description`, provider, and version come from the venue's agent-info configuration.
 
 ### How inbound messages map
 

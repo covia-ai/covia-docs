@@ -63,6 +63,7 @@ See [Authentication](./auth) for OAuth setup, token types, and the access model.
 | `a2a` | off unless present | Agent-to-Agent protocol config (`a2a.defaultChatOp`, `a2a.agentInfo`). Endpoints register only when this block is present. |
 | `webdav.enabled` | `false` | Mount DLFS over WebDAV at `/dlfs/`. |
 | `adapters.<name>` | — | Per-adapter settings, keyed by adapter name (e.g. `adapters.agent.sessionDelete`, default `true`). |
+| `file.roots` | — | Named filesystem roots for the [File adapter](../user-guide/adapters/file), e.g. `{"workspace": "/srv/agent-workspace", "data": {"path": "/srv/data", "readOnly": true}}`. Without roots the adapter refuses all access. |
 | `enablePrivateJobs` | `false` | Accept `private: true` (memory-only) jobs. A private request against a venue without this fails. |
 | `defaultTransitionOp` | `v/ops/llmagent/chat` | Default agent transition operation when an agent config omits `operation`. |
 | `defaultLlmOperation` | `v/ops/langchain/openai` | Default level-3 LLM operation for agents. |

@@ -25,20 +25,20 @@ npm install @covia/covia-sdk
 import { Grid, BearerAuth, Ed25519Auth } from "@covia/covia-sdk";
 
 // Connect using a URL
-const venue = await Grid.connect("https://venue-3.covia.ai");
+const venueByUrl = await Grid.connect("https://venue-3.covia.ai");
 
 // Connect using a DID
-const venue = await Grid.connect("did:web:venue-3.covia.ai");
+const venueByDid = await Grid.connect("did:web:venue-3.covia.ai");
 
 // With bearer token
-const venue = await Grid.connect("https://venue-3.covia.ai",
+const venueWithToken = await Grid.connect("https://venue-3.covia.ai",
   new BearerAuth("your-token")
 );
 
 // With Ed25519 key pair (self-issued JWT)
 const auth = Ed25519Auth.generate();
 console.log(`Your DID: ${auth.getDID()}`);
-const venue = await Grid.connect("https://venue-3.covia.ai", auth);
+const venueWithKey = await Grid.connect("https://venue-3.covia.ai", auth);
 ```
 
 `Grid.connect()` caches venue connections — calling it twice with the same ID returns the same instance.
@@ -284,7 +284,7 @@ console.log(auth.getDID());        // did:key:z6Mk...
 console.log(auth.getPublicKey());  // Uint8Array
 
 // Or from an existing private key (hex)
-const auth = Ed25519Auth.fromHex("abcdef0123456789...");
+const authFromKey = Ed25519Auth.fromHex("abcdef0123456789...");
 
 const venue = await Grid.connect("https://venue.covia.ai", auth);
 ```

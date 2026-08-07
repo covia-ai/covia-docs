@@ -39,7 +39,7 @@ Calling an MCP server *through* a venue, rather than wiring it into your client 
 
 - **Plug-and-play orchestration** — compose MCP tools with other grid operations, agents, and [orchestrations](./orchestrator).
 - **A system of record** — every call is a [Job](../api/) with an auditable record on your venue.
-- **Controlled credentials** — API keys live in the venue's [secret store](../api/#secrets), not in the client.
+- **Controlled credentials** — API keys live in the venue's [secret store](./secret), not in the client.
 
 ## Related
 

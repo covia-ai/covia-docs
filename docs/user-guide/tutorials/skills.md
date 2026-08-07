@@ -159,7 +159,7 @@ Three fields carry the whole thing:
 |-------|--------------|
 | `description` | The index line. **What it does, and when to load it** — this is what an agent chooses on, so write it for a reader mid-task, not for a catalogue. |
 | `content` | The body. `inline` for short bodies like this one; larger or shared bodies live in a stored asset (step 5) or a file binding. |
-| `skill.tools` | Operations added to the palette while loaded. Full catalogue paths. Curate the minimum the skill actually teaches. |
+| `skill.tools` | Operations added to the palette while loaded. Full catalog paths. Curate the minimum the skill actually teaches. |
 
 Verify it before anyone loads it:
 

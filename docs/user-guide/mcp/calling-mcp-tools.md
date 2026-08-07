@@ -74,17 +74,16 @@ Call a specific tool on an MCP server:
 }
 ```
 
-**Response:**
+**Response** — the job output is the tool's result, unwrapped:
+
+- If the server returns **structured content** (a tool with an output schema), the job output is that structured value, verbatim — e.g. `{"results": [...]}` for a search tool.
+- Otherwise the output is the tool's **text content**: a single string for a one-block result, or an array of strings for a multi-block result.
+
 ```json
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "Here are the latest AI news articles..."
-    }
-  ]
-}
+"Here are the latest AI news articles..."
 ```
+
+There is no `content` wrapper — dereference the output directly (`[0]` for the text of a text-only tool, `[0, "results", ...]` for a structured one). A tool that reports an error fails the job with the error text (see [Error Handling](#error-handling)).
 
 ## Bridging MCP Tools into the Catalog
 
@@ -319,7 +318,7 @@ Combine MCP tool calls with other operations in orchestrations:
         "op": "v/ops/langchain/openai",
         "name": "Summarise Results",
         "input": {
-          "prompt": ["concat", "Summarise the following search results:\n", [0, "content", 0, "text"]]
+          "prompt": ["concat", "Summarise the following search results:\n", [0]]
         }
       }
     ],
@@ -398,7 +397,7 @@ All MCP tool invocations create Jobs in your venue, providing:
 
 ## Example: Multi-Tool Workflow
 
-This example shows a complete workflow using multiple MCP tools:
+This example shows a complete workflow using multiple MCP tools. It assumes structured-output servers (the search tool returns `{"results": [...]}` and the fetch tool `{"content": ...}`); against text-only servers, dereference the whole output with `[N]` instead:
 
 ```json
 {

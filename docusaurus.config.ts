@@ -84,6 +84,13 @@ const config: Config = {
             from: ['/'],
             to: '/docs/overview/',
           },
+          // Retired auto-generated category pages: the sidebar categories now
+          // open the hand-written section overviews directly.
+          { from: ['/docs/category/mcp-integration'], to: '/docs/user-guide/mcp/' },
+          { from: ['/docs/category/api-reference'], to: '/docs/user-guide/api/' },
+          { from: ['/docs/category/sdk'], to: '/docs/user-guide/sdk/' },
+          { from: ['/docs/category/agents'], to: '/docs/user-guide/agents/' },
+          { from: ['/docs/category/adapters'], to: '/docs/user-guide/adapters/' },
         ],
       },
     ],

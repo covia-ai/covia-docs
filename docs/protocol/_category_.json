@@ -1,8 +1,4 @@
 {
   "label": "Protocol",
-  "position": 3,
-  "link": {
-    "type": "generated-index",
-    "description": "Learn about Covia's protocol architecture, specifications, and governance model."
-  }
-} 
+  "position": 3
+}

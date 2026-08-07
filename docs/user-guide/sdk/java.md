@@ -47,10 +47,10 @@ import covia.grid.Grid;
 import covia.grid.Venue;
 
 // Connect using a DID
-Venue venue = Grid.connect("did:web:venue-3.covia.ai");
+Venue venueByDid = Grid.connect("did:web:venue-3.covia.ai");
 
 // Or connect directly to a URL
-Venue venue = Grid.connect("https://venue-3.covia.ai");
+Venue venueByUrl = Grid.connect("https://venue-3.covia.ai");
 ```
 
 ### Discovering Assets
@@ -208,19 +208,19 @@ venue.setTimeout(Duration.ofSeconds(30).toMillis());
 import covia.grid.VenueAuth;
 
 // Bearer token
-Venue venue = Grid.connect("did:web:venue-3.covia.ai",
+Venue withToken = Grid.connect("did:web:venue-3.covia.ai",
     VenueAuth.bearer("your-api-token"));
 
 // Ed25519 key pair (self-issued JWT)
-Venue venue = Grid.connect("did:web:venue-3.covia.ai",
+Venue withKey = Grid.connect("did:web:venue-3.covia.ai",
     VenueAuth.keyPair(keyPair));
 
 // Local venue (no auth needed)
-Venue venue = Grid.connect("http://localhost:8080",
+Venue local = Grid.connect("http://localhost:8080",
     VenueAuth.local());
 
 // No authentication
-Venue venue = Grid.connect("https://public-venue.covia.ai",
+Venue anonymous = Grid.connect("https://public-venue.covia.ai",
     VenueAuth.none());
 ```
 
