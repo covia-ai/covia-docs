@@ -17,19 +17,16 @@ The Java SDK is the reference implementation. Each language page carries full se
 
 ## The shape of the API
 
-Connect once — `Grid.connect(urlOrDid)` — and every operation in the venue's catalog is a call away. One line gives your application durable memory on a venue you control:
+Connect once — `Grid.connect(urlOrDid)` — and every operation in the venue's catalog is a call away. A single call gives your application durable memory on a venue you control:
 
 ```python
-venue.run("v/ops/covia/write", {"path": "w/memory/preferences", "value": "British English, concise replies"})
+venue.run("v/ops/covia/write", {
+    "path": "w/memory/preferences",
+    "value": "British English, concise replies",
+})
 ```
 
-```typescript
-await venue.operations.run("v/ops/covia/write", { path: "w/memory/preferences", value: "British English, concise replies" });
-```
-
-```java
-venue.run("v/ops/covia/write", Map.of("path", "w/memory/preferences", "value", "British English, concise replies"));
-```
+The call looks the same in every language — see the language pages above for the exact idiom.
 
 That value now lives in the venue's governed workspace: it survives restarts, any authorised client or agent can read it back, and the write itself is recorded as an auditable [job](../user-guide/api/). Because operations are self-describing, the same pattern covers everything a venue can do — LLM calls, agent tasks, scheduled work, federated invocations on remote venues — with no per-integration client to generate.
 
