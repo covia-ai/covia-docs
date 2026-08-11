@@ -15,7 +15,7 @@ SDKs are available for major language ecosystems.
 
 | Language | Package | GitHub | Status |
 | -------- | ------- | ------ | ------ |
-| [Java](./java) | `covia-core` | [covia-ai/covia](https://github.com/covia-ai/covia) | Build from source |
+| [Java](./java) | [`ai.covia:covia-core`](https://central.sonatype.com/artifact/ai.covia/covia-core) | [covia-ai/covia](https://github.com/covia-ai/covia) | Available |
 | [Python](./python) | `covia` | [covia-ai/covia-sdk-py](https://github.com/covia-ai/covia-sdk-py) | Available |
 | [TypeScript](./typescript) | `@covia/covia-sdk` | [covia-ai/covia-sdk](https://github.com/covia-ai/covia-sdk) | Available |
 | [Rust](./rust) | — | — | Planned |
