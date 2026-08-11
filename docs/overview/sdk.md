@@ -17,21 +17,21 @@ The Java SDK is the reference implementation. Each language page carries full se
 
 ## The shape of the API
 
-Connect once — `Grid.connect(urlOrDid)` — and every operation in the venue's catalog is a call away:
+Connect once — `Grid.connect(urlOrDid)` — and every operation in the venue's catalog is a call away. One line gives your application durable memory on a venue you control:
 
 ```python
-result = venue.run("v/ops/schema/infer", {"value": {"name": "Ada", "age": 36}})
+venue.run("v/ops/covia/write", {"path": "w/memory/preferences", "value": "British English, concise replies"})
 ```
 
 ```typescript
-const result = await venue.operations.run("v/ops/schema/infer", { value: { name: "Ada", age: 36 } });
+await venue.operations.run("v/ops/covia/write", { path: "w/memory/preferences", value: "British English, concise replies" });
 ```
 
 ```java
-Object result = venue.run("v/ops/schema/infer", Map.of("value", Map.of("name", "Ada", "age", 36)));
+venue.run("v/ops/covia/write", Map.of("path", "w/memory/preferences", "value", "British English, concise replies"));
 ```
 
-Because operations are self-describing, this one pattern covers everything a venue can do — LLM calls, lattice state, agent tasks, federated invocations on remote venues — with no per-integration client to generate. Every invocation returns an auditable [job](../user-guide/api/), not just a value.
+That value now lives in the venue's governed workspace: it survives restarts, any authorised client or agent can read it back, and the write itself is recorded as an auditable [job](../user-guide/api/). Because operations are self-describing, the same pattern covers everything a venue can do — LLM calls, agent tasks, scheduled work, federated invocations on remote venues — with no per-integration client to generate.
 
 No SDK for your language? Every venue speaks the same [REST API](../user-guide/api/); the SDKs are ergonomic bindings over it, so anything they do, any HTTP client can do.
 
