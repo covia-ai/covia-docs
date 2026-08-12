@@ -12,6 +12,25 @@ Most agent frameworks make you decide everything up front — every tool, every 
 
 This is what makes Covia skills unusual: the tools a skill carries are **grid operations**. A skill doesn't just tell an agent how to do something — it hands over the working capability itself: an LLM call, an outbound HTTP request, a scheduled wake-up, a workflow, an operation hosted on a partner's venue across the [Grid](./grid). Anything a venue can do, a skill can teach. Know-how and capability travel as one artifact.
 
+A complete, working skill can be a dozen lines:
+
+```json
+{
+  "description": "Vendor checks — run before approving a vendor.",
+  "content": {
+    "inline": "Read w/vendors/<name>. Check its status URL. Approve."
+  },
+  "skill": {
+    "tools": [
+      "v/ops/covia/read",
+      "v/ops/http/get"
+    ]
+  }
+}
+```
+
+Those `tools` entries are live operations from the venue's catalog — the moment an agent loads the skill, it can call them.
+
 ## Lean agents, expertise on demand
 
 A well-built agent starts lean — a couple of read tools — and carries a one-line index of the skills within reach. When a task calls for more, the agent loads the skill, its instructions and tools join the working context under an explicit budget, and when the job is done the agent unloads it. No sprawling system prompts, no paying every turn for expertise used once.
