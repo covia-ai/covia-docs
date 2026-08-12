@@ -1,6 +1,6 @@
 ---
 title: Persistence
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Persistence
@@ -42,7 +42,13 @@ If `store` is **omitted entirely**, the venue falls back to an ephemeral temp st
 
 ### Venue Identity
 
-When using a persistent file store and no explicit `seed` is configured, the venue auto-generates an Ed25519 keypair and saves it to `venue.key` in the same directory as the Etch store file. On restart with the same store path, the same venue DID is restored — identity is stable across restarts.
+The venue key pair resolves in a strict order: an explicit `seed` → a configured `keystore` (PKCS12) → a `venue.key` file beside a persistent store (auto-generated with owner-only `0600` permissions if absent) → freshly generated. On restart with the same store path, the same venue DID is restored — identity is stable across restarts.
+
+Two deliberate edges: an **ephemeral** (`temp`/`memory`) venue without `seed` or `keystore` gets a new DID every start by design, and reopening an existing store with a key that owns none of its state is a **startup error naming the store's real owner** — a wrong key can never silently create a fresh empty venue and orphan your data.
+
+### Encrypted Stores
+
+The Etch store can be an **encrypted Etch v3 store** (`etch` config block) — everything inside it (lattice state, agents, secrets, DLFS drives) is then encrypted at rest, with fail-closed key handling. The store key and the identity `seed` are independent secrets: rotate and guard them separately, and with an encrypted store prefer `seed` or `keystore` over a plaintext `venue.key` sitting beside it (the venue warns about that combination). One caveat: `storage.content: "file"` writes asset content bytes *outside* the store as plaintext files. See [Security](./security#encrypt-the-store) for the full treatment.
 
 ## Shutdown
 
