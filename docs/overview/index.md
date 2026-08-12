@@ -12,7 +12,7 @@ sidebar_position: 1
 
 ## What is Covia?
 
-Covia is an open-source runtime for **federated AI orchestration**. You run a **venue** — a node on the grid that hosts *operations* (executable, self-describing capabilities), runs *agents*, and keeps an immutable, auditable record of every job. Venues federate: a workflow on one venue can invoke an operation on a partner's venue, in another cloud or jurisdiction, while the data stays where it is governed and only results cross the boundary.
+Covia is an open-source runtime for **federated AI orchestration**. The grid consists of **venues** — nodes on the grid that host *operations* (executable, self-describing capabilities), manage context and state for *agents*, and keep an immutable, auditable record of every job. Venues federate: a workflow on one venue can invoke an operation on a partner's venue, in another cloud or jurisdiction, while the data stays where it is governed and only results cross the boundary.
 
 It is built on the [Convex](https://docs.convex.world/docs/overview/lattice) lattice platform for decentralised, cryptographically verifiable state — and it speaks the protocols the AI ecosystem already uses: **REST**, **MCP**, **A2A**, and **DID**. If you think of HTTP as the protocol that made documents interoperable, Covia is the layer that makes **AI capability** interoperable, verifiable, and governable across trust boundaries.
 
@@ -46,14 +46,14 @@ docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest
 
 AI capability is unevenly distributed by nature: the best model sits in one cloud, the data that makes it valuable belongs to another organisation, and the domain expertise lives in a third. Today there are two ways to combine them — **centralise** (hand your data and agency to someone else's platform) or **integrate** (build N² brittle point-to-point connections). Neither survives contact with real governance: regulated data can't leave, audit trails can't be reconstructed from glue code, and every new partner restarts the integration project.
 
-Covia's bet is that the missing piece is **infrastructure, not another framework**: a common runtime where any AI capability can be published, discovered, invoked, and audited across organisational boundaries — with control retained, always, by the party that owns each resource.
+Covia's view is that the missing piece is **infrastructure, not another framework**: a common runtime where any AI capability can be published, discovered, invoked, and audited across organisational boundaries — with control retained, always, by the party that owns each resource.
 
 ## How it works — and what's different
 
 | Principle | What it means |
 |---|---|
 | **Sovereign by construction** | Each [venue](./venues) is operated independently with its own identity (DID), [authentication](../operator-guide/auth), and policy. Federation never requires surrendering control of data or infrastructure. |
-| **Self-describing operations** | Every capability carries JSON Schema in/out and is discoverable — by developers *and* by agents. One integration surface for humans and machines. |
+| **Self-describing operations** | Every capability carries discoverable metadata — for developers *and* agents. One integration surface for humans and machines. |
 | **Audit-grade execution** | Every invocation is a [job](../user-guide/api/) with an immutable, queryable record. Compliance is a property of the runtime, not an afterthought. |
 | **Verifiable state** | Assets are content-addressed; venue state lives on a [CRDT lattice](https://docs.convex.world/docs/overview/lattice) that merges deterministically — no central coordinator, no consensus bottleneck. |
 | **Capability security** | Authorisation follows the [UCAN model](../user-guide/capabilities): signed, attenuable grants enforced on every call. Agents run under least privilege by default. |
