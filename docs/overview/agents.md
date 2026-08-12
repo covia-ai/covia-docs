@@ -22,7 +22,7 @@ Every operation in a venue's catalog is a potential tool. Operations are self-de
 
 A **skill** is a named bundle of instructions, context, and tools that an agent loads on demand. Instead of pinning every procedure into the configuration and paying for it on every turn, a well-built agent starts lean and carries a one-line index of skills it can acquire when a task needs them (`skill_load`). Skills are ordinary assets — content-addressed and portable, so you can write one in your workspace and hand it to any agent on any venue. Loading a skill grants no authority: its tools are still capability-checked like any other.
 
-→ [Teach an Agent a New Skill](../user-guide/tutorials/skills) · [Skills reference](../user-guide/agents/tools-and-context#skills) · [COG-18](../protocol/cogs/COG-018)
+→ [Skills in Covia](./skills) · [Teach an Agent a New Skill](../user-guide/tutorials/skills) · [COG-18](../protocol/cogs/COG-018)
 
 ### Context
 

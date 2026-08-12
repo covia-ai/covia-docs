@@ -22,7 +22,7 @@ Read and write access are governed by [UCAN capabilities](../user-guide/capabili
 
 ## Engineered for LLMs
 
-For hosted agents the layer goes further: context is assembled fresh every turn under explicit budgets, agents load and unload exactly what a task needs, and [skills](../user-guide/tutorials/skills) bundle context with instructions and tools for expertise on demand. See [Agents](./agents) for the full suite.
+For hosted agents the layer goes further: context is assembled fresh every turn under explicit budgets, agents load and unload exactly what a task needs, and [skills](./skills) bundle context with instructions and tools for expertise on demand. See [Agents](./agents) for the full suite.
 
 ## Go deeper
 
