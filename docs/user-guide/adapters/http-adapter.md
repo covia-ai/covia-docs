@@ -6,7 +6,7 @@ sidebar_label: HTTP
 
 # HTTP Adapter
 
-The HTTP adapter makes outbound HTTP requests to external APIs and web services, with built-in SSRF protection.
+Agents and workflows constantly need the outside world — REST APIs, webhooks, data feeds — but an unguarded network hole is the classic way an agent platform gets burned. The HTTP adapter provides outbound HTTP as a governed operation: built-in SSRF protection, capability checks on every call, and a job record for every request that leaves the venue.
 
 ## Operations
 

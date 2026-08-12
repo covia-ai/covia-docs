@@ -5,7 +5,7 @@ sidebar_label: JVM
 
 # JVM Adapter and Venue Modules
 
-The JVM adapter ships a few pure in-process utility operations — `v/ops/jvm/string-concat`, `v/ops/jvm/url-encode`, `v/ops/jvm/url-decode` — handy glue for orchestrations:
+Sometimes the capability you need is code you already have — and it deserves the same catalog entry, capability checks, and audit trail as everything else. That is what the JVM story delivers, at two levels: this adapter ships a few pure in-process utility operations — `v/ops/jvm/string-concat`, `v/ops/jvm/url-encode`, `v/ops/jvm/url-decode` — as orchestration glue:
 
 ```json
 {

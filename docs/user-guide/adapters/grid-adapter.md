@@ -6,7 +6,7 @@ sidebar_label: Grid
 
 # Grid Adapter
 
-The Grid adapter enables distributed operation execution across the Covia network. Operations can run locally or on remote venues — the interface is the same either way.
+The best model, the governed dataset, and the domain expert's operation rarely all live on *your* venue — that is the whole point of a grid. The Grid adapter lets workflows and agents use capability wherever it lives: operations run locally or on remote venues through exactly the same interface, while each party's data stays under its own governance and only results cross the boundary.
 
 ## Operations
 

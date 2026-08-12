@@ -6,7 +6,7 @@ sidebar_label: Covia (Venue)
 
 # Covia Adapter
 
-The Covia adapter provides workspace CRUD, data inspection, and lattice access. These are the core operations for reading and writing data on a venue.
+Everything on a venue — agent memory, workflow state, shared records, the operation catalog itself — ultimately lives as lattice state, and this is the adapter that reads and writes it. The Covia adapter provides workspace CRUD, data inspection, and lattice access: the substrate that users, agents, and workflows collaborate through, one structured path at a time.
 
 ## Workspace Operations
 

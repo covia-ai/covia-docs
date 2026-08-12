@@ -5,7 +5,7 @@ sidebar_label: Skills
 
 # Skills Adapter
 
-The skills adapter is the read surface for [skills](../agents/tools-and-context#skills) — named bundles of instructions, context, and tools that agents load on demand. It exposes a single operation, `v/ops/skills`, dispatched by a `command` field, so it costs one tool definition in an agent's palette rather than two.
+Agents shouldn't need every procedure configured up front — they should find expertise at the moment a task calls for it. The skills adapter is how they do: the read surface for [skills](../agents/tools-and-context#skills), the named bundles of instructions, context, and tools that agents load on demand. It exposes a single operation, `v/ops/skills`, dispatched by a `command` field, so it costs one tool definition in an agent's palette rather than two.
 
 It is deliberately read-only: skills are authored with the ordinary write surfaces — [`covia:write`](./venue-adapter) for workspace skills, [`asset:store`](./asset) for immutable published ones. The same resolution logic backs the agent runtime's skills index and `skill_load` tool, so what you see here is exactly what a loading agent receives.
 

@@ -5,7 +5,7 @@ sidebar_label: Convex
 
 # Convex Adapter
 
-The Convex adapter connects a venue to the [Convex network](https://docs.convex.world/) — the decentralised lattice technology Covia itself is built on. `convex:query` runs read-only Convex Lisp against a peer; `convex:transact` submits signed transactions. Agents and workflows get verifiable, decentralised state and settlement as ordinary grid operations.
+Sometimes agents need shared state that no single party controls — balances, registries, commitments between organisations that don't trust each other's databases. The Convex adapter provides it by connecting the venue to the [Convex network](https://docs.convex.world/) — the decentralised lattice technology Covia itself is built on. `convex:query` runs read-only Convex Lisp against a peer; `convex:transact` submits signed transactions: verifiable, decentralised state and settlement as ordinary grid operations.
 
 ## Operations
 

@@ -5,7 +5,7 @@ sidebar_label: UCAN
 
 # UCAN Adapter
 
-The UCAN adapter is the venue's capability desk: `ucan:issue` mints venue-signed capability tokens, and `ucan:verify` explains — rather than merely enforces — whether a token would be honoured. Together with the [capability model](../capabilities) they make authority a first-class, inspectable artifact.
+Collaboration across users, agents, and organisations only works when authority itself can be handed over, narrowed, and checked — not implied by shared infrastructure. The UCAN adapter is the venue's capability desk for exactly that: `ucan:issue` mints venue-signed capability tokens, and `ucan:verify` explains — rather than merely enforces — whether a token would be honoured. Together with the [capability model](../capabilities) they make authority a first-class, inspectable artifact.
 
 ## ucan:issue — Mint a Grant
 

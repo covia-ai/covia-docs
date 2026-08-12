@@ -5,7 +5,7 @@ sidebar_label: Python
 
 # Python Adapter
 
-The Python adapter — the optional [`ai.covia:covia-python-adapter`](https://central.sonatype.com/artifact/ai.covia/covia-python-adapter) venue module — publishes operator-configured Python functions as grid operations. CPython runs **in-process** via the Java FFM API (Java 22+, CPython 3.10–3.14), with Convex values converting natively across the boundary — no subprocess, no serialisation tax.
+Much of the world's analytical, scientific, and ML code lives in Python — and rewriting it is not a plan. The Python adapter — the optional [`ai.covia:covia-python-adapter`](https://central.sonatype.com/artifact/ai.covia/covia-python-adapter) venue module — brings that code onto the grid as first-class operations: operator-configured Python functions, published, capability-checked, and audited. CPython runs **in-process** via the Java FFM API (Java 22+, CPython 3.10–3.14), with Convex values converting natively across the boundary — no subprocess, no serialisation tax.
 
 The security model is deliberate: **there is no `eval`**. Callers can never submit Python source, host paths, or function names — the operator selects every script and allowlists every callable. Caller-selected code would turn venue invocation into host code execution, so the surface simply doesn't exist. Python runs with the venue process's authority; scripts are trusted operator code (use containers for anything else).
 

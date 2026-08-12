@@ -6,7 +6,7 @@ sidebar_label: MCP
 
 # MCP Adapter
 
-The MCP adapter lets a venue **call external [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers as grid operations** — discovering their tools and invoking them like any other operation.
+Thousands of useful tools already exist as [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers — but on their own they come with no governance, no audit trail, and no federation. The MCP adapter brings them inside: a venue **calls external MCP servers as grid operations**, discovering their tools and invoking them with the same capability checks and job records as everything else.
 
 > Looking for the other direction — exposing *your* venue's operations to an AI assistant as MCP tools? A venue is automatically an MCP server. See [Venues as MCP Servers](../mcp/venues-as-mcp-servers).
 

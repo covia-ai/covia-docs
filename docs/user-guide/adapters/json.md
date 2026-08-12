@@ -6,7 +6,7 @@ sidebar_position: 7
 
 # JSON Adapter
 
-The JSON adapter provides four pure data manipulation primitives for composing structured outputs and declarative branching in orchestrations. All operations are pure functions with sub-millisecond execution — no IO, no external calls.
+Orchestrations are full of small data plumbing — merge these step outputs, pick that branch — and reaching for an LLM or custom code for it is waste. The JSON adapter covers the plumbing with four pure data manipulation primitives for composing structured outputs and declarative branching. All operations are pure functions with sub-millisecond execution — no IO, no external calls, no tokens spent.
 
 ## Operations
 

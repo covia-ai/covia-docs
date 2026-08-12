@@ -5,7 +5,7 @@ sidebar_label: Assets
 
 # Asset Adapter
 
-The asset adapter manages **immutable, content-addressed assets**: store data once, get back an ID that is the cryptographic hash of its metadata, and that ID verifies the content forever. Assets are how skills, operation definitions, documents, and artifacts travel the grid tamper-evidently.
+When data travels between parties who don't share infrastructure, "is this exactly what was published?" must have a provable answer. The asset adapter provides it with **immutable, content-addressed assets**: store data once, get back an ID that is the cryptographic hash of its metadata, and that ID verifies the content forever. Assets are how skills, operation definitions, documents, and artifacts travel the grid tamper-evidently.
 
 ## Operations
 

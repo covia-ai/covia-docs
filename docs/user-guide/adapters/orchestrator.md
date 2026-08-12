@@ -6,7 +6,7 @@ sidebar_label: Orchestrator
 
 # Orchestrator
 
-The Orchestrator executes multi-step workflows as directed acyclic graphs (DAGs). Steps run in parallel where possible, with automatic dependency resolution and result composition.
+Multi-step AI pipelines deserve better than glue code in a script — they should be declared once, audited end to end, and runnable anywhere on the grid. The Orchestrator does exactly that: workflows are defined as operation assets and executed as directed acyclic graphs (DAGs), with steps running in parallel where possible, automatic dependency resolution, and result composition — one auditable job for the whole pipeline.
 
 ## How It Works
 

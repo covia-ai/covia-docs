@@ -5,7 +5,7 @@ sidebar_label: Schema
 
 # Schema Adapter
 
-The schema adapter exposes JSON Schema operations as grid tools: validate, infer, coerce, and check. All five are **pure JVM functions — no IO, no LLM, sub-millisecond** — so they are safe to call in tight orchestration loops and cheap enough to guard every boundary.
+Data that crosses boundaries — between workflow steps, between agents, between venues — needs checking, and LLM output doubly so. The schema adapter is that guard rail, exposing JSON Schema operations as grid tools: validate, infer, coerce, and check. All five are **pure JVM functions — no IO, no LLM, sub-millisecond** — cheap enough to guard every boundary and safe to call in tight orchestration loops.
 
 ## Operations
 

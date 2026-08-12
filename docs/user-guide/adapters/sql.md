@@ -5,7 +5,7 @@ sidebar_label: SQL
 
 # SQL Adapter
 
-The SQL adapter — the optional [`ai.covia:covia-sql`](https://central.sonatype.com/artifact/ai.covia/covia-sql) venue module — turns SQL databases into governed grid operations: `sql:query` for reads, `sql:execute` for DDL/DML. Any JDBC database can sit behind it, and every call passes through Covia's capability checks and lands in the audit trail like any other operation.
+Most of the world's operational data lives in SQL databases — and agents become far more useful the moment they can reach it safely. The SQL adapter — the optional [`ai.covia:covia-sql`](https://central.sonatype.com/artifact/ai.covia/covia-sql) venue module — makes that safe reach real, turning SQL databases into governed grid operations: `sql:query` for reads, `sql:execute` for DDL/DML. Any JDBC database can sit behind it, and every call passes through Covia's capability checks and lands in the audit trail like any other operation.
 
 Callers name a **database, never a JDBC URL** — connection strings live only in operator config, which removes the whole class of attacks where a caller points the venue at an internal host or local file.
 

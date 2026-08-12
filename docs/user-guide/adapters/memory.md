@@ -5,7 +5,7 @@ sidebar_label: User Memory
 
 # User Memory Adapter
 
-The memory adapter gives every user — and every agent acting for them — a durable, editable memory list with a deliberately tiny surface: one operation, `v/ops/memory`, dispatched by a `command` field (`recall`, `remember`, `update`, `forget`). One tool definition instead of four keeps the cost in an agent's tool palette minimal.
+Nobody should have to repeat their preferences to every agent, every session. The memory adapter gives every user — and every agent acting for them — a durable, editable memory that agents carry into each turn, with a deliberately tiny surface: one operation, `v/ops/memory`, dispatched by a `command` field (`recall`, `remember`, `update`, `forget`). One tool definition instead of four keeps the cost in an agent's tool palette minimal.
 
 Memory lives as a plain vector at a workspace path (default `w/memory`) in the calling user's namespace — queryable, governed lattice state like everything else, not a private database. Storage delegates to [`covia:read`/`covia:write`](./venue-adapter), so per-user scoping and capability enforcement are inherited rather than reimplemented.
 

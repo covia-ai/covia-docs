@@ -5,7 +5,7 @@ sidebar_label: Archive
 
 # Archive Adapter
 
-The archive adapter handles zip and jar files as governed operations: `archive:list` inspects without extracting, `archive:extract` unpacks into a jailed directory, and `archive:zip` builds an archive from files — written to a jailed file or published as a content-addressed [asset](./asset).
+Real workflows exchange bundles — datasets, document packs, build outputs — and an archive from outside should never be trusted blindly. The archive adapter handles zip and jar files as governed operations: `archive:list` inspects without extracting, `archive:extract` unpacks into a jailed directory, and `archive:zip` builds an archive from files — written to a jailed file or published as a content-addressed [asset](./asset).
 
 ## Operations
 

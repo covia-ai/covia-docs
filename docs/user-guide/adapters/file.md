@@ -6,7 +6,7 @@ sidebar_label: File
 
 # File Adapter
 
-The File adapter gives agents and operations **root-jailed access to a local filesystem**. An operator configures one or more named *roots*; every `file:` operation works relative to a root and cannot escape it. Roots can be host directories, ephemeral temp directories, or [DLFS](./dlfs)-backed drives.
+Agents often need real files — imports to process, outputs to write, a working directory — without being handed the run of the host machine. The File adapter squares that: agents and operations get **root-jailed access to a local filesystem**. An operator configures one or more named *roots*; every `file:` operation works relative to a root and cannot escape it. Roots can be host directories, ephemeral temp directories, or [DLFS](./dlfs)-backed drives.
 
 ## Operations
 

@@ -5,7 +5,7 @@ sidebar_label: Users
 
 # User Adapter
 
-The user adapter manages the venue's user registry: who is registered, and which keys may authenticate as them. Registration is an **explicit administrative act** — successfully authenticating never registers anyone by side effect.
+A sovereign venue decides exactly who it serves — membership is a deliberate trust decision, not a side effect. The user adapter manages that decision: who is registered, and which keys may authenticate as them. Registration is an **explicit administrative act** — successfully authenticating never registers anyone.
 
 ## Operations
 

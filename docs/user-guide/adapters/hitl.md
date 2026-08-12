@@ -5,7 +5,7 @@ sidebar_label: Human-in-the-Loop
 
 # Human-in-the-Loop Adapter
 
-The HITL adapter pauses automated work for a human decision — approval, choice, free text, or a capability grant — inside the same audited job machinery as everything else. A workflow or agent calls `hitl:request`; the job parks as `INPUT_REQUIRED` and a durable request record lands in the target user's `h/` inbox. When the human responds, the job completes with their answers (or fails on rejection or expiry).
+Some decisions must stay human: paying an invoice, approving a deployment, granting an agent new authority. The HITL adapter makes those decisions part of the workflow rather than an interruption to it — automated work pauses for a human answer (approval, choice, free text, or a capability grant) inside the same audited job machinery as everything else. A workflow or agent calls `hitl:request`; the job parks as `INPUT_REQUIRED` and a durable request record lands in the target user's `h/` inbox. When the human responds, the job completes with their answers (or fails on rejection or expiry).
 
 Three operations carry the whole protocol:
 
