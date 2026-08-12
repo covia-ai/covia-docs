@@ -46,13 +46,13 @@ Every venue is an **MCP server** and an **A2A agent** out of the box — no gate
 
 ### Adapters
 
-Adapters are how a venue gets its capabilities: each contributes a family of operations — LLM calls, outbound HTTP, files, secrets, scheduling, lattice state, federation, and more. Out of the box a venue ships with around twenty, and they compose: an agent can call an LLM, fetch a URL, and schedule its own wake-up through one uniform interface.
+Adapters are how a venue gets its capabilities: each contributes a family of operations — LLM calls, outbound HTTP, files, secrets, scheduling, lattice state, federation, and more. Out of the box a venue ships with nearly thirty, and they compose: an agent can call an LLM, fetch a URL, and schedule its own wake-up through one uniform interface.
 
 → [Adapters overview](../user-guide/adapters/)
 
 ### Plugins
 
-The capability surface is pluggable at every level. Operators extend a venue with their own adapters; **bridging** mirrors or curates an external MCP server's tools into the venue's catalog, where they behave exactly like native operations — discoverable, capability-scoped, and audited; and skills package higher-level know-how that agents load at run time. Extending a venue never means forking it.
+The capability surface is pluggable at every level. Operators extend a venue with their own adapters — shipped examples include [SQL](../user-guide/adapters/sql) (governed queries over any JDBC database) and [Python](../user-guide/adapters/python) (operator-configured Python operations); **bridging** mirrors or curates an external MCP server's tools into the venue's catalog, where they behave exactly like native operations — discoverable, capability-scoped, and audited; and skills package higher-level know-how that agents load at run time. Extending a venue never means forking it.
 
 → [Bridging MCP tools](../user-guide/mcp/calling-mcp-tools#bridging-mcp-tools-into-the-catalog) · [Adapters overview](../user-guide/adapters/)
 
