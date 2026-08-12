@@ -28,7 +28,7 @@ A **skill** is a named bundle of instructions, context, and tools that an agent 
 
 Each turn, the context builder reassembles the agent's input from scratch: system prompt, tools, pinned context entries, loaded paths, pending results, and the session conversation. Agents manage their own working set with `context_load` and `context_unload`, every entry carries a byte budget with budget-aware rendering, and the Goal Tree adapter compacts automatically under pressure — so context is an engineered, inspectable resource rather than an ever-growing transcript.
 
-→ [Context assembly](../user-guide/agents/tools-and-context#context-assembly-pipeline) · [Context budgets](../user-guide/agents/tools-and-context#context-budgets)
+→ [The context layer](./context) · [Context assembly](../user-guide/agents/tools-and-context#context-assembly-pipeline) · [Context budgets](../user-guide/agents/tools-and-context#context-budgets)
 
 ### Memory
 
