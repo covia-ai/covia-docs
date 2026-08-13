@@ -6,11 +6,11 @@ sidebar_position: 7
 
 # JSON Adapter
 
-Orchestrations are full of small data plumbing — merge these step outputs, pick that branch — and reaching for an LLM or custom code for it is waste. The JSON adapter covers the plumbing with four pure data manipulation primitives for composing structured outputs and declarative branching. All operations are pure functions with sub-millisecond execution — no IO, no external calls, no tokens spent.
+Orchestrations are full of small data plumbing (merge these step outputs, pick that branch), and reaching for an LLM or custom code for it is waste. The JSON adapter covers the plumbing with four pure data manipulation primitives for composing structured outputs and declarative branching. All operations are pure functions with sub-millisecond execution: no IO, no external calls, no tokens spent.
 
 ## Operations
 
-### json:merge — Deep Merge
+### json:merge: Deep Merge
 
 Merges an array of maps using [RFC 7396](https://datatracker.ietf.org/doc/html/rfc7396) JSON Merge Patch semantics. Later values win on key conflict; nested maps merge recursively; `null` values delete keys.
 
@@ -40,9 +40,9 @@ Merges an array of maps using [RFC 7396](https://datatracker.ietf.org/doc/html/r
 
 Use `merge` to compose outputs from multiple pipeline steps (e.g., LLM decision + invoice data + policy rules).
 
-### json:cond — Conditional Selection
+### json:cond: Conditional Selection
 
-Returns the `then` value of the first case whose `when` is truthy. Only `null` and `false` are falsy — everything else (including `0`, `""`, `[]`, `{}`) is truthy.
+Returns the `then` value of the first case whose `when` is truthy. Only `null` and `false` are falsy; everything else (including `0`, `""`, `[]`, `{}`) is truthy.
 
 ```json
 {
@@ -62,7 +62,7 @@ Returns the `then` value of the first case whose `when` is truthy. Only `null` a
 
 Use `cond` for declarative branching in orchestrations without invoking an LLM.
 
-### json:assoc — Set Value at Path
+### json:assoc: Set Value at Path
 
 Sets a value at a path in a map, creating intermediate maps for missing keys. Equivalent to Clojure `assoc-in` or Lodash `_.set`.
 
@@ -81,7 +81,7 @@ Sets a value at a path in a map, creating intermediate maps for missing keys. Eq
 
 The `path` can be a single string (top-level key) or an array of strings (nested path). Missing intermediate maps are created automatically.
 
-### json:select — Pick by Discriminator
+### json:select: Pick by Discriminator
 
 Looks up a value in a map of cases by a discriminator key. Like a switch statement.
 
@@ -114,11 +114,11 @@ Returns `default` if the key is not found, or `null` if no default is provided.
 
 ## Use Cases
 
-- **Pipeline composition** — `merge` combines outputs from multiple steps into a single result
-- **Declarative routing** — `cond` and `select` branch without LLM calls, keeping orchestrations fast and deterministic
-- **Data enrichment** — `assoc` adds fields to records before passing them downstream
+- **Pipeline composition**: `merge` combines outputs from multiple steps into a single result
+- **Declarative routing**: `cond` and `select` branch without LLM calls, keeping orchestrations fast and deterministic
+- **Data enrichment**: `assoc` adds fields to records before passing them downstream
 
 ## Related
 
-- [Orchestrator](./orchestrator) — workflow coordination using these primitives
-- [Agents](/docs/user-guide/agents/) — agents can call JSON operations as tools
+- [Orchestrator](./orchestrator): workflow coordination using these primitives
+- [Agents](/docs/user-guide/agents/): agents can call JSON operations as tools

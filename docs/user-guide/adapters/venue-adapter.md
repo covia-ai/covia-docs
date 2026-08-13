@@ -6,11 +6,11 @@ sidebar_label: Covia (Venue)
 
 # Covia Adapter
 
-Everything on a venue — agent memory, workflow state, shared records, the operation catalog itself — ultimately lives as lattice state, and this is the adapter that reads and writes it. The Covia adapter provides workspace CRUD, data inspection, and lattice access: the substrate that users, agents, and workflows collaborate through, one structured path at a time.
+Everything on a venue (agent memory, workflow state, shared records, the operation catalog itself) ultimately lives as lattice state, and this is the adapter that reads and writes it. The Covia adapter provides workspace CRUD, data inspection, and lattice access: the substrate that users, agents, and workflows collaborate through, one structured path at a time.
 
 ## Workspace Operations
 
-### covia:read — Read a Value
+### covia:read: Read a Value
 
 ```json
 { "operation": "v/ops/covia/read", "input": { "path": "w/vendor-records/acme" } }
@@ -20,7 +20,7 @@ Everything on a venue — agent memory, workflow state, shared records, the oper
 
 Supports deep paths: `w/records/acme/contact/email` navigates into nested maps. Numeric keys index into vectors.
 
-### covia:write — Store a Value
+### covia:write: Store a Value
 
 ```json
 {
@@ -34,15 +34,15 @@ Supports deep paths: `w/records/acme/contact/email` navigates into nested maps. 
 
 Creates intermediate maps for deep paths. Only `w/` (workspace) and `o/` (operation pins) are writable.
 
-### covia:delete — Remove a Value
+### covia:delete: Remove a Value
 
 ```json
 { "operation": "v/ops/covia/delete", "input": { "path": "w/vendor-records/acme" } }
 ```
 
-Idempotent — deleting a non-existent path succeeds.
+Idempotent: deleting a non-existent path succeeds.
 
-### covia:append — Add to a Vector
+### covia:append: Add to a Vector
 
 ```json
 { "operation": "v/ops/covia/append", "input": { "path": "w/events", "value": { "type": "invoice_received" } } }
@@ -50,7 +50,7 @@ Idempotent — deleting a non-existent path succeeds.
 
 Creates the vector if it doesn't exist. Useful for event logs and audit trails.
 
-### covia:list — List Keys
+### covia:list: List Keys
 
 ```json
 { "operation": "v/ops/covia/list", "input": { "path": "w/vendor-records", "limit": 20 } }
@@ -60,7 +60,7 @@ Creates the vector if it doesn't exist. Useful for event logs and audit trails.
 
 Supports pagination via `limit` and `offset`. Shows structure without fetching values.
 
-### covia:slice — Paginate Collections
+### covia:slice: Paginate Collections
 
 ```json
 { "operation": "v/ops/covia/slice", "input": { "path": "w/events", "offset": 0, "limit": 10 } }
@@ -68,7 +68,7 @@ Supports pagination via `limit` and `offset`. Shows structure without fetching v
 
 Returns elements from vectors or `{key, value}` pairs from maps.
 
-### covia:inspect — Budget-Controlled Preview
+### covia:inspect: Budget-Controlled Preview
 
 ```json
 { "operation": "v/ops/covia/inspect", "input": { "paths": "w/vendor-records", "budget": 500 } }
@@ -92,8 +92,8 @@ Renders data as a compact preview, truncated to fit the byte budget (default 500
 
 | Prefix | Access | Description |
 |--------|--------|-------------|
-| `w/` | Read/Write | User workspace — your persistent data |
-| `o/` | Read/Write | Operation pins — named operations for reuse |
+| `w/` | Read/Write | User workspace: your persistent data |
+| `o/` | Read/Write | Operation pins: named operations for reuse |
 | `n/` | Read | Agent-private notes |
 | `g/` | Read | Agent records (state, timeline, config) |
 | `s/` | Read | Secrets (encrypted) |
@@ -106,6 +106,6 @@ Framework-managed namespaces (`n/`, `g/`, `s/`, `j/`, `v/`) are read-only via th
 
 ## Related
 
-- [Agents: Tools and Context](/docs/user-guide/agents/tools-and-context) — how agents use these operations
-- [REST API](/docs/user-guide/api) — HTTP endpoints
-- [DLFS](./dlfs) — file-based storage (separate from workspace)
+- [Agents: Tools and Context](/docs/user-guide/agents/tools-and-context): how agents use these operations
+- [REST API](/docs/user-guide/api): HTTP endpoints
+- [DLFS](./dlfs): file-based storage (separate from workspace)

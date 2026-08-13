@@ -17,7 +17,7 @@ COGs are the formal technical specifications that define:
 
 ## Available COGs
 
-COG numbers identify topics, not chronology: numbers are assigned when a topic enters the process, and the specifications are written and revised at different times — a lower number does not imply an earlier or more mature document.
+COG numbers identify topics, not chronology: numbers are assigned when a topic enters the process, and the specifications are written and revised at different times; a lower number does not imply an earlier or more mature document.
 
 ### Core Protocol Specifications
 
@@ -31,7 +31,7 @@ COG numbers identify topics, not chronology: numbers are assigned when a topic e
 - **[COG-8](./cogs/COG-008)** - Jobs
 - **[COG-9](./cogs/COG-009)** - Agent Messaging
 - **[COG-10](./cogs/COG-010)** - Venue Authentication & Access Control
-- **[COG-11](./cogs/COG-011)** - Agent Lifecycle *(exploratory draft — superseded in practice by session-based agents; see [Sessions](../user-guide/agents/sessions))*
+- **[COG-11](./cogs/COG-011)** - Agent Lifecycle *(exploratory draft, superseded in practice by session-based agents; see [Sessions](../user-guide/agents/sessions))*
 - **[COG-12](./cogs/COG-012)** - Orchestrations
 - **[COG-13](./cogs/COG-013)** - Agent Capabilities
 - **[COG-14](./cogs/COG-014)** - A2A Agent Interoperability *(not yet implemented)*
@@ -69,6 +69,6 @@ Each COG carries a status indicating its development stage. The stages currently
 - **Draft (Work in Progress)**: Actively being written; sections may be incomplete
 - **Draft**: A complete draft under community review
 
-Later stages — **Proposed** (ready for community decision), **Approved** (formally adopted), and **Deprecated** (superseded) — are defined by the [governance process](./governance); no COG has yet reached them.
+Later stages (**Proposed**, ready for community decision; **Approved**, formally adopted; and **Deprecated**, superseded) are defined by the [governance process](./governance); no COG has yet reached them.
 
 *Note: COG specifications are expected to evolve based on community feedback and real-world implementation experience.*

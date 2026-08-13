@@ -6,7 +6,7 @@ sidebar_label: File
 
 # File Adapter
 
-Agents often need real files — imports to process, outputs to write, a working directory — without being handed the run of the host machine. The File adapter squares that: agents and operations get **root-jailed access to a local filesystem**. An operator configures one or more named *roots*; every `file:` operation works relative to a root and cannot escape it. Roots can be host directories, ephemeral temp directories, or [DLFS](./dlfs)-backed drives.
+Agents often need real files (imports to process, outputs to write, a working directory) without being handed the run of the host machine. The File adapter squares that: agents and operations get **root-jailed access to a local filesystem**. An operator configures one or more named *roots*; every `file:` operation works relative to a root and cannot escape it. Roots can be host directories, ephemeral temp directories, or [DLFS](./dlfs)-backed drives.
 
 ## Operations
 
@@ -61,7 +61,7 @@ Exactly one of `path`, `temp`, or `dlfs` must be set. If no roots are configured
 
 ## Reading
 
-`file:read` decodes by `mode` — `auto` (default; UTF-8 text when it looks like text, otherwise base64), `text`, `bytes` (base64), or `json` (parsed value returned in `value`):
+`file:read` decodes by `mode`: `auto` (default; UTF-8 text when it looks like text, otherwise base64), `text`, `bytes` (base64), or `json` (parsed value returned in `value`):
 
 ```json
 { "operation": "v/ops/file/read", "input": { "root": "workspace", "path": "notes/daily.md" } }
@@ -96,7 +96,7 @@ workspace/
 
 ## Safety
 
-Every path is **root-jailed**. Absolute paths, drive-rooted or UNC paths, and `..` escapes are rejected before any filesystem access. For host roots the adapter additionally resolves symlinks (`toRealPath`) and rejects any path — including one reached through a symlink or a dangling link — that would resolve outside the root. A leading `/` on a path is treated as "relative to the root", not the host root.
+Every path is **root-jailed**. Absolute paths, drive-rooted or UNC paths, and `..` escapes are rejected before any filesystem access. For host roots the adapter additionally resolves symlinks (`toRealPath`) and rejects any path (including one reached through a symlink or a dangling link) that would resolve outside the root. A leading `/` on a path is treated as "relative to the root", not the host root.
 
 ## Capabilities
 
@@ -109,10 +109,10 @@ Every path is **root-jailed**. Absolute paths, drive-rooted or UNC paths, and `.
 ]
 ```
 
-Reads map to `crud/read`, writes/mkdir/append to `crud/write`, and delete to `crud/delete`. A denied call returns a structural error explaining what was required and what the agent holds — see [Capabilities](../capabilities).
+Reads map to `crud/read`, writes/mkdir/append to `crud/write`, and delete to `crud/delete`. A denied call returns a structural error explaining what was required and what the agent holds; see [Capabilities](../capabilities).
 
 ## Related
 
-- [DLFS](./dlfs) — the decentralised file system that can back a root
-- [Capabilities](../capabilities) — the UCAN model gating `file:` operations
-- [Creating Agents](../agents/creating-agents) — giving an agent `file:` tools and caps
+- [DLFS](./dlfs): the decentralised file system that can back a root
+- [Capabilities](../capabilities): the UCAN model gating `file:` operations
+- [Creating Agents](../agents/creating-agents): giving an agent `file:` tools and caps

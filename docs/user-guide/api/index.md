@@ -58,11 +58,11 @@ The `did` is the venue's persistent `did:key` identity, also published in its [D
 
 ### Assets
 
-Across the API and in operation inputs (e.g. `asset:get`, the `file:write` `asset` field, grid operation references), an asset can be referenced by **bare hex hash**, by `a/<hash>`, or by `/a/<hash>` — these are equivalent. The `a/` form matches the per-user namespace convention used elsewhere (`w/`, `o/`).
+Across the API and in operation inputs (e.g. `asset:get`, the `file:write` `asset` field, grid operation references), an asset can be referenced by **bare hex hash**, by `a/<hash>`, or by `/a/<hash>`; these are equivalent. The `a/` form matches the per-user namespace convention used elsewhere (`w/`, `o/`).
 
 #### `GET /api/v1/assets`
 
-Lists the **caller's own pinned assets** (the per-user `a/` namespace) — not every asset on the venue. The venue's operation catalog is discovered via `GET /api/v1/operations` (or the `covia:functions` / `covia:inspect` operations), not here.
+Lists the **caller's own pinned assets** (the per-user `a/` namespace), not every asset on the venue. The venue's operation catalog is discovered via `GET /api/v1/operations` (or the `covia:functions` / `covia:inspect` operations), not here.
 
 **Query Parameters:**
 
@@ -178,12 +178,12 @@ Invokes an operation and creates a job to track execution.
 ```
 
 The `operation` field is a resolvable reference:
-- A **catalog path** — `v/ops/<adapter>/<op>` (e.g. `v/ops/http/get`). The usual form; list them via `GET /api/v1/operations`.
-- A **user pin** — `o/<name>` from your workspace
-- An **Asset ID** — `a/<hash>` or bare hex
-- A **DID URL** — an operation on a remote venue
+- A **catalog path**: `v/ops/<adapter>/<op>` (e.g. `v/ops/http/get`). The usual form; list them via `GET /api/v1/operations`.
+- A **user pin**: `o/<name>` from your workspace
+- An **Asset ID**: `a/<hash>` or bare hex
+- A **DID URL**: an operation on a remote venue
 
-The short `adapter:op` style (e.g. `http:get`) is the operation's *name* as used in documentation and adapter metadata — it is **not** a resolvable reference and will be rejected.
+The short `adapter:op` style (e.g. `http:get`) is the operation's *name* as used in documentation and adapter metadata; it is **not** a resolvable reference and will be rejected.
 
 **Response:** `201 Created`
 ```json
@@ -201,11 +201,11 @@ Invocation is **asynchronous by default**: the response is the job record, and y
 
 | `wait` | Behaviour |
 |--------|-----------|
-| absent / `false` | Asynchronous — `201` with a job record to poll (the default) |
+| absent / `false` | Asynchronous: `201` with a job record to poll (the default) |
 | `true` | Block up to the 120s cap; return the finished record with `200` if it completes |
 | `<integer>` | Block up to that many **milliseconds** (clamped to the 120s cap) |
 
-If the job finishes within the window you get the completed record (`200`); otherwise the current record (`201`) and you continue polling. A malformed `wait` value is rejected with `400`. The 120s cap is a server resource limit — for longer waits, poll or use SSE.
+If the job finishes within the window you get the completed record (`200`); otherwise the current record (`201`) and you continue polling. A malformed `wait` value is rejected with `400`. The 120s cap is a server resource limit; for longer waits, poll or use SSE.
 
 ```bash
 # Fire-and-poll (default)
@@ -391,7 +391,7 @@ Returns the DID document for the venue, following W3C DID specification.
 }
 ```
 
-The document `id` is the venue's persistent `did:key`; the same key is also listed under `assertionMethod`, `capabilityDelegation` and `capabilityInvocation`. The venue remains reachable by `did:web:<host>` references — this endpoint is what resolves them to the API `serviceEndpoint`.
+The document `id` is the venue's persistent `did:key`; the same key is also listed under `assertionMethod`, `capabilityDelegation` and `capabilityInvocation`. The venue remains reachable by `did:web:<host>` references; this endpoint is what resolves them to the API `serviceEndpoint`.
 
 #### `GET /.well-known/mcp.json`
 

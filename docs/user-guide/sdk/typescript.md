@@ -41,7 +41,7 @@ console.log(`Your DID: ${auth.getDID()}`);
 const venueWithKey = await Grid.connect("https://venue-3.covia.ai", auth);
 ```
 
-`Grid.connect()` caches venue connections — calling it twice with the same ID returns the same instance.
+`Grid.connect()` caches venue connections: calling it twice with the same ID returns the same instance.
 
 ### Running Operations
 
@@ -122,7 +122,7 @@ const response = await venue.agents.request("Alice",
 );
 console.log(response.output);
 
-// Session-scoped chat — start a session
+// Session-scoped chat: start a session
 const first = await venue.agents.chat("Alice", "Hi Alice");
 const sessionId = first.sessionId;
 console.log(first.response);
@@ -390,6 +390,6 @@ venue.close();
 
 ## Related Documentation
 
-- [SDK Overview](./) — comparison of all Covia SDKs
-- [REST API Reference](../api) — direct HTTP API documentation
-- [Agents](/docs/user-guide/agents/) — agent system documentation
+- [SDK Overview](./): comparison of all Covia SDKs
+- [REST API Reference](../api): direct HTTP API documentation
+- [Agents](/docs/user-guide/agents/): agent system documentation

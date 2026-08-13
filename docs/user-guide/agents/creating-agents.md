@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Creating Agents
 
-Agents are created with the `agent:create` operation. The key decision is **what to put in the config** — this determines the agent's personality, tools, capabilities, and LLM backend.
+Agents are created with the `agent:create` operation. The key decision is **what to put in the config**: this determines the agent's personality, tools, capabilities, and LLM backend.
 
 ## Minimal Agent
 
@@ -24,7 +24,7 @@ This creates an agent with default settings: `llmagent:chat` transition, `langch
 
 ## Configuration
 
-The `config` field controls agent behaviour. All fields are optional — defaults are sensible for general-purpose agents.
+The `config` field controls agent behaviour. All fields are optional; defaults are sensible for general-purpose agents.
 
 ```json
 {
@@ -74,20 +74,20 @@ The `config` field controls agent behaviour. All fields are optional — default
 | `systemPrompt` | string | Generic assistant | The system message defining the agent's role and instructions. |
 | `model` | string | `gpt-5.4-mini` | LLM model name passed to the backend. |
 | `llmOperation` | string | `v/ops/langchain/openai` | Level 3 LLM operation. See [LLM Backends](./llm-backends). |
-| `tools` | array | — | Operations the agent can call. Strings or `{operation, name, description}` maps. |
+| `tools` | array | – | Operations the agent can call. Strings or `{operation, name, description}` maps. |
 | `defaultTools` | boolean | `true` | Include the platform's default tools (workspace CRUD, agent management, assets, schemas). Set `false` for explicit control. |
-| `caps` | array | — | Capability restrictions. Each entry: `{with: "path/", can: "crud/read"}`. |
-| `context` | array | — | Lattice paths to load into context every turn. |
-| `skills` | array | — | Skill sources (`w/skills`, `v/skills`, `a/<hash>`). Injects the skills index and offers `skill_load`. See [Skills](./tools-and-context#skills). |
-| `outputs` | object | — | Typed output schemas for `complete` and `fail` (Goal Tree only). |
-| `responseFormat` | string / object | — | `"text"`, `"json"`, or `{name, schema}` for strict structured responses. |
+| `caps` | array | – | Capability restrictions. Each entry: `{with: "path/", can: "crud/read"}`. |
+| `context` | array | – | Lattice paths to load into context every turn. |
+| `skills` | array | – | Skill sources (`w/skills`, `v/skills`, `a/<hash>`). Injects the skills index and offers `skill_load`. See [Skills](./tools-and-context#skills). |
+| `outputs` | object | – | Typed output schemas for `complete` and `fail` (Goal Tree only). |
+| `responseFormat` | string / object | – | `"text"`, `"json"`, or `{name, schema}` for strict structured responses. |
 
 ### Tools
 
 The `tools` array lists operations the agent can invoke. Each entry is either:
 
-- A **string** — an operation path like `"v/ops/covia/read"`
-- A **map** — `{ "operation": "v/ops/covia/read", "name": "read_data", "description": "Read workspace data" }` for a custom name/description
+- A **string**: an operation path like `"v/ops/covia/read"`
+- A **map**: `{ "operation": "v/ops/covia/read", "name": "read_data", "description": "Read workspace data" }` for a custom name/description
 
 When `defaultTools` is `true` (the default), the platform adds standard operations covering workspace CRUD, agent management, asset operations, and schema validation. Set `defaultTools: false` for full control over the tool palette.
 
@@ -117,10 +117,10 @@ The `context` array injects external data into the agent's context every turn:
 ```
 
 Each entry can be:
-- `ref` — a lattice path, resolved and rendered fresh each turn
-- `op` — an operation to invoke, whose output is injected as context
+- `ref`: a lattice path, resolved and rendered fresh each turn
+- `op`: an operation to invoke, whose output is injected as context
 
-Context entries are budget-aware — large values are automatically summarised to fit within the context window.
+Context entries are budget-aware: large values are automatically summarised to fit within the context window.
 
 ### Typed Outputs (Goal Tree)
 
@@ -155,7 +155,7 @@ When using the Goal Tree adapter, you can enforce structured output via `outputs
 
 This wraps the `complete` and `fail` harness tools with strict JSON schema enforcement via the LLM's structured output mode.
 
-**Per-request override:** a caller can pass a `responseSchema` on [`agent:request`](./operations#agent-request) to get typed output from any agent for a single call — no `outputs` config required. It overrides the agent's default output schema for that request.
+**Per-request override:** a caller can pass a `responseSchema` on [`agent:request`](./operations#agent-request) to get typed output from any agent for a single call, with no `outputs` config required. It overrides the agent's default output schema for that request.
 
 ## Templates
 
@@ -179,7 +179,7 @@ Every venue provides these built-in templates:
 
 | Template | Tools | Purpose |
 |----------|-------|---------|
-| `template:skilled` | read, list + [skills](./tools-and-context#skills) | **Recommended default** — lean base, capabilities loaded on demand |
+| `template:skilled` | read, list + [skills](./tools-and-context#skills) | **Recommended default**: lean base, capabilities loaded on demand |
 | `template:minimal` | None | Pure reasoning, no side effects |
 | `template:reader` | read, list, slice | Read-only data analysis |
 | `template:worker` | CRUD operations | General data processing |
@@ -219,10 +219,10 @@ Store a config map in the workspace and reference it:
 
 A `config` string reference can be any of:
 
-- a **template** name — `template:worker` (resolves to `v/agents/templates/worker`)
-- a **workspace path** — `w/templates/invoice-scanner`
-- an **asset reference** — `a/<hash>` (immutable, content-addressed)
-- a **DID URL** — for a template hosted on another venue (cross-venue use)
+- a **template** name: `template:worker` (resolves to `v/agents/templates/worker`)
+- a **workspace path**: `w/templates/invoice-scanner`
+- an **asset reference**: `a/<hash>` (immutable, content-addressed)
+- a **DID URL**: for a template hosted on another venue (cross-venue use)
 - a **venue operation name**
 
 Explicit fields you pass alongside the reference are merged on top of the resolved config.
@@ -248,7 +248,7 @@ An agent can be created with pre-populated state by including a `state` field at
 }
 ```
 
-The `state` is opaque to the framework — its structure depends on the Level 2 adapter. For both `llmagent:chat` and `goaltree:chat`, the state includes a `config` sub-map with LLM settings.
+The `state` is opaque to the framework; its structure depends on the Level 2 adapter. For both `llmagent:chat` and `goaltree:chat`, the state includes a `config` sub-map with LLM settings.
 
 ## Idempotent Creation
 
@@ -323,11 +323,11 @@ The AP Invoice Audit Trail demo creates a team of specialised agents:
 }
 ```
 
-Each agent has the minimum tools and capabilities needed for its role — following the principle of least privilege.
+Each agent has the minimum tools and capabilities needed for its role, following the principle of least privilege.
 
 ## Related
 
-- [Agent Operations](./operations) — full lifecycle reference (trigger, request, fork, etc.)
-- [Tools and Context](./tools-and-context) — tool resolution, context loading, budgets
-- [LLM Backends](./llm-backends) — configuring OpenAI, Anthropic, Ollama, xAI
-- [Capabilities](../capabilities) — the UCAN capability model behind the `caps` field
+- [Agent Operations](./operations): full lifecycle reference (trigger, request, fork, etc.)
+- [Tools and Context](./tools-and-context): tool resolution, context loading, budgets
+- [LLM Backends](./llm-backends): configuring OpenAI, Anthropic, Ollama, xAI
+- [Capabilities](../capabilities): the UCAN capability model behind the `caps` field

@@ -5,18 +5,18 @@ sidebar_position: 2
 # Covia.ai White Paper
 
 :::caution Draft
-This is a draft of the Covia white paper, for discussion only — not to be considered final. Parts of it predate the current protocol specifications; where they disagree, the [COGs](./cogs-overview) are authoritative.
+This is a draft of the Covia white paper, for discussion only; not to be considered final. Parts of it predate the current protocol specifications; where they disagree, the [COGs](./cogs-overview) are authoritative.
 :::
 
 ## Vision
 
-Modern AI systems are no longer isolated models or linear pipelines — they are **distributed, agentic, multi-party workflows** operating across APIs, clouds, internal services, and external data zones.
+Modern AI systems are no longer isolated models or linear pipelines; they are **distributed, agentic, multi-party workflows** operating across APIs, clouds, internal services, and external data zones.
 
 Yet the infrastructure to run these systems with **control, coordination, and compliance** is missing.
 
 Covia introduces a **runtime orchestration protocol** that lets developers and infra teams **compose, execute, and govern AI-native workflows** with cryptographic traceability, policy enforcement, and modular deployment.
 
-Inspired by the modularity of **HTTP**, the operational consistency of **Kubernetes**, and the verifiability of **Git**, **Covia.ai** enables secure, multi-agent AI workflows to operate across trust boundaries — without losing control, visibility, or scalability.
+Inspired by the modularity of **HTTP**, the operational consistency of **Kubernetes**, and the verifiability of **Git**, **Covia.ai** enables secure, multi-agent AI workflows to operate across trust boundaries, without losing control, visibility, or scalability.
 
 With Covia.ai, organisations of all sizes can orchestrate powerful AI supply chains, harnessing the best resources available in a global ecosystem, using open standard Internet technology.
 
@@ -25,12 +25,12 @@ With Covia.ai, organisations of all sizes can orchestrate powerful AI supply cha
 The Covia.ai protocol defines a standard for orchestrating federated execution graphs across systems, teams, and infrastructure zones. It enables agents, APIs, models, and data services to interoperate securely under runtime policies and execution constraints.
 
 **Core Concepts**
-- **Assets** — Addressable, immutable units of data or compute
-- **Venues** — Execution environments with scoped trust and policy
-- **Agents** — Runtime-exposed capabilities: APIs, models, scripts, or services
-- **Operations** — Executable nodes in an orchestration graph
-- **Policies** — Rules enforced at runtime: identity, access, fallback, rollback
-- **Traces** — Verifiable records of what ran, where, and under what conditions
+- **Assets**: Addressable, immutable units of data or compute
+- **Venues**: Execution environments with scoped trust and policy
+- **Agents**: Runtime-exposed capabilities (APIs, models, scripts, or services)
+- **Operations**: Executable nodes in an orchestration graph
+- **Policies**: Rules enforced at runtime (identity, access, fallback, rollback)
+- **Traces**: Verifiable records of what ran, where, and under what conditions
 
 Each Covia graph is:
 - Executed in parts, across federated venues
@@ -38,13 +38,13 @@ Each Covia graph is:
 - Logged and signed for audit and traceability
 - Composable into reusable modules for orchestration at scale
 
-By combining execution and governance in a unified runtime, Covia.ai offers a **developer-friendly protocol for operating AI workflows safely in production** — even when they span multiple organisations or regulatory regimes.
+By combining execution and governance in a unified runtime, Covia.ai offers a **developer-friendly protocol for operating AI workflows safely in production**, even when they span multiple organisations or regulatory regimes.
 
 ## Architecture Overview
 
-Covia.ai is built as a **federated execution layer** for orchestrating AI workflows across distributed systems. The architecture is modular, pluggable, and policy-aware — designed to span clouds, teams, and partner organisations without centralising control or breaking trust boundaries.
+Covia.ai is built as a **federated execution layer** for orchestrating AI workflows across distributed systems. The architecture is modular, pluggable, and policy-aware, designed to span clouds, teams, and partner organisations without centralising control or breaking trust boundaries.
 
-At the core of Covia’s architecture is the **Execution Graph Runtime**, supported by runtime policy enforcement, shared memory, and observability services — all operating within or across isolated **venues**.
+At the core of Covia’s architecture is the **Execution Graph Runtime**, supported by runtime policy enforcement, shared memory, and observability services, all operating within or across isolated **venues**.
 
 ### Component Summary
 

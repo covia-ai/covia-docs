@@ -13,7 +13,7 @@ The MCP adapter enables you to invoke tools from any MCP server as Grid operatio
 
 ## Built-in MCP Operations
 
-Every Covia venue includes six built-in MCP operations — two for one-off calls (below), and four for [bridging](#bridging-mcp-tools-into-the-catalog) remote tools into the catalog:
+Every Covia venue includes six built-in MCP operations: two for one-off calls (below), and four for [bridging](#bridging-mcp-tools-into-the-catalog) remote tools into the catalog:
 
 ### `mcp:tools:list` - List Available Tools
 
@@ -74,16 +74,16 @@ Call a specific tool on an MCP server:
 }
 ```
 
-**Response** — the job output is the tool's result, unwrapped:
+**Response**: the job output is the tool's result, unwrapped:
 
-- If the server returns **structured content** (a tool with an output schema), the job output is that structured value, verbatim — e.g. `{"results": [...]}` for a search tool.
+- If the server returns **structured content** (a tool with an output schema), the job output is that structured value, verbatim, e.g. `{"results": [...]}` for a search tool.
 - Otherwise the output is the tool's **text content**: a single string for a one-block result, or an array of strings for a multi-block result.
 
 ```json
 "Here are the latest AI news articles..."
 ```
 
-There is no `content` wrapper — dereference the output directly (`[0]` for the text of a text-only tool, `[0, "results", ...]` for a structured one). A tool that reports an error fails the job with the error text (see [Error Handling](#error-handling)).
+There is no `content` wrapper; dereference the output directly (`[0]` for the text of a text-only tool, `[0, "results", ...]` for a structured one). A tool that reports an error fails the job with the error text (see [Error Handling](#error-handling)).
 
 ## Bridging MCP Tools into the Catalog
 
@@ -93,7 +93,7 @@ they become ordinary operations: invocable by path, subject to capability
 grants and gates, recorded as jobs, validated against their schema, and
 usable in agent tool palettes.
 
-The tool is the entity — the server is just where it lives.
+The tool is the entity; the server is just where it lives.
 
 ### Curating individual tools
 
@@ -111,7 +111,7 @@ The tool is the entity — the server is just where it lives.
 ```
 
 The bridged asset is **self-contained** (server, tool name, auth reference,
-and the tool's own input schema all live in the asset) — there is no
+and the tool's own input schema all live in the asset); there is no
 registry entry to manage. That makes **groups just catalog paths**: curate
 `o/research/search_papers`, `o/research/github_search` and
 `o/research/fetch_page` from three different servers, each with its own
@@ -119,15 +119,15 @@ auth, and hand the group to an agent as its tool set.
 
 Paths under your own `o/` namespace need nothing extra; venue-wide paths
 (`v/ops/...`) require the `mcp/manage` ability. Remove a curated tool with
-`covia:delete` on its path — nothing resurrects it.
+`covia:delete` on its path; nothing resurrects it.
 
 Optional inputs:
 
-- `name` / `description` — display overrides. They are yours: refresh never
+- `name` / `description`: display overrides. They are yours: refresh never
   touches them.
-- `auth` — a secret reference for the server (see
+- `auth`: a secret reference for the server (see
   [Authentication for bridged servers](#authentication-for-bridged-servers)).
-- `default` — argument defaults (below).
+- `default`: argument defaults (below).
 
 If the tool name doesn't exist on the server, the error lists the server's
 available tools so you (or an agent) can self-correct in one step.
@@ -150,12 +150,12 @@ purpose-shaped one:
 }
 ```
 
-Callers (and agents) now see a tool that needs only `title` and `body` —
+Callers (and agents) now see a tool that needs only `title` and `body`;
 the defaulted keys are removed from the schema's `required` list. Defaults may be any
 value type, and a caller-supplied value always wins: this is
 purpose-shaping, **not** access control. When an argument value must be
 enforced, use a capability gate instead. The mechanism is generic
-(`operation.default` works on any operation — see
+(`operation.default` works on any operation; see
 [COG-7: Operations](/docs/protocol/cogs/COG-007)); `add-tool` just stores it
 for you.
 
@@ -181,22 +181,22 @@ refresh/remove bookkeeping. `v/ops/mcp/remove-server` deletes the mirrored
 subtree and registry entry.
 
 Server URLs pass the same SSRF validation (and operator allow/block lists)
-as the HTTP adapter — bridging a server can never reach anything a direct
+as the HTTP adapter; bridging a server can never reach anything a direct
 call couldn't.
 
 ### Keeping bridged tools fresh
 
-`v/ops/mcp/refresh` re-syncs against the live server, in one of two modes —
+`v/ops/mcp/refresh` re-syncs against the live server, in one of two modes;
 provide exactly one of `name` or `path`:
 
-- **Mirror** (`{"name": "github"}`): full reconciliation — new tools added,
+- **Mirror** (`{"name": "github"}`): full reconciliation, with new tools added,
   changed schemas rewritten, vanished tools **deleted**. The subtree mirrors
   the server.
 - **Curated** (`{"path": "o/research"}`): walks the bridged ops under the
   path (one op or a whole group, across servers), updates input/output
   schemas and annotations in place. Your `name`/`description` overrides and
   `default` values are untouched, and a tool the server no longer offers is
-  **reported in `missing`, never deleted** — you picked it, removal is your
+  **reported in `missing`, never deleted**; you picked it, removal is your
   call. Per-server failures are isolated in `errors`; other servers in the
   group still refresh.
 
@@ -205,12 +205,12 @@ provide exactly one of `name` or `path`:
 The `auth` input should be a **secret reference**, resolved at call time and
 never persisted raw:
 
-- `s/GITHUB_MCP_TOKEN` — a secret in your own store (stored qualified to
+- `s/GITHUB_MCP_TOKEN`: a secret in your own store (stored qualified to
   your DID), set via `v/ops/secret/set`
-- `did:key:.../s/GITHUB_MCP_TOKEN` — an explicitly DID-qualified reference
+- `did:key:.../s/GITHUB_MCP_TOKEN`: an explicitly DID-qualified reference
   (the venue's or your own)
 
-A literal token works but warns — the bridged asset persists on the
+A literal token works but warns: the bridged asset persists on the
 lattice, so raw credentials belong in the secret store.
 
 ### Bridged tool errors
@@ -218,7 +218,7 @@ lattice, so raw credentials belong in the secret store.
 Bridged calls fail with LLM-diagnosable messages at the point of use:
 
 - A remote tool-level error (`isError` in the MCP result) fails the job
-  with the remote error text — a model can read it and self-correct.
+  with the remote error text; a model can read it and self-correct.
 - Transport failures name the tool, the server and the root cause, with a
   remedy: `MCP tool 'search_papers' on server https://... failed:
   Connection refused — check the server is reachable, or re-sync the
@@ -270,7 +270,7 @@ The token is passed as a Bearer token in the request to the MCP server.
 
 ### Using Venue Configuration
 
-For frequently-used MCP servers, declare them in the venue configuration —
+For frequently-used MCP servers, declare them in the venue configuration;
 they are bridged into the catalog at boot (venue scope):
 
 ```json
@@ -287,7 +287,7 @@ they are bridged into the catalog at boot (venue scope):
 ```
 
 Each server's tools materialise as operations under
-`v/ops/mcp/protected-server/`, invocable by path like any other operation —
+`v/ops/mcp/protected-server/`, invocable by path like any other operation;
 no `server` or `token` inputs needed. Seeding is best-effort: a server that
 is down at boot logs a warning and the last-known catalog persists (run
 `v/ops/mcp/refresh` when it is reachable). See
@@ -362,9 +362,9 @@ MCP failures fail the job with a diagnosable message:
 
 Common error scenarios:
 - **Connection errors**: the message names the tool, server and root cause
-- **Authentication errors**: invalid or missing token / unresolvable secret reference (fail-closed — a missing secret never silently connects unauthenticated)
+- **Authentication errors**: invalid or missing token / unresolvable secret reference (fail-closed: a missing secret never silently connects unauthenticated)
 - **Tool not found**: the requested tool doesn't exist on the server
-- **Tool-level errors**: a remote tool that reports `isError` fails the job with the remote error text — never a "successful" result carrying an error payload
+- **Tool-level errors**: a remote tool that reports `isError` fails the job with the remote error text, never a "successful" result carrying an error payload
 - **Invalid arguments**: arguments don't match the tool's schema
 
 ## Caching and Performance

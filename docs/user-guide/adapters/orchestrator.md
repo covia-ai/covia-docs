@@ -6,7 +6,7 @@ sidebar_label: Orchestrator
 
 # Orchestrator
 
-Multi-step AI pipelines deserve better than glue code in a script — they should be declared once, audited end to end, and runnable anywhere on the grid. The Orchestrator does exactly that: workflows are defined as operation assets and executed as directed acyclic graphs (DAGs), with steps running in parallel where possible, automatic dependency resolution, and result composition — one auditable job for the whole pipeline.
+Multi-step AI pipelines deserve better than glue code in a script: they should be declared once, audited end to end, and runnable anywhere on the grid. The Orchestrator does exactly that: workflows are defined as operation assets and executed as directed acyclic graphs (DAGs), with steps running in parallel where possible, automatic dependency resolution, and result composition; one auditable job for the whole pipeline.
 
 ## How It Works
 
@@ -74,7 +74,7 @@ Step inputs are built using a resolution syntax that references the orchestratio
 | `[N, "field"]` | Output from step N | `[0, "output"]` |
 | `["concat", parts...]` | String concatenation | `["concat", "prefix-", ["input", "id"]]` |
 
-Resolution is recursive — maps and arrays within step inputs are resolved recursively.
+Resolution is recursive: maps and arrays within step inputs are resolved recursively.
 
 **Dependency rule:** Step N can only reference steps 0 to N-1. This enforces a DAG structure with no circular dependencies.
 
@@ -102,7 +102,7 @@ Resolution is recursive — maps and arrays within step inputs are resolved recu
 | `input` | object | No | Input with resolution expressions |
 | `venue` | string | No | Remote venue URL or DID (omit for local) |
 | `strict` | boolean | No | Validate output against operation schema |
-| `foreach` | object | No | Run the step once per element of a collection — see [Fan out over a collection](#fan-out-over-a-collection-foreach) |
+| `foreach` | object | No | Run the step once per element of a collection, see [Fan out over a collection](#fan-out-over-a-collection-foreach) |
 
 ## Result Composition
 
@@ -119,7 +119,7 @@ The `result` field defines what the orchestration returns, using the same resolu
 
 ## Error Handling
 
-- If `strict: true` on a step, its output is validated against the operation's schema — violations fail the orchestration immediately
+- If `strict: true` on a step, its output is validated against the operation's schema; violations fail the orchestration immediately
 - If a step's operation fails, all steps depending on it also fail
 - Independent steps continue running even if a sibling fails (unless global strict mode is set)
 
@@ -144,7 +144,7 @@ A step with a `foreach` object runs its operation once per element, as concurren
 ]
 ```
 
-Inside a foreach step's `input`, `["item"]` binds the current element (`["item", "field"]` for a path within it) and `["index"]` its zero-based position. Arrays iterate element-wise; maps iterate as `[key, value]` pairs. Output order matches source order regardless of completion order. The first failing element fails the step (in-flight elements finish), and the venue caps collection size and concurrency — see [COG-12 § Foreach Steps](/docs/protocol/cogs/COG-012#foreach-steps) for the full semantics.
+Inside a foreach step's `input`, `["item"]` binds the current element (`["item", "field"]` for a path within it) and `["index"]` its zero-based position. Arrays iterate element-wise; maps iterate as `[key, value]` pairs. Output order matches source order regardless of completion order. The first failing element fails the step (in-flight elements finish), and the venue caps collection size and concurrency; see [COG-12 § Foreach Steps](/docs/protocol/cogs/COG-012#foreach-steps) for the full semantics.
 
 ### Agent Pipeline
 
@@ -186,7 +186,7 @@ Route individual steps to remote venues:
 
 ## Related
 
-- [Grid Adapter](./grid-adapter) — individual operation invocation
-- [JSON Adapter](./json) — data manipulation primitives for result composition
-- [Agents](/docs/user-guide/agents/) — agent-based step execution
-- [COG-012: Orchestrations](/docs/protocol/cogs/COG-012) — Protocol specification
+- [Grid Adapter](./grid-adapter): individual operation invocation
+- [JSON Adapter](./json): data manipulation primitives for result composition
+- [Agents](/docs/user-guide/agents/): agent-based step execution
+- [COG-012: Orchestrations](/docs/protocol/cogs/COG-012): Protocol specification

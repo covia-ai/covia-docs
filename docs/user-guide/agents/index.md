@@ -5,16 +5,16 @@ sidebar_position: 1
 
 # Agents
 
-Covia agents are persistent, stateful AI actors that live on a venue. They receive tasks, call tools, coordinate with other agents, and produce auditable results — all within the venue's governance and capability framework.
+Covia agents are persistent, stateful AI actors that live on a venue. They receive tasks, call tools, coordinate with other agents, and produce auditable results, all within the venue's governance and capability framework.
 
 ## Key Concepts
 
 An agent is more than a chat session. It is a durable record with:
 
-- **Configuration** — system prompt, tools, capabilities, LLM backend
-- **Sessions** — persistent conversation threads; each holds its own messages, conversation, and scratch data that persist across runs
-- **Tasks** — tracked requests (Jobs) from humans, other agents, or systems
-- **Timeline** — an append-only audit trail of every completed run
+- **Configuration**: system prompt, tools, capabilities, LLM backend
+- **Sessions**: persistent conversation threads; each holds its own messages, conversation, and scratch data that persist across runs
+- **Tasks**: tracked requests (Jobs) from humans, other agents, or systems
+- **Timeline**: an append-only audit trail of every completed run
 
 See [Sessions](./sessions) for how work flows into an agent.
 
@@ -31,7 +31,7 @@ agent:request        -->    llmagent:chat        -->    langchain:anthropic
 agent:message               (custom)                    langchain:ollama
 ```
 
-**Level 1 (Framework)** manages the agent lifecycle — picking up inbound tasks and session messages, invoking the transition function, recording results in the timeline, and persisting state. It never inspects the conversation or user data.
+**Level 1 (Framework)** manages the agent lifecycle: picking up inbound tasks and session messages, invoking the transition function, recording results in the timeline, and persisting state. It never inspects the conversation or user data.
 
 **Level 2 (Domain Logic)** manages the session conversation, tool call loops, and context assembly. Two built-in options:
 
@@ -67,7 +67,7 @@ An agent transitions through four states:
 |-------|-------------|
 | **SLEEPING** | Idle, ready to run. Default after creation or a successful run. |
 | **RUNNING** | A transition is in flight. New tasks and messages are queued. |
-| **SUSPENDED** | Last run failed. Dormant — does not auto-retry. State and tasks are preserved for debugging. |
+| **SUSPENDED** | Last run failed. Dormant, does not auto-retry. State and tasks are preserved for debugging. |
 | **TERMINATED** | Logically deleted. Preserves audit record; can be revived with `overwrite: true`. |
 
 ## Quick Example
@@ -110,15 +110,15 @@ agent_request agentId: "Alice"  input: { task: "Summarise the vendor records" } 
 
 ## What's Next
 
-- [Creating Agents](./creating-agents) — configuration, templates, and examples
-- [Sessions](./sessions) — conversation threads and the run loop
-- [Agent Operations](./operations) — full lifecycle reference
-- [LLM Agent](./llm-agent) — simple conversational agents
-- [Goal Tree](./goal-tree) — hierarchical goal decomposition
-- [Tools and Context](./tools-and-context) — tool resolution, capabilities, context loading
-- [LLM Backends](./llm-backends) — OpenAI, Anthropic, Ollama, and more
+- [Creating Agents](./creating-agents): configuration, templates, and examples
+- [Sessions](./sessions): conversation threads and the run loop
+- [Agent Operations](./operations): full lifecycle reference
+- [LLM Agent](./llm-agent): simple conversational agents
+- [Goal Tree](./goal-tree): hierarchical goal decomposition
+- [Tools and Context](./tools-and-context): tool resolution, capabilities, context loading
+- [LLM Backends](./llm-backends): OpenAI, Anthropic, Ollama, and more
 
 ## Related
 
-- [COG-11: Agent Lifecycle](/docs/protocol/cogs/COG-011) — Protocol specification for agents
-- [COG-12: Orchestrations](/docs/protocol/cogs/COG-012) — Multi-agent orchestration
+- [COG-11: Agent Lifecycle](/docs/protocol/cogs/COG-011): Protocol specification for agents
+- [COG-12: Orchestrations](/docs/protocol/cogs/COG-012): Multi-agent orchestration

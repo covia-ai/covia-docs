@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # Federate Two Venues
 
-This is the demo that makes Covia *Covia*: two independent venues — separate identities, separate data, separate audit trails — collaborating on a task where **the data never leaves its home venue and only results cross the boundary**. You'll run both on your laptop in about ten minutes, then federate with a real venue in the cloud.
+This is the demo that makes Covia *Covia*: two independent venues (separate identities, separate data, separate audit trails) collaborating on a task where **the data never leaves its home venue and only results cross the boundary**. You'll run both on your laptop in about ten minutes, then federate with a real venue in the cloud.
 
 **You'll need:** Java 21+ and the `covia.jar` from the [latest development build](https://github.com/covia-ai/covia/releases/tag/latest-snapshot) (or build from source). No API keys.
 
@@ -33,7 +33,7 @@ curl -s http://localhost:8080/api/v1/status   # "Venue A", did:key:z6Mkg...
 curl -s http://localhost:8081/api/v1/status   # "Venue B", did:key:z6Mks...
 ```
 
-> Two Docker containers work too — but note that from inside a container, `localhost` is the container itself; put both on a Docker network or use `host.docker.internal`. The single-process config keeps the tutorial friction-free.
+> Two Docker containers work too, but note that from inside a container, `localhost` is the container itself; put both on a Docker network or use `host.docker.internal`. The single-process config keeps the tutorial friction-free.
 
 ## 2. Your first federated call
 
@@ -59,7 +59,7 @@ POST http://localhost:8080/api/v1/invoke
 }
 ```
 
-Venue A created a job, dispatched the call across the venue boundary, Venue B executed it, and only the result came back. The calling interface is identical to a local invocation — federation is not a special case.
+Venue A created a job, dispatched the call across the venue boundary, Venue B executed it, and only the result came back. The calling interface is identical to a local invocation; federation is not a special case.
 
 ## 3. The data stays put
 
@@ -106,11 +106,11 @@ curl -s http://localhost:8081/api/v1/jobs    # B's log: the writes and the feder
 curl -s http://localhost:8080/api/v1/jobs    # A's log: the grid:run jobs it dispatched
 ```
 
-Neither side depends on the other for its audit trail — compliance evidence exists on both sides of every cross-boundary call.
+Neither side depends on the other for its audit trail: compliance evidence exists on both sides of every cross-boundary call.
 
 ## 5. Federate with the cloud
 
-Nothing about this is localhost-specific. Point your laptop venue at a live public venue — by URL or by **DID**:
+Nothing about this is localhost-specific. Point your laptop venue at a live public venue, by URL or by **DID**:
 
 ```json
 POST http://localhost:8080/api/v1/invoke
@@ -129,11 +129,11 @@ POST http://localhost:8080/api/v1/invoke
 { "status": "COMPLETE", "output": { "schema": { "type": "object", "..." : "..." } } }
 ```
 
-Your laptop just dispatched work to a venue on AWS, addressed by its decentralised identifier — the DID resolved via `/.well-known/did.json` to the venue's API endpoint. That's the grid: any venue, anywhere, one calling convention.
+Your laptop just dispatched work to a venue on AWS, addressed by its decentralised identifier; the DID resolved via `/.well-known/did.json` to the venue's API endpoint. That's the grid: any venue, anywhere, one calling convention.
 
 ## 6. Long-running work across venues
 
-`grid:run` blocks for the result. For long operations, use the async pair — submit, then poll:
+`grid:run` blocks for the result. For long operations, use the async pair (submit, then poll):
 
 ```json
 { "operation": "v/ops/grid/invoke",
@@ -148,12 +148,12 @@ returns a job id immediately; collect it later with:
 
 ## Go further
 
-- **Multi-venue orchestrations** — [orchestrator](../adapters/orchestrator) steps each take their own `venue`, so one declarative workflow can fan out across the grid and compose the results.
-- **Federated agents** — an [agent](../agents/) on one venue can hold `v/ops/grid/run` as a tool and delegate work to partner venues, under its own [capabilities](../capabilities).
-- **Other protocols cross boundaries too** — venues federate over [A2A](../adapters/covia-with-a2a) (agent-to-agent tasks) and [MCP](../mcp/calling-mcp-tools) (remote tool calls), not just `grid:*`.
+- **Multi-venue orchestrations**: [orchestrator](../adapters/orchestrator) steps each take their own `venue`, so one declarative workflow can fan out across the grid and compose the results.
+- **Federated agents**: an [agent](../agents/) on one venue can hold `v/ops/grid/run` as a tool and delegate work to partner venues, under its own [capabilities](../capabilities).
+- **Other protocols cross boundaries too**: venues federate over [A2A](../adapters/covia-with-a2a) (agent-to-agent tasks) and [MCP](../mcp/calling-mcp-tools) (remote tool calls), not just `grid:*`.
 
 ## Related
 
-- [Grid Adapter](../adapters/grid-adapter) — the full `grid:*` reference
-- [The Grid](../../overview/grid) — the conceptual model
-- [Operator: Authentication](../../operator-guide/auth) — governing who may call your venue
+- [Grid Adapter](../adapters/grid-adapter): the full `grid:*` reference
+- [The Grid](../../overview/grid): the conceptual model
+- [Operator: Authentication](../../operator-guide/auth): governing who may call your venue

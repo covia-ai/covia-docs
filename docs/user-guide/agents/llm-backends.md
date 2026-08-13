@@ -5,7 +5,7 @@ sidebar_position: 7
 
 # LLM Backends
 
-The Level 3 LLM call is a stateless operation that sends messages and tool definitions to a language model and returns the response. Covia is **model-agnostic** — it talks to several providers through the LangChain adapter, and the choice of provider and model is yours. The default models below are what a backend uses when you don't set `model` — a fallback, not a recommendation.
+The Level 3 LLM call is a stateless operation that sends messages and tool definitions to a language model and returns the response. Covia is **model-agnostic**: it talks to several providers through the LangChain adapter, and the choice of provider and model is yours. The default models below are what a backend uses when you don't set `model` (a fallback, not a recommendation).
 
 ## Available Backends
 
@@ -41,7 +41,7 @@ Many providers (xAI, DeepSeek, Google Gemini, local gateways) expose an OpenAI-c
 
 ## Configuration
 
-Set the backend via `llmOperation` in agent config. The `model` is optional — omit it to use the backend default:
+Set the backend via `llmOperation` in agent config. The `model` is optional; omit it to use the backend default:
 
 ```json
 {
@@ -59,17 +59,17 @@ Set the backend via `llmOperation` in agent config. The `model` is optional — 
 
 ### Secrets
 
-API keys are resolved from the per-user secret store at invocation time — they are never stored in job records. Set one with:
+API keys are resolved from the per-user secret store at invocation time; they are never stored in job records. Set one with:
 
 ```json
 { "operation": "v/ops/secret/set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." } }
 ```
 
-A backend that needs a key but can't resolve one **fails fast** with a clear error naming the secret it looked for (e.g. `s/OPENAI_API_KEY`) — it does not silently fall back. Ollama needs no key.
+A backend that needs a key but can't resolve one **fails fast** with a clear error naming the secret it looked for (e.g. `s/OPENAI_API_KEY`); it does not silently fall back. Ollama needs no key.
 
 ### Sampling parameters
 
-`temperature` and `topP` in the op input pass through to every backend —
+`temperature` and `topP` in the op input pass through to every backend;
 `temperature: 0` gives (near-)deterministic output for extraction pipelines.
 Omitted parameters use the provider's defaults. `maxTokens` bounds the output
 on the Anthropic backend (its API requires a bound; the client default
@@ -80,15 +80,15 @@ applies otherwise).
 When the op input carries no `url`, the Ollama base URL resolves venue-side:
 `adapters.langchain.ollamaUrl` in venue config, then the `OLLAMA_BASE_URL`
 environment variable, then `http://localhost:11434`. Keep agents
-topology-agnostic — set the venue-level knob, not per-agent URLs:
+topology-agnostic: set the venue-level knob, not per-agent URLs:
 
 | Topology | Setting |
 |----------|---------|
-| Host venue + host Ollama | nothing — the localhost default works |
+| Host venue + host Ollama | nothing, the localhost default works |
 | Docker venue + host Ollama | `adapters.langchain.ollamaUrl` (or `OLLAMA_BASE_URL`) = `http://host.docker.internal:11434`, and start Ollama with `OLLAMA_HOST=0.0.0.0 ollama serve` |
 | Both in one compose network | `http://<ollama-service-name>:11434` |
 
-A connect failure names the resolved URL and this knob — if you see
+A connect failure names the resolved URL and this knob; if you see
 `Ollama not reachable at http://localhost:11434` from a containerised venue,
 that's the second row.
 
@@ -131,5 +131,5 @@ You may pass a single `prompt` string and/or `systemPrompt` instead of a full `m
 
 ## Related
 
-- [Creating Agents](./creating-agents) — agent configuration reference
-- [LLM Agent](./llm-agent) — how the Level 2 transition manages the tool call loop
+- [Creating Agents](./creating-agents): agent configuration reference
+- [LLM Agent](./llm-agent): how the Level 2 transition manages the tool call loop
