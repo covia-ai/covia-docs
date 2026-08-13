@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Capabilities
 
-Covia uses **capabilities** to decide what an authenticated caller (a user, an agent, or another venue) is allowed to do. A capability is a signed grant that says "this holder may perform *this ability* on *this resource*". Covia's model follows [UCAN](https://github.com/ucan-wg/spec) (User-Controlled Authorization Networks): capabilities are carried as signed tokens, can be **attenuated** (narrowed) when delegated, and are checked at the point of use.
+Covia uses **capabilities** to decide what an authenticated caller — a user, an agent, or another venue — is allowed to do. A capability is a signed grant that says "this holder may perform *this ability* on *this resource*". Covia's model follows [UCAN](https://github.com/ucan-wg/spec) (User-Controlled Authorization Networks): capabilities are carried as signed tokens, can be **attenuated** (narrowed) when delegated, and are checked at the point of use.
 
 Authentication answers *who you are* (see the [operator auth guide](../operator-guide/auth)); capabilities answer *what you may do*.
 
@@ -13,8 +13,8 @@ Authentication answers *who you are* (see the [operator auth guide](../operator-
 
 A capability is a `{with, can}` pair:
 
-- **`with`**: the resource, as a path or URI: a lattice path like `o/shared/`, `w/reports/`, or `dlfs/notes/` (DLFS drives are a DID-scoped namespace alongside `w/`; the legacy `dlfs://notes/` scheme form is still accepted for your *own* drives), or a typed resource such as `file://workspace/`.
-- **`can`**: the ability, a hierarchical path. The common family is `crud/read`, `crud/write`, `crud/delete` (with the umbrella `crud` covering all three); further families govern specific surfaces (e.g. `agent/create`, `asset/read`, `mcp/manage` (managing bridged MCP servers), `grant/…` (issuing grants)), and `*` covers everything.
+- **`with`** — the resource, as a path or URI: a lattice path like `o/shared/`, `w/reports/`, or `dlfs/notes/` (DLFS drives are a DID-scoped namespace alongside `w/`; the legacy `dlfs://notes/` scheme form is still accepted for your *own* drives), or a typed resource such as `file://workspace/`.
+- **`can`** — the ability, a hierarchical path. The common family is `crud/read`, `crud/write`, `crud/delete` (with the umbrella `crud` covering all three); further families govern specific surfaces — e.g. `agent/create`, `asset/read`, `mcp/manage` (managing bridged MCP servers), `grant/…` (issuing grants) — and `*` covers everything.
 
 ```json
 { "with": "o/shared/", "can": "crud/read" }
@@ -26,7 +26,7 @@ A grant **covers** a request when its resource is a prefix of the target and its
 
 ### 1. Agent caps
 
-An agent's config can carry a `caps` array. Once set, **every** operation the agent attempts is checked against it; the agent cannot exceed its grant, even via tool calls:
+An agent's config can carry a `caps` array. Once set, **every** operation the agent attempts is checked against it — the agent cannot exceed its grant, even via tool calls:
 
 ```json
 "caps": [
@@ -36,7 +36,7 @@ An agent's config can carry a `caps` array. Once set, **every** operation the ag
 ]
 ```
 
-The agent's capabilities are disclosed in its system prompt so the model knows its limits up front. A denied call returns a **structural** error (it names the required ability and resource and lists what the agent holds, and signals that retrying won't help), so the agent adapts instead of looping. (An agent with no `caps` is unrestricted within its owner's namespace.)
+The agent's capabilities are disclosed in its system prompt so the model knows its limits up front. A denied call returns a **structural** error — it names the required ability and resource and lists what the agent holds, and signals that retrying won't help — so the agent adapts instead of looping. (An agent with no `caps` is unrestricted within its owner's namespace.)
 
 ### 2. UCAN tokens on a request
 
@@ -48,9 +48,9 @@ Authorization: Bearer <ucan-jwt>
 
 This works on both the REST API and the MCP endpoint. The token's issuer (`iss`) is taken as the caller DID, and the token is stashed as a capability proof for the operation. Requests may also carry proofs explicitly via the `ucans` field of the invoke envelope.
 
-This is what enables **cross-user access**: if Alice issues Bob a UCAN granting `{with: "o/shared/", can: "crud/read"}`, Bob can present it to read under Alice's `o/shared/` namespace, access he wouldn't otherwise have. The venue trusts the verified proof, not Bob's bare identity.
+This is what enables **cross-user access**: if Alice issues Bob a UCAN granting `{with: "o/shared/", can: "crud/read"}`, Bob can present it to read under Alice's `o/shared/` namespace — access he wouldn't otherwise have. The venue trusts the verified proof, not Bob's bare identity.
 
-Verification checks the **root of the delegation chain**: a grant over Alice's resources must be rooted by Alice herself (an owner-signed, *self-sovereign* grant, verifiable by **any** venue, which is what makes capabilities work across venue boundaries) or by the venue that hosts the data (venue-issued grants, e.g. from `ucan:issue`). A chain can pass through intermediaries (Alice → Bob → Carol) as long as each hop only narrows the grant; an escalating hop is refused.
+Verification checks the **root of the delegation chain**: a grant over Alice's resources must be rooted by Alice herself (an owner-signed, *self-sovereign* grant — verifiable by **any** venue, which is what makes capabilities work across venue boundaries) or by the venue that hosts the data (venue-issued grants, e.g. from `ucan:issue`). A chain can pass through intermediaries (Alice → Bob → Carol) as long as each hop only narrows the grant; an escalating hop is refused.
 
 ## Issuing a UCAN
 
@@ -71,13 +71,13 @@ The `ucan:issue` operation mints a venue-signed UCAN delegating capabilities to 
 
 | Field | Meaning |
 |-------|---------|
-| `aud` | Audience DID: who receives the capability |
-| `att` | Attenuations: the `{with, can}` grants being delegated |
+| `aud` | Audience DID — who receives the capability |
+| `att` | Attenuations — the `{with, can}` grants being delegated |
 | `exp` | Expiry, in unix seconds |
 
 The result is a JWT the audience presents as a bearer token. Because UCANs attenuate, the audience can in turn delegate a *narrower* subset onward, but never more than it holds.
 
-A resource owner with their own `did:key` keypair can equally sign grants over their own namespace **directly**, with no venue involvement. Such self-sovereign grants verify on any venue that holds the data.
+A resource owner with their own `did:key` keypair can equally sign grants over their own namespace **directly** — no venue involvement. Such self-sovereign grants verify on any venue that holds the data.
 
 ## Capability-gated adapters
 
@@ -85,7 +85,7 @@ Capability checks apply across the venue. In particular, the [`file:`](./adapter
 
 ## Related
 
-- [Operator: Authentication](../operator-guide/auth): how callers are identified
-- [Creating Agents](./agents/creating-agents): setting an agent's `caps`
-- [File Adapter](./adapters/file): capability-gated filesystem access
-- [COG-013: Agent Capabilities](../protocol/cogs/COG-013): the protocol specification
+- [Operator: Authentication](../operator-guide/auth) — how callers are identified
+- [Creating Agents](./agents/creating-agents) — setting an agent's `caps`
+- [File Adapter](./adapters/file) — capability-gated filesystem access
+- [COG-013: Agent Capabilities](../protocol/cogs/COG-013) — the protocol specification

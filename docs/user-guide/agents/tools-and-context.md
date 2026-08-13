@@ -5,21 +5,21 @@ sidebar_position: 6
 
 # Tools and Context
 
-Every agent turn, the context builder assembles the complete input for the LLM: system prompt, tools, loaded context, and the session conversation. Understanding this pipeline helps you configure agents effectively and debug unexpected behaviour.
+Every agent turn, the context builder assembles the complete input for the LLM — system prompt, tools, loaded context, and the session conversation. Understanding this pipeline helps you configure agents effectively and debug unexpected behaviour.
 
 ## Context Assembly Pipeline
 
 Each turn, the context is rebuilt fresh (never frozen from the first turn):
 
-1. **System prompt**: from `config.systemPrompt`, plus capability disclosure and lattice namespace reference
-2. **Config tools**: resolved from `config.tools` array
-3. **Default tools**: the standard operation palette (when `defaultTools: true`)
-4. **Context entries**: from `config.context` array, resolved and rendered
-5. **Skills index**: one line per skill offered by `config.skills` sources
-6. **Loaded paths**: from `context_load` and `skill_load` calls, rendered at assigned budgets
-7. **Pending results**: completions of outbound jobs the agent is waiting on
-8. **Session messages**: ephemeral notifications delivered to the session
-9. **Conversation**: the session conversation (LLM Agent) or current frame (Goal Tree)
+1. **System prompt** — from `config.systemPrompt`, plus capability disclosure and lattice namespace reference
+2. **Config tools** — resolved from `config.tools` array
+3. **Default tools** — the standard operation palette (when `defaultTools: true`)
+4. **Context entries** — from `config.context` array, resolved and rendered
+5. **Skills index** — one line per skill offered by `config.skills` sources
+6. **Loaded paths** — from `context_load` and `skill_load` calls, rendered at assigned budgets
+7. **Pending results** — completions of outbound jobs the agent is waiting on
+8. **Session messages** — ephemeral notifications delivered to the session
+9. **Conversation** — the session conversation (LLM Agent) or current frame (Goal Tree)
 
 ## Tool Resolution
 
@@ -82,7 +82,7 @@ Loaded paths persist across turns and are re-rendered fresh each turn.
 
 ### One-Shot Reads
 
-For data needed once, agents can call `covia:read` directly; this returns the value in the tool result without persisting it in the context across turns.
+For data needed once, agents can call `covia:read` directly — this returns the value in the tool result without persisting it in the context across turns.
 
 ## Skills
 
@@ -92,9 +92,9 @@ Where `config.context` pins knowledge the agent always needs, **skills** are the
 "skills": ["w/skills", "v/skills"]
 ```
 
-Each entry is a source: a directory of skills, or a single skill asset. Sources are searched in order, so a same-named skill in `w/skills` shadows the venue's. Declaring any source does two things: it injects a compact index (one `- name — description` line per skill) into every turn, and it offers the agent the `skill_load` harness tool.
+Each entry is a source — a directory of skills, or a single skill asset. Sources are searched in order, so a same-named skill in `w/skills` shadows the venue's. Declaring any source does two things: it injects a compact index (one `- name — description` line per skill) into every turn, and it offers the agent the `skill_load` harness tool.
 
-Loading a skill injects its body, loads its bundled context entries, and adds its tools to the palette, all as one entry in the same loads tier `context_load` uses, so budgets, the Context Map, eviction, and `context_unload` all apply unchanged. Bodies re-resolve each turn, so editing a skill takes effect on the next turn of every agent carrying it.
+Loading a skill injects its body, loads its bundled context entries, and adds its tools to the palette — all as one entry in the same loads tier `context_load` uses, so budgets, the Context Map, eviction, and `context_unload` all apply unchanged. Bodies re-resolve each turn, so editing a skill takes effect on the next turn of every agent carrying it.
 
 Loading grants no authority: a skill's tools are still capability-checked at invocation, exactly as before it was loaded.
 
@@ -112,9 +112,9 @@ Anyone can browse the same skills with the `v/ops/skills` operation (`list` and 
 
 Each context entry has a byte budget. The context builder uses budget-aware rendering:
 
-- **High budget**: full detail, all fields and nested structures
-- **Low budget**: summarised, key fields only
-- **Compacted segments** (Goal Tree): summaries at low budget, full turns at high budget
+- **High budget** — full detail, all fields and nested structures
+- **Low budget** — summarised, key fields only
+- **Compacted segments** (Goal Tree) — summaries at low budget, full turns at high budget
 
 The default context budget is 180,000 bytes (approximately 45,000 tokens). This is configurable.
 
@@ -155,7 +155,7 @@ This helps the LLM adjust its approach rather than retrying the same denied acti
 | `crud/write` | Write operations only |
 | `crud` | Full CRUD (read, write, delete, append) |
 
-The `with` field is a path prefix: `"w/vendor-records/"` grants access to everything under that path.
+The `with` field is a path prefix — `"w/vendor-records/"` grants access to everything under that path.
 
 ## Lattice Namespaces
 
@@ -163,25 +163,25 @@ Agents interact with data via lattice paths. The system prompt includes a refere
 
 | Prefix | Description |
 |--------|-------------|
-| `w/` | User workspace: persistent data managed on the user's behalf |
-| `o/` | Operation pins: named operations saved for reuse |
-| `n/` | Agent-private notes: persists across transitions, private to this agent |
-| `t/` | Temporary scratch space: cleaned up when the job ends |
-| `g/` | Agent records: state, timelines, config for all agents |
-| `s/` | Secrets: API keys and credentials |
-| `j/` | Job records: status and results of past work |
-| `a/` | Assets: immutable content-addressed artefacts |
-| `v/ops/` | Venue operations catalog: shared, read-only |
+| `w/` | User workspace — persistent data managed on the user's behalf |
+| `o/` | Operation pins — named operations saved for reuse |
+| `n/` | Agent-private notes — persists across transitions, private to this agent |
+| `t/` | Temporary scratch space — cleaned up when the job ends |
+| `g/` | Agent records — state, timelines, config for all agents |
+| `s/` | Secrets — API keys and credentials |
+| `j/` | Job records — status and results of past work |
+| `a/` | Assets — immutable content-addressed artefacts |
+| `v/ops/` | Venue operations catalog — shared, read-only |
 
 Deep path navigation is supported: `w/records/123/name`, `g/agent/timeline/0/end`.
 
 ## Inbound Channels
 
-Agents receive work through three channels. Tasks, chats, and messages all attach to a [session](./sessions): the persistent conversation thread the run loop processes one at a time.
+Agents receive work through three channels. Tasks, chats, and messages all attach to a [session](./sessions) — the persistent conversation thread the run loop processes one at a time.
 
 | Channel | Persistence | Tracking | Use for |
 |---------|-------------|----------|---------|
-| **Tasks** (via `agent:request`) | Persistent, survive restarts | Each is a Job with status | Formal requests requiring a response |
+| **Tasks** (via `agent:request`) | Persistent — survive restarts | Each is a Job with status | Formal requests requiring a response |
 | **Chats** (via `agent:chat`) | Per-session | A chat Job awaiting the next reply | Conversational, back-and-forth interaction |
 | **Messages** (via `agent:message`) | Queued on the session, consumed on next run | Recorded in the timeline | One-way notifications |
 | **Pending results** | Persistent | Linked to outbound Job IDs | Completions of work the agent delegated |
@@ -190,8 +190,8 @@ Tasks persist until completed or failed. Messages are drained after processing. 
 
 ## Related
 
-- [Creating Agents](./creating-agents): configuration reference
-- [Teach an Agent a New Skill](../tutorials/skills): skills end to end
-- [LLM Agent](./llm-agent): simple conversational model
-- [Goal Tree](./goal-tree): hierarchical goal decomposition
-- [LLM Backends](./llm-backends): configuring the Level 3 provider
+- [Creating Agents](./creating-agents) — configuration reference
+- [Teach an Agent a New Skill](../tutorials/skills) — skills end to end
+- [LLM Agent](./llm-agent) — simple conversational model
+- [Goal Tree](./goal-tree) — hierarchical goal decomposition
+- [LLM Backends](./llm-backends) — configuring the Level 3 provider

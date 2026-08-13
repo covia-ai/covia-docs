@@ -5,13 +5,13 @@ sidebar_label: Python
 
 # Python Adapter
 
-Much of the world's analytical, scientific, and ML code lives in Python, and rewriting it is not a plan. The Python adapter (the optional [`ai.covia:covia-python-adapter`](https://central.sonatype.com/artifact/ai.covia/covia-python-adapter) venue module) brings that code onto the grid as first-class operations: operator-configured Python functions, published, capability-checked, and audited. CPython runs **in-process** via the Java FFM API (Java 22+, CPython 3.10–3.14), with Convex values converting natively across the boundary: no subprocess, no serialisation tax.
+Much of the world's analytical, scientific, and ML code lives in Python — and rewriting it is not a plan. The Python adapter — the optional [`ai.covia:covia-python-adapter`](https://central.sonatype.com/artifact/ai.covia/covia-python-adapter) venue module — brings that code onto the grid as first-class operations: operator-configured Python functions, published, capability-checked, and audited. CPython runs **in-process** via the Java FFM API (Java 22+, CPython 3.10–3.14), with Convex values converting natively across the boundary — no subprocess, no serialisation tax.
 
-The security model is deliberate: **there is no `eval`**. Callers can never submit Python source, host paths, or function names: the operator selects every script and allowlists every callable. Caller-selected code would turn venue invocation into host code execution, so the surface simply doesn't exist. Python runs with the venue process's authority; scripts are trusted operator code (use containers for anything else).
+The security model is deliberate: **there is no `eval`**. Callers can never submit Python source, host paths, or function names — the operator selects every script and allowlists every callable. Caller-selected code would turn venue invocation into host code execution, so the surface simply doesn't exist. Python runs with the venue process's authority; scripts are trusted operator code (use containers for anything else).
 
 ## Configured operations
 
-Each operation declared in the module config installs at `v/ops/python/<id>` with the JSON Schemas the operator gives it, and behaves like any native operation (discoverable, capability-checked, audited, callable as an MCP tool):
+Each operation declared in the module config installs at `v/ops/python/<id>` with the JSON Schemas the operator gives it, and behaves like any native operation — discoverable, capability-checked, audited, callable as an MCP tool:
 
 ```json
 {
@@ -37,7 +37,7 @@ For session-style work, the module can also expose **instances**: isolated, stat
 }
 ```
 
-`instances/list` shows your live instances; `instances/close` releases one. State (module globals) persists across calls until close or venue restart. Instances are owned by the calling user: other users' instances are invisible, agents share their owner's, and anonymous callers are refused. `maxPerUser` (default 8) and `maxTotal` (default 128) bound retained native state.
+`instances/list` shows your live instances; `instances/close` releases one. State (module globals) persists across calls until close or venue restart. Instances are owned by the calling user — other users' instances are invisible, agents share their owner's, and anonymous callers are refused. `maxPerUser` (default 8) and `maxTotal` (default 128) bound retained native state.
 
 ## Enabling the module
 
@@ -65,10 +65,10 @@ Unlike SQL, Python's configuration lives in the module entry itself:
 }
 ```
 
-Omit `instances` and no instance surface exists at all. If FFM or CPython is unavailable the module degrades gracefully: the venue starts, the adapter stays inactive with a warning.
+Omit `instances` and no instance surface exists at all. If FFM or CPython is unavailable the module degrades gracefully — the venue starts, the adapter stays inactive with a warning.
 
 ## Related
 
-- [Venue modules](/docs/operator-guide/configuration): loading and pinning module jars
-- [SQL (module)](./sql): the other shipped extension module
-- [MCP integration](../mcp/): configured operations as MCP tools
+- [Venue modules](/docs/operator-guide/configuration) — loading and pinning module jars
+- [SQL (module)](./sql) — the other shipped extension module
+- [MCP integration](../mcp/) — configured operations as MCP tools

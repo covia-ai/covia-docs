@@ -5,7 +5,7 @@ sidebar_label: Archive
 
 # Archive Adapter
 
-Real workflows exchange bundles (datasets, document packs, build outputs), and an archive from outside should never be trusted blindly. The archive adapter handles zip and jar files as governed operations: `archive:list` inspects without extracting, `archive:extract` unpacks into a jailed directory, and `archive:zip` builds an archive from files, written to a jailed file or published as a content-addressed [asset](./asset).
+Real workflows exchange bundles — datasets, document packs, build outputs — and an archive from outside should never be trusted blindly. The archive adapter handles zip and jar files as governed operations: `archive:list` inspects without extracting, `archive:extract` unpacks into a jailed directory, and `archive:zip` builds an archive from files — written to a jailed file or published as a content-addressed [asset](./asset).
 
 ## Operations
 
@@ -21,7 +21,7 @@ Real workflows exchange bundles (datasets, document packs, build outputs), and a
 }
 ```
 
-Sources for `list` and `extract` are exactly one of: `root` + `path` (a file under a configured [File adapter](./file) root), `asset` (a content-addressed reference), or `bytes` (inline base64). Omit `destRoot`/`destPath` on `zip` and the result is published as an asset in your `a/` namespace instead of written to disk: `{entries, bytes, asset: "did:.../a/<hash>"}`.
+Sources for `list` and `extract` are exactly one of: `root` + `path` (a file under a configured [File adapter](./file) root), `asset` (a content-addressed reference), or `bytes` (inline base64). Omit `destRoot`/`destPath` on `zip` and the result is published as an asset in your `a/` namespace instead of written to disk — `{entries, bytes, asset: "did:.../a/<hash>"}`.
 
 ## Built for hostile inputs
 
@@ -37,5 +37,5 @@ Checks are per resource rather than blanket: sources require `crud/read`, destin
 
 ## Related
 
-- [File Adapter](./file): the root jail this builds on
-- [Assets](./asset): archives as immutable artifacts
+- [File Adapter](./file) — the root jail this builds on
+- [Assets](./asset) — archives as immutable artifacts

@@ -6,14 +6,14 @@ sidebar_position: 8
 
 # DLFS (Decentralised Lattice File System)
 
-On most platforms your files ultimately belong to the platform. DLFS exists so they belong to **you**: self-sovereign, decentralised file storage where each user gets their own named drives, every write is signed with the user's own Ed25519 key, and the whole drive (stored in an independent lattice region) is portable across venues. Move venue, keep your files, keep the proof they're yours.
+On most platforms your files ultimately belong to the platform. DLFS exists so they belong to **you**: self-sovereign, decentralised file storage where each user gets their own named drives, every write is signed with the user's own Ed25519 key, and the whole drive — stored in an independent lattice region — is portable across venues. Move venue, keep your files, keep the proof they're yours.
 
 ## Key Properties
 
-- **User-signed**: every write is signed by the user's own key, not the venue's
-- **Lattice-backed**: drives use CRDT merge semantics for conflict-free cross-venue synchronisation
-- **Portable**: users can migrate drives to another venue by exporting their key
-- **Isolated**: DLFS occupies a separate lattice region from venue state; the venue operator cannot forge modifications
+- **User-signed** — every write is signed by the user's own key, not the venue's
+- **Lattice-backed** — drives use CRDT merge semantics for conflict-free cross-venue synchronisation
+- **Portable** — users can migrate drives to another venue by exporting their key
+- **Isolated** — DLFS occupies a separate lattice region from venue state; the venue operator cannot forge modifications
 
 ## Drives
 
@@ -31,7 +31,7 @@ Each user can create and manage multiple named drives. A drive is a named file s
 { "operation": "v/ops/dlfs/delete-drive", "input": { "name": "archive" } }
 ```
 
-Drive creation is idempotent: creating the same drive twice succeeds without error. The first write to a drive also auto-creates it if needed.
+Drive creation is idempotent — creating the same drive twice succeeds without error. The first write to a drive also auto-creates it if needed.
 
 ## File Operations
 
@@ -111,13 +111,13 @@ Parent directories must already exist.
 { "operation": "v/ops/dlfs/delete", "input": { "drive": "documents", "path": "reports/draft.json" } }
 ```
 
-Cannot delete non-empty directories; delete contents first.
+Cannot delete non-empty directories — delete contents first.
 
 ## Operations Reference
 
 | Operation | Input | Description |
 |-----------|-------|-------------|
-| `dlfs:listDrives` | (none) | List all drives for the caller |
+| `dlfs:listDrives` | — | List all drives for the caller |
 | `dlfs:createDrive` | `name` | Create a named drive (idempotent) |
 | `dlfs:deleteDrive` | `name` | Delete a drive and all contents |
 | `dlfs:list` | `drive`, `path?` | List directory entries |
@@ -180,7 +180,7 @@ net use Z: https://your-venue.example.com/dlfs/documents /user:alice
 ```
 
 :::tip
-If Windows refuses `https://` URLs, ensure the **WebClient** service is running (`services.msc` → WebClient → Start, set to Automatic). Windows also enforces a default 50 MB WebDAV file-size limit; raise `FileSizeLimitInBytes` under `HKLM\SYSTEM\CurrentControlSet\Services\WebClient\Parameters` if you transfer larger files.
+If Windows refuses `https://` URLs, ensure the **WebClient** service is running (`services.msc` → WebClient → Start, set to Automatic). Windows also enforces a default 50 MB WebDAV file-size limit — raise `FileSizeLimitInBytes` under `HKLM\SYSTEM\CurrentControlSet\Services\WebClient\Parameters` if you transfer larger files.
 :::
 
 #### macOS (Finder)
@@ -222,7 +222,7 @@ When a user first accesses DLFS, the adapter generates a unique Ed25519 keypair.
 
 - Each user can only access their own drives
 - The venue operator cannot modify a user's drives (modifications require the user's signature)
-- Anonymous requests are rejected: all DLFS operations require authentication
+- Anonymous requests are rejected — all DLFS operations require authentication
 
 ### Cross-Venue Portability
 
@@ -238,9 +238,9 @@ Because ownership is cryptographic rather than administrative, a venue cannot lo
 DLFS uses timestamp-wins CRDT merge:
 - When two venues modify the same file, the newest version wins
 - Changes made offline are stored locally and sync when reconnected
-- No manual conflict resolution: merging is automatic and deterministic
+- No manual conflict resolution — merging is automatic and deterministic
 
 ## Related
 
-- [Vault](./vault): simplified DLFS wrapper for health vault access
-- [REST API](/docs/user-guide/api): HTTP endpoints
+- [Vault](./vault) — simplified DLFS wrapper for health vault access
+- [REST API](/docs/user-guide/api) — HTTP endpoints

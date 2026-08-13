@@ -6,7 +6,7 @@ sidebar_position: 8
 
 # Build the Open Grid with Us
 
-The Grid is an open, interoperable fabric for AI, built in the open, by and for developers. If you believe AI should be modular, auditable, and connectable across tools, frameworks, and venues, you're in the right place.
+The Grid is an open, interoperable fabric for AI — built in the open, by and for developers. If you believe AI should be modular, auditable, and connectable across tools, frameworks, and venues, you're in the right place.
 
 - Core (Covia): [github.com/covia-ai/covia](https://github.com/covia-ai/covia)
 - Documentation: [github.com/covia-ai/covia-docs](https://github.com/covia-ai/covia-docs)
@@ -70,7 +70,7 @@ The Grid is an open, interoperable fabric for AI, built in the open, by and for 
 
 ## Not sure where to start?
 
-Tell us what you want to build in Discord, and we'll help you map it to the Grid, whether that's a new venue, a custom adapter, or a production workflow. Your feedback directly shapes the roadmap.
+Tell us what you want to build in Discord, and we'll help you map it to the Grid — whether that's a new venue, a custom adapter, or a production workflow. Your feedback directly shapes the roadmap.
 
 Ready? Open your first issue or PR today:
 

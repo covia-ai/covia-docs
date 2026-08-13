@@ -6,11 +6,11 @@ sidebar_label: HTTP
 
 # HTTP Adapter
 
-Agents and workflows constantly need the outside world (REST APIs, webhooks, data feeds), but an unguarded network hole is the classic way an agent platform gets burned. The HTTP adapter provides outbound HTTP as a governed operation: built-in SSRF protection, capability checks on every call, and a job record for every request that leaves the venue.
+Agents and workflows constantly need the outside world — REST APIs, webhooks, data feeds — but an unguarded network hole is the classic way an agent platform gets burned. The HTTP adapter provides outbound HTTP as a governed operation: built-in SSRF protection, capability checks on every call, and a job record for every request that leaves the venue.
 
 ## Operations
 
-### http:get: GET Request
+### http:get — GET Request
 
 ```json
 {
@@ -23,7 +23,7 @@ Agents and workflows constantly need the outside world (REST APIs, webhooks, dat
 }
 ```
 
-### http:post: POST Request (and PUT, DELETE, PATCH)
+### http:post — POST Request (and PUT, DELETE, PATCH)
 
 ```json
 {
@@ -41,7 +41,7 @@ The `method` parameter defaults to POST but can be set to `PUT`, `DELETE`, or `P
 
 ### Bearer authentication via a secret
 
-To call an API that needs a bearer token without putting the token in plaintext, set `bearerSecret` to a secret reference. The venue resolves it from the caller's [secret store](./secret) at invocation time and sends it as `Authorization: Bearer <token>`; the token never appears in the operation input or the job record:
+To call an API that needs a bearer token without putting the token in plaintext, set `bearerSecret` to a secret reference. The venue resolves it from the caller's [secret store](./secret) at invocation time and sends it as `Authorization: Bearer <token>` — the token never appears in the operation input or the job record:
 
 ```json
 {
@@ -67,7 +67,7 @@ Every HTTP operation returns:
 }
 ```
 
-The `body` is always a string; JSON responses must be parsed by the caller.
+The `body` is always a string — JSON responses must be parsed by the caller.
 
 ## Input Reference
 
@@ -96,5 +96,5 @@ The adapter includes SSRF (Server-Side Request Forgery) protection:
 
 ## Related
 
-- [Grid Adapter](./grid-adapter): for invoking operations on other Covia venues (use Grid, not HTTP)
-- [REST API](/docs/user-guide/api): the venue's own HTTP API
+- [Grid Adapter](./grid-adapter) — for invoking operations on other Covia venues (use Grid, not HTTP)
+- [REST API](/docs/user-guide/api) — the venue's own HTTP API

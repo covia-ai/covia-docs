@@ -6,17 +6,17 @@ sidebar_position: 9
 
 # Vault Adapter
 
-The vault is a **protected, venue-hosted file system for each user**: a private space for documents and files that agents can be given controlled access to. Every user's vault is their own: operations always target the caller's personal drive, access is governed by [capabilities](../capabilities) like every other operation, and every read and write is traced to the identity that made it and signed with the user's DLFS key.
+The vault is a **protected, venue-hosted file system for each user** — a private space for documents and files that agents can be given controlled access to. Every user's vault is their own: operations always target the caller's personal drive, access is governed by [capabilities](../capabilities) like every other operation, and every read and write is traced to the identity that made it and signed with the user's DLFS key.
 
-Under the hood it is a thin wrapper over [DLFS](./dlfs) bound to a single well-known drive (`vault` by default, operator-configurable below). The drive is created automatically on first access, and the user's signing key is generated for them, with no setup step.
+Under the hood it is a thin wrapper over [DLFS](./dlfs) bound to a single well-known drive (`vault` by default, operator-configurable below). The drive is created automatically on first access, and the user's signing key is generated for them — no setup step.
 
 ## Why Use Vault?
 
-Handing an agent the full DLFS API means it must manage drive names; handing it the vault means five simple tools (`read`, `write`, `list`, `mkdir`, `delete`) that always land in its owner's protected space. Access is as controlled as you choose to make it: give a summarising agent only `vault:read` and `vault:list` and it can never modify a document; every operation it performs lands in the audit trail under its own identity.
+Handing an agent the full DLFS API means it must manage drive names; handing it the vault means five simple tools — `read`, `write`, `list`, `mkdir`, `delete` — that always land in its owner's protected space. Access is as controlled as you choose to make it: give a summarising agent only `vault:read` and `vault:list` and it can never modify a document; every operation it performs lands in the audit trail under its own identity.
 
 ## Operations
 
-Only a `path` is needed; the drive is implicit.
+Only a `path` is needed — the drive is implicit.
 
 ### Read
 
@@ -24,7 +24,7 @@ Only a `path` is needed; the drive is implicit.
 { "operation": "v/ops/vault/read", "input": { "path": "documents/referral.json" } }
 ```
 
-Returns `{content, encoding, size}`, identical to `dlfs:read`.
+Returns `{content, encoding, size}` — identical to `dlfs:read`.
 
 ### Write
 
@@ -68,7 +68,7 @@ Omit `path` to list the vault root.
 
 ## Configuration
 
-The operator can rename the backing drive in venue config, useful when a deployment wants a domain-specific vault (a health product might use `health-vault`, for instance):
+The operator can rename the backing drive in venue config — useful when a deployment wants a domain-specific vault (a health product might use `health-vault`, for instance):
 
 ```json
 {
@@ -78,10 +78,10 @@ The operator can rename the backing drive in venue config, useful when a deploym
 }
 ```
 
-The name must be a valid DLFS drive name: non-empty, with no `/`, `\`, or `:`.
+The name must be a valid DLFS drive name — non-empty, with no `/`, `\`, or `:`.
 
 :::caution Encrypt sensitive vaults
-Vault data is only as protected as the venue's storage. If the venue has no encrypted storage policy configured, vault contents persist unencrypted; the venue logs a warning at startup. Configure `etch.cipher` and key management before storing sensitive data. See [Persistence](/docs/operator-guide/persistence).
+Vault data is only as protected as the venue's storage. If the venue has no encrypted storage policy configured, vault contents persist unencrypted — the venue logs a warning at startup. Configure `etch.cipher` and key management before storing sensitive data. See [Persistence](/docs/operator-guide/persistence).
 :::
 
 ## Giving Agents Vault Access
@@ -120,5 +120,5 @@ All operations are traced to the agent's identity and signed by the user's DLFS 
 
 ## Related
 
-- [DLFS](./dlfs): full decentralised file system with multi-drive support and WebDAV
-- [Agents](/docs/user-guide/agents/): creating and configuring agents with tools
+- [DLFS](./dlfs) — full decentralised file system with multi-drive support and WebDAV
+- [Agents](/docs/user-guide/agents/) — creating and configuring agents with tools

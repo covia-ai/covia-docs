@@ -302,7 +302,7 @@ venue.agents.create("Alice", config={
     "tools": ["v/ops/covia/read", "v/ops/covia/list"],
 }, overwrite=True)
 
-# Session-scoped chat: omit session_id on the first call, then reuse it
+# Session-scoped chat — omit session_id on the first call, then reuse it
 reply = venue.agents.chat("Alice", "Hi Alice")
 follow = venue.agents.chat("Alice", "And the next step?", session_id=reply.sessionId)
 
@@ -554,7 +554,7 @@ logging.getLogger("covia").addHandler(handler)
 
 ```
 covia
-├── Grid                 # Entry point: Grid.connect()
+├── Grid                 # Entry point — Grid.connect()
 ├── Venue                # Venue interaction; typed managers: venue.agents,
 │                        #   venue.secrets, venue.workspace, venue.ucan
 ├── Job                  # Job lifecycle (wait, result, cancel, stream)

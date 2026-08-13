@@ -21,5 +21,5 @@ Use the [REST API](../api) directly from Rust with `reqwest` or any HTTP client.
 
 ## Related Documentation
 
-- [SDK Overview](./): comparison of all Covia SDKs
-- [REST API Reference](../api): direct HTTP API documentation
+- [SDK Overview](./) — comparison of all Covia SDKs
+- [REST API Reference](../api) — direct HTTP API documentation

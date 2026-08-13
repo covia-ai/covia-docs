@@ -8,7 +8,7 @@ Every Covia venue can function as an MCP (Model Context Protocol) server, automa
 
 ## Enabling MCP
 
-The MCP endpoint registers when an `mcp` block is present in the venue configuration; the built-in default configuration (and the published Docker image) includes one, so a stock venue serves MCP out of the box. To configure it explicitly:
+The MCP endpoint registers when an `mcp` block is present in the venue configuration — the built-in default configuration (and the published Docker image) includes one, so a stock venue serves MCP out of the box. To configure it explicitly:
 
 ```json
 {
@@ -33,7 +33,7 @@ This endpoint implements the MCP **Streamable HTTP** transport: JSON-RPC over `P
 
 ### Claude (claude.ai and Claude Desktop)
 
-Remote venues are added as **custom connectors**: go to **Settings → Connectors → Add custom connector** and paste your venue's `/mcp` URL. Custom connectors require a public HTTPS endpoint; a `http://localhost:8080/mcp` venue won't work here. See the [Claude tutorial](../tutorials/claude-mcp) for a full walkthrough.
+Remote venues are added as **custom connectors**: go to **Settings → Connectors → Add custom connector** and paste your venue's `/mcp` URL. Custom connectors require a public HTTPS endpoint — a `http://localhost:8080/mcp` venue won't work here. See the [Claude tutorial](../tutorials/claude-mcp) for a full walkthrough.
 
 ### Claude Code
 
@@ -79,7 +79,7 @@ Covia automatically converts operations to MCP tools. Tool names are derived fro
 | `agent:create` | `agent_create` |
 | `mcp:tools:call` | `mcp_tools_call` |
 
-Operations are discovered dynamically from the venue's adapter registries: any operation with a valid input schema is automatically exposed as an MCP tool.
+Operations are discovered dynamically from the venue's adapter registries — any operation with a valid input schema is automatically exposed as an MCP tool.
 
 ### Operation Metadata
 
@@ -229,7 +229,7 @@ Review which operations should be exposed via MCP. Use the `"mcp": false` flag t
 
 ### Tool Design
 
-- **Clear Names**: Name operations so the derived tool reads as an action: `search:documents` becomes `search_documents`, which beats `doc_srch`
+- **Clear Names**: Name operations so the derived tool reads as an action — `search:documents` becomes `search_documents`, which beats `doc_srch`
 - **Helpful Descriptions**: Write descriptions that help AI understand when to use the tool
 - **Typed Parameters**: Use JSON Schema to fully describe parameters with types and descriptions
 

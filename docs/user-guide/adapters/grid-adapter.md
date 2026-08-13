@@ -6,11 +6,11 @@ sidebar_label: Grid
 
 # Grid Adapter
 
-The best model, the governed dataset, and the domain expert's operation rarely all live on *your* venue; that is the whole point of a grid. The Grid adapter lets workflows and agents use capability wherever it lives: operations run locally or on remote venues through exactly the same interface, while each party's data stays under its own governance and only results cross the boundary.
+The best model, the governed dataset, and the domain expert's operation rarely all live on *your* venue — that is the whole point of a grid. The Grid adapter lets workflows and agents use capability wherever it lives: operations run locally or on remote venues through exactly the same interface, while each party's data stays under its own governance and only results cross the boundary.
 
 ## Operations
 
-### grid:run: Synchronous Execution
+### grid:run — Synchronous Execution
 
 Execute an operation and wait for the result.
 
@@ -28,7 +28,7 @@ Execute an operation and wait for the result.
 
 Returns the operation's output directly.
 
-**Remote execution**: specify a venue URL or DID:
+**Remote execution** — specify a venue URL or DID:
 
 ```json
 {
@@ -41,7 +41,7 @@ Returns the operation's output directly.
 }
 ```
 
-### grid:invoke: Asynchronous Execution
+### grid:invoke — Asynchronous Execution
 
 Submit an operation and return immediately with a job ID.
 
@@ -65,7 +65,7 @@ Submit an operation and return immediately with a job ID.
 }
 ```
 
-### grid:jobStatus: Poll Job
+### grid:jobStatus — Poll Job
 
 Check the current status of a previously submitted job.
 
@@ -85,7 +85,7 @@ Check the current status of a previously submitted job.
 }
 ```
 
-### grid:jobResult: Wait for Result
+### grid:jobResult — Wait for Result
 
 Block until a job completes and return its output.
 
@@ -104,7 +104,7 @@ Returns the operation's output directly, or errors if the job failed.
 | `grid:jobStatus` | `id`, `venue?` | Poll job status |
 | `grid:jobResult` | `id`, `venue?` | Wait for job completion, return result |
 
-The `input` passed to `grid:run` / `grid:invoke` may be **any JSON value** (object, array, string, number, boolean, or null), not just an object. It is passed through to the target operation, which validates it against its own input schema.
+The `input` passed to `grid:run` / `grid:invoke` may be **any JSON value** — object, array, string, number, boolean, or null — not just an object. It is passed through to the target operation, which validates it against its own input schema.
 
 ## Operation References
 
@@ -140,7 +140,7 @@ grid:jobResult job-3 → result-C
 
 ### Cross-Venue Federation
 
-Execute an operation on a remote venue; caller identity is automatically propagated for audit and access control:
+Execute an operation on a remote venue — caller identity is automatically propagated for audit and access control:
 
 ```json
 {
@@ -155,6 +155,6 @@ Execute an operation on a remote venue; caller identity is automatically propaga
 
 ## Related
 
-- [REST API](/docs/user-guide/api): HTTP endpoints for invoking operations
-- [Orchestrator](./orchestrator): multi-step workflows using grid operations
-- [COG-007: Operations](/docs/protocol/cogs/COG-007): Operation specification
+- [REST API](/docs/user-guide/api) — HTTP endpoints for invoking operations
+- [Orchestrator](./orchestrator) — multi-step workflows using grid operations
+- [COG-007: Operations](/docs/protocol/cogs/COG-007) — Operation specification

@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Persistence
 
-Covia venues persist all state (assets, jobs, agents, secrets, workspace data, and DLFS drives) to an on-disk Etch store backed by lattice technology. This page explains how persistence works, what operators need to configure, and what to expect during shutdown and recovery. See the [Configuration Reference](./configuration) for the `store`, `seed`, and `storage` keys.
+Covia venues persist all state — assets, jobs, agents, secrets, workspace data, and DLFS drives — to an on-disk Etch store backed by lattice technology. This page explains how persistence works, what operators need to configure, and what to expect during shutdown and recovery. See the [Configuration Reference](./configuration) for the `store`, `seed`, and `storage` keys.
 
 ## How It Works
 
@@ -15,12 +15,12 @@ Venue state is persisted by a background sweep:
 Component writes → in-memory fork → (every 100ms) → signed root cursor → Etch store (disk)
 ```
 
-1. **Writes accumulate in a fork**: all mutations (API calls, MCP operations, agent runs, jobs) write to an in-memory fork of the lattice
-2. **Daemon sweep (every 100ms)**: a background thread merges the fork into the root cursor with a single Ed25519 signature
-3. **Periodic fsync (~every 10s)**: the sweep forces a store-level `fsync` only when at least ~10 seconds have elapsed since the last flush, bounding the data-loss window on an *unclean* host shutdown (kernel panic, power loss, hard VM stop)
-4. **Critical writes flush immediately**: job completion, secret rotation, agent termination, and OAuth login trigger a synchronous flush that bypasses the background queue and resets the periodic-fsync timer
+1. **Writes accumulate in a fork** — all mutations (API calls, MCP operations, agent runs, jobs) write to an in-memory fork of the lattice
+2. **Daemon sweep (every 100ms)** — a background thread merges the fork into the root cursor with a single Ed25519 signature
+3. **Periodic fsync (~every 10s)** — the sweep forces a store-level `fsync` only when at least ~10 seconds have elapsed since the last flush, bounding the data-loss window on an *unclean* host shutdown (kernel panic, power loss, hard VM stop)
+4. **Critical writes flush immediately** — job completion, secret rotation, agent termination, and OAuth login trigger a synchronous flush that bypasses the background queue and resets the periodic-fsync timer
 
-No operator configuration is needed for the sweep; it runs automatically.
+No operator configuration is needed for the sweep — it runs automatically.
 
 ## Store Configuration
 
@@ -34,28 +34,28 @@ The `store` field in venue configuration controls where state is persisted:
 
 | Value | Behaviour |
 |-------|-----------|
-| `"/path/to/venue.etch"` | **Persistent file store**: state survives restarts. Recommended for production. |
-| `"temp"` | **Temporary store**: deleted on exit. Default; suitable for development. |
-| `"memory"` | **In-memory only**: no persistence at all. Fastest, but all state lost on exit. |
+| `"/path/to/venue.etch"` | **Persistent file store** — state survives restarts. Recommended for production. |
+| `"temp"` | **Temporary store** — deleted on exit. Default; suitable for development. |
+| `"memory"` | **In-memory only** — no persistence at all. Fastest, but all state lost on exit. |
 
 If `store` is **omitted entirely**, the venue falls back to an ephemeral temp store and logs a warning that data will be deleted on exit. Set `store` to a file path for persistence, or to `"temp"` / `"memory"` to make the choice explicit and silence the warning.
 
 ### Venue Identity
 
-The venue key pair resolves in a strict order: an explicit `seed` → a configured `keystore` (PKCS12) → a `venue.key` file beside a persistent store (auto-generated with owner-only `0600` permissions if absent) → freshly generated. On restart with the same store path, the same venue DID is restored; identity is stable across restarts.
+The venue key pair resolves in a strict order: an explicit `seed` → a configured `keystore` (PKCS12) → a `venue.key` file beside a persistent store (auto-generated with owner-only `0600` permissions if absent) → freshly generated. On restart with the same store path, the same venue DID is restored — identity is stable across restarts.
 
-Two deliberate edges: an **ephemeral** (`temp`/`memory`) venue without `seed` or `keystore` gets a new DID every start by design, and reopening an existing store with a key that owns none of its state is a **startup error naming the store's real owner**: a wrong key can never silently create a fresh empty venue and orphan your data.
+Two deliberate edges: an **ephemeral** (`temp`/`memory`) venue without `seed` or `keystore` gets a new DID every start by design, and reopening an existing store with a key that owns none of its state is a **startup error naming the store's real owner** — a wrong key can never silently create a fresh empty venue and orphan your data.
 
 ### Encrypted Stores
 
-The Etch store can be an **encrypted Etch v3 store** (`etch` config block); everything inside it (lattice state, agents, secrets, DLFS drives) is then encrypted at rest, with fail-closed key handling. The store key and the identity `seed` are independent secrets: rotate and guard them separately, and with an encrypted store prefer `seed` or `keystore` over a plaintext `venue.key` sitting beside it (the venue warns about that combination). One caveat: `storage.content: "file"` writes asset content bytes *outside* the store as plaintext files. See [Security](./security#encrypt-the-store) for the full treatment.
+The Etch store can be an **encrypted Etch v3 store** (`etch` config block) — everything inside it (lattice state, agents, secrets, DLFS drives) is then encrypted at rest, with fail-closed key handling. The store key and the identity `seed` are independent secrets: rotate and guard them separately, and with an encrypted store prefer `seed` or `keystore` over a plaintext `venue.key` sitting beside it (the venue warns about that combination). One caveat: `storage.content: "file"` writes asset content bytes *outside* the store as plaintext files. See [Security](./security#encrypt-the-store) for the full treatment.
 
 ## Shutdown
 
 On graceful shutdown, the venue follows a strict ordering to ensure no writes are lost:
 
-1. **Engine closes first**: stops accepting new sweep tasks, waits up to 2 seconds for any in-flight sweep to finish, then runs a final synchronous flush (merges fork, persists to root cursor)
-2. **Node server closes second**: reads the root cursor (now guaranteed to contain the engine's final writes), broadcasts final state, and flushes the Etch store
+1. **Engine closes first** — stops accepting new sweep tasks, waits up to 2 seconds for any in-flight sweep to finish, then runs a final synchronous flush (merges fork, persists to root cursor)
+2. **Node server closes second** — reads the root cursor (now guaranteed to contain the engine's final writes), broadcasts final state, and flushes the Etch store
 
 This ordering is critical. The fork pattern means writes sit in memory until explicitly merged. Without the engine-first flush, the node server's shutdown drain would read stale state.
 
@@ -69,14 +69,14 @@ On restart, all state is automatically restored:
 4. Agents with pending work wake automatically via the scheduler
 5. DLFS drives are recovered from the independent `:dlfs` lattice region
 
-No manual recovery is needed; restart is idempotent.
+No manual recovery is needed — restart is idempotent.
 
 ## Durability Window
 
 Two intervals matter, because they fail differently:
 
-- **Process kill (SIGKILL):** only writes still in the fork, at most one sweep interval (~100ms), are at risk. Writes the sweep has already merged and written to the store survive a process kill, because the OS flushes them from its page cache.
-- **Unclean host shutdown (kernel panic, power loss, hard VM stop):** writes that reached the store but haven't been `fsync`ed can be lost, up to the periodic-fsync interval (~10s).
+- **Process kill (SIGKILL):** only writes still in the fork — at most one sweep interval (~100ms) — are at risk. Writes the sweep has already merged and written to the store survive a process kill, because the OS flushes them from its page cache.
+- **Unclean host shutdown (kernel panic, power loss, hard VM stop):** writes that reached the store but haven't been `fsync`ed can be lost — up to the periodic-fsync interval (~10s).
 
 Critical operations (job completion, secrets, agent termination, OAuth login) always flush synchronously and are not subject to either window.
 
@@ -93,11 +93,11 @@ Critical operations (job completion, secrets, agent termination, OAuth login) al
 
 Watch for these in venue logs:
 
-- **Sweep warnings**: indicate the background sync is failing (disk issues, lock contention)
-- **Flush timeouts**: indicate the synchronous barrier is taking longer than expected
-- **Recovery messages** on startup: confirm how many jobs and agents were restored
+- **Sweep warnings** — indicate the background sync is failing (disk issues, lock contention)
+- **Flush timeouts** — indicate the synchronous barrier is taking longer than expected
+- **Recovery messages** on startup — confirm how many jobs and agents were restored
 
 ## Related
 
-- [Venue Quick Start](./venue-start): launching and configuring a venue
-- [Authentication](./auth): configuring authentication for your venue
+- [Venue Quick Start](./venue-start) — launching and configuring a venue
+- [Authentication](./auth) — configuring authentication for your venue

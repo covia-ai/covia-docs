@@ -5,7 +5,7 @@ sidebar_position: 5
 
 # Goal Tree
 
-The Goal Tree adapter (`goaltree:chat`) provides hierarchical goal decomposition for complex agent tasks. The agent pursues goals via a **frame stack**: each subgoal opens a child frame with its own scoped conversation, and results propagate back to the parent.
+The Goal Tree adapter (`goaltree:chat`) provides hierarchical goal decomposition for complex agent tasks. The agent pursues goals via a **frame stack** — each subgoal opens a child frame with its own scoped conversation, and results propagate back to the parent.
 
 ## How It Works
 
@@ -24,7 +24,7 @@ Each frame has its own conversation with the LLM. When a `subgoal` tool is calle
 3. The child calls `complete` or `fail` (or returns text for implicit complete)
 4. Control returns to the parent with the result
 
-Ancestor frames are visible as progressively summarised context: the parent at ~300 bytes, the grandparent at ~150 bytes, and so on.
+Ancestor frames are visible as progressively summarised context — the parent at ~300 bytes, the grandparent at ~150 bytes, and so on.
 
 ## Configuration
 
@@ -69,7 +69,7 @@ Open a child frame to pursue a sub-task.
 { "name": "subgoal", "input": { "description": "Extract line items from the invoice" } }
 ```
 
-The child inherits the parent's tool definitions and loaded context paths. Its conversation is independent; the parent doesn't see it. Returns `{status: "complete", result: ...}` or `{status: "failed", error: ...}`.
+The child inherits the parent's tool definitions and loaded context paths. Its conversation is independent — the parent doesn't see it. Returns `{status: "complete", result: ...}` or `{status: "failed", error: ...}`.
 
 ### complete
 
@@ -81,7 +81,7 @@ Finish the current goal with a result.
 
 If `config.outputs.complete.schema` is defined, the input is validated against that schema using the LLM's strict structured output mode.
 
-A text-only response (no tool calls) implicitly completes the goal; no explicit `complete` call needed.
+A text-only response (no tool calls) implicitly completes the goal — no explicit `complete` call needed.
 
 ### fail
 
@@ -190,6 +190,6 @@ Root: "Analyse all 50 vendor records"
 
 ## Related
 
-- [LLM Agent](./llm-agent): simpler conversational model
-- [Creating Agents](./creating-agents): configuration and templates
-- [Tools and Context](./tools-and-context): tool resolution, budgets, context loading
+- [LLM Agent](./llm-agent) — simpler conversational model
+- [Creating Agents](./creating-agents) — configuration and templates
+- [Tools and Context](./tools-and-context) — tool resolution, budgets, context loading
