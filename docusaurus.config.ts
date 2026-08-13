@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Covia.ai Docs',
-  tagline: 'Universal Grid for AI',
+  tagline: 'The Universal Grid for the Agent Economy',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
