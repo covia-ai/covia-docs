@@ -319,7 +319,7 @@ event: job-update
 data: {"id":"0x1234...","status":"COMPLETE","output":{...}}
 ```
 
-Delegated or federated observation presents proofs via the `X-Covia-Ucans` header (see [Authentication](#presenting-ucan-capability-proofs)). Note that the browser `EventSource` API cannot set an `Authorization` header; browser clients authenticating with bearer tokens should poll `GET /api/v1/jobs/{id}`, or parse the SSE body from a `fetch` stream.
+Delegated or federated observation presents proofs via the `X-Covia-Ucans` header (see [Authentication](#presenting-ucan-capability-proofs)). Note that the browser `EventSource` API cannot set an `Authorization` header. The SDKs therefore stream over `fetch` and parse the SSE body themselves, carrying normal auth headers (TypeScript `venue.jobs.stream()`, SDK 1.9.0); plain `EventSource` clients work unauthenticated on public venues, and otherwise poll `GET /api/v1/jobs/{id}`.
 
 #### `PUT /api/v1/jobs/{id}/cancel`
 
