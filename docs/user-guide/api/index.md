@@ -485,6 +485,16 @@ Gets details for a specific operation by name.
 
 ---
 
+### Schedules (job-free read)
+
+#### `GET /api/v1/schedules`
+
+Lists the authenticated caller's pending scheduled events, time-ordered, without creating a job (covia 0.9.2). Includes events queued by the caller's agents. Requires authentication (`401` otherwise).
+
+**Response:** an array of `{handle, op, time}` entries, where `handle` identifies the schedule for `scheduler:cancel`/`scheduler:trigger`, `op` is the target operation reference, and `time` is the next run in epoch milliseconds.
+
+---
+
 ### Agents (job-free reads)
 
 Two `GET` routes read agent state without creating a job. Agent **actions** (create, chat, request, suspend, and the rest) remain operations under `v/ops/agent/`; see [Agent Operations](../agents/operations).
