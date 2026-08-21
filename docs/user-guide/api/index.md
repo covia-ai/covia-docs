@@ -218,6 +218,28 @@ curl -X POST '.../api/v1/invoke?wait=30000' -d '{"operation":"...","input":{...}
 
 ---
 
+#### `POST /api/v1/run`
+
+Runs an operation and returns **its result**, rather than a job handle. The request body is the same as `/invoke`; the HTTP request stays open until the operation completes.
+
+```bash
+curl -X POST "$VENUE/api/v1/run" \
+  -H "Content-Type: application/json" \
+  -d '{"operation": "v/ops/schema/infer", "input": {"value": {"name": "Ada"}}}'
+```
+
+Execution still uses the normal Job lifecycle internally — this is a different *response shape*, not a different execution path. What differs is what gets **recorded**: mutating or unclassified operations are recorded as durable jobs exactly as through `/invoke`, while an operation declaring `readOnly: true` may run as a transient job that persists no record. An operation with `internal: false`, or the venue policy `recordReadOnlyOperations`, forces recording anyway.
+
+Use `/run` when you want a value and the audit record would be noise; use `/invoke` when you want a handle to poll, stream, pause, or cancel.
+
+| Status | Meaning |
+| ------ | ------- |
+| `200` | Operation output |
+| `400` | Malformed request or operation |
+| `403` | Operation not authorised |
+
+---
+
 ### Jobs
 
 #### `GET /api/v1/jobs`
