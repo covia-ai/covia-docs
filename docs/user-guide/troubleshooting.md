@@ -41,7 +41,7 @@ Ways to inspect:
 **Fix:** store the key the operation names:
 
 ```json
-{ "operation": "v/ops/secret/set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." }, "wait": true }
+{ "operation": "v/ops/secret/set", "input": { "name": "OPENAI_API_KEY", "value": "sk-..." }, "wait": true }
 ```
 
 Secrets are per-user and resolved at invocation time; they never appear in job records. Each [backend](./agents/llm-backends) declares its own secret name (`ANTHROPIC_API_KEY`, `XAI_API_KEY`, …). Local [Ollama](./agents/llm-backends#available-backends) needs no key.
@@ -56,7 +56,7 @@ When a transition fails (bad credentials, missing tool, capability denial), the 
 
 ## "'paths' must be a string or array of strings"
 
-`v/ops/covia/inspect` takes **`paths`** (a string or an array), not `path` — unlike `covia:read`/`covia:write`, which take `path`. Easy to mix up.
+`v/ops/covia/inspect` takes `path` for the usual single-path case, or **`paths`** — a string or an array — to preview several paths in one call, sharing the budget between them. This error means `paths` was given something that is neither.
 
 ## My agent isn't seeing what I think it is
 

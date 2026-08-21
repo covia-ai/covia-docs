@@ -86,7 +86,7 @@ Renders data as a compact preview, truncated to fit the byte budget (default 500
 | `covia:append` | `path`, `value` | `w/`, `o/` | Append to vector |
 | `covia:list` | `path`, `limit?`, `offset?` | All | List keys with pagination |
 | `covia:slice` | `path`, `limit?`, `offset?` | All | Paginate collection elements |
-| `covia:inspect` | `paths` (string or array), `budget?` | All | Compact preview |
+| `covia:inspect` | `path`, or `paths` (string or array) to compare several; `budget?`, `compact?` | All | Compact preview |
 
 ## Lattice Namespaces
 

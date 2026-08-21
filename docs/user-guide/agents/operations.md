@@ -20,8 +20,11 @@ Send a tracked task to an agent. The task is recorded as a Job. This is the prim
 | `agentId` | string | *required* | Agent identifier |
 | `input` | object | *required* | Task payload — the instructions/data the agent needs. Never empty. |
 | `timeout` | integer (ms) | `5000` | How long to wait synchronously. `0` returns a snapshot immediately (pure async). |
-| `responseSchema` | object | — | JSON Schema constraining the agent's response (server-side structured output). Overrides the agent's default output schema. |
+| `responseSchema` | object | — | JSON Schema for the task result. Shown to the agent as the target shape, and **advisory unless `strict` is set**. Overrides the agent's config-level `responseFormat` for this task. |
+| `strict` | boolean | `false` | Enforce `responseSchema` at completion. A `complete_task` result that doesn't conform is rejected back to the agent with the validation diagnostics, and the agent corrects it or fails the task. |
 | `sessionId` | string (hex) | — | Continue an existing session. Omit to mint a new one (returned in the response). |
+| `outputPath` | string | — | A mutable lattice path for structural result handoff (`w/pipeline/run1/chapter1`, `t/stage1`, or an authorised DID-URL path). On successful completion the framework writes the worker's full result there — so a pipeline stage can hand off without the caller relaying the payload. |
+| `loads` | object | — | Context to pre-load for a **new** session — the session tier of the [scope chain](./tools-and-context#the-scope-chain), as a map of lattice path to `{budget}` bytes. Valid only when this call creates the session; an error if the session already exists. |
 
 ```json
 {
@@ -51,6 +54,7 @@ Send a message and synchronously await the agent's next response on the session.
 | `agentId` | string | *required* | Agent identifier |
 | `message` | any | *required* | Message content — string, object, or any JSON value |
 | `sessionId` | string (hex) | — | Echo a previous `sessionId` to continue the conversation. Omit to start a new session. An unknown `sessionId` is rejected. |
+| `loads` | object | — | Context to pre-load for a **new** session — a map of lattice path to `{budget}` bytes. Valid only when this call creates the session. |
 
 ```json
 {

@@ -30,8 +30,8 @@ Any other OpenAI-compatible provider or local gateway works through `langchain:o
 Store API keys via the secrets manager:
 
 ```json
-{ "operation": "v/ops/secret/set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." } }
-{ "operation": "v/ops/secret/set", "input": { "key": "ANTHROPIC_API_KEY", "value": "sk-ant-..." } }
+{ "operation": "v/ops/secret/set", "input": { "name": "OPENAI_API_KEY", "value": "sk-..." } }
+{ "operation": "v/ops/secret/set", "input": { "name": "ANTHROPIC_API_KEY", "value": "sk-ant-..." } }
 ```
 
 Keys are resolved from the caller's secret store at invocation time. A backend that requires a key but can't resolve one fails fast with an error naming the secret it expected — it does not silently continue.

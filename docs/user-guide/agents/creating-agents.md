@@ -183,12 +183,15 @@ Every venue provides these built-in templates:
 | Template | Tools | Purpose |
 |----------|-------|---------|
 | `template:skilled` | read, list + [skills](./tools-and-context#skills) | **Recommended default** — lean base, capabilities loaded on demand |
+| `template:goaltree` | Skills, no default tools | A [Goal Tree](./goal-tree) agent — `v/ops/goaltree/chat`, for goals worth decomposing |
 | `template:minimal` | None | Pure reasoning, no side effects |
 | `template:reader` | read, list, slice | Read-only data analysis |
 | `template:worker` | CRUD operations | General data processing |
 | `template:manager` | Agent ops + read/list | Agent coordination |
 | `template:analyst` | CRUD + schema ops | Data analysis with validation |
 | `template:full` | All defaults | Development and exploration |
+
+Templates are ordinary lattice values under `v/agents/templates/`, so `v/ops/covia/list` on that path tells you what a given venue actually offers.
 
 ### Custom Templates
 

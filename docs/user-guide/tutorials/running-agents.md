@@ -17,7 +17,7 @@ Store the key in the venue's secret store. It's resolved at invocation time and 
 
 ```json
 POST /api/v1/invoke
-{ "operation": "v/ops/secret/set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." }, "wait": true }
+{ "operation": "v/ops/secret/set", "input": { "name": "OPENAI_API_KEY", "value": "sk-..." }, "wait": true }
 ```
 
 ## 2. Seed your workspace
