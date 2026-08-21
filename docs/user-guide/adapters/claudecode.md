@@ -74,7 +74,11 @@ A turn that Claude Code reports as an error — max turns, budget, execution err
 
 Headless runs have nobody to answer a permission prompt, so `default` denies anything that would ask. `acceptEdits` auto-approves file edits; `plan` is read-only planning. `bypassPermissions` is only allowed when the project itself is configured with it.
 
-Per-call options — `model`, `fallbackModel`, `effort`, `allowedTools`, `disallowedTools`, `tools`, `maxTurns`, `maxBudgetUsd`, `appendSystemPrompt`, `agent`, `keepAlive` — layer over the project's settings, which layer over the adapter defaults. Process environment, working directories and MCP configuration are **operator-only**: they can be set in adapter or project config, never per call.
+Options layer: a per-call value overrides the project's, which overrides the adapter defaults.
+
+**Settable per call:** `model`, `fallbackModel`, `effort`, `permissionMode`, `allowedTools`, `disallowedTools`, `tools`, `maxTurns`, `maxBudgetUsd`, `appendSystemPrompt`, `systemPrompt`, `jsonSchema`, `agent`, `keepAlive`.
+
+**Operator-only** — settable in adapter or project config, never by a caller: `env`, `addDirs`, `mcpConfig`, `strictMcpConfig`, `settings`. These decide what the process can *reach* — its environment, directories beyond the project, and the MCP servers it may call — so they belong with whoever chose the directory in the first place. `env` values may be `s/NAME` secret references.
 
 ## Continuing a conversation
 

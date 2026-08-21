@@ -57,10 +57,12 @@ A bot is a Discord bot token plus a routing target, running as a Covia `user`, w
 | `reply` | Operation handlers: `true`, `false`, or fixed text |
 | `allow` | Discord user ids permitted to talk to the bot |
 | `open` | `true` lets anyone talk to it (default `false`) |
-| `mentionOnly` | Only respond in a guild channel when the bot is mentioned |
+| `mentionOnly` | Only respond in a guild channel when the bot is mentioned. **Default `true`** — set `false` only for a channel the bot is meant to read wholesale |
 | `greeting` | Opening reply |
 
-**What reaches a handler:** direct messages, and guild messages that mention the bot. A guild channel is a shared space, so a bot that answered everything would be a nuisance and a leak — mentions are the opt-in. Access is fail-closed on top of that: only allow-listed Discord accounts are answered, unless the bot is `open`.
+**What reaches a handler:** direct messages always, and guild messages only when they mention the bot — because `mentionOnly` defaults to `true`. A guild channel is a shared space, so a bot that answered everything would be both a nuisance and a leak; mentions are the opt-in. Setting `mentionOnly: false` gives the bot every message in the channels it can see, which is occasionally what you want and never the safe default.
+
+Access is fail-closed on top of that: only allow-listed Discord accounts are answered, unless the bot is `open`. An unauthorised DM gets a reply naming the sender’s Discord user id, so they can pass it to whoever administers the allow-list.
 
 Users create their own bots with `discord:create` (token must be an `s/NAME` reference), persisted in the venue-private adapter workspace and re-armed at boot; `discord:delete` removes the bot and its channel sessions.
 
