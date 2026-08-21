@@ -31,7 +31,7 @@ A module is an external jar compiled against the venue API that declares its ada
 
 Modules load at boot, before catalog materialisation, so their operations appear in `v/ops/` alongside the built-ins — with the same catalog entries, capability checks, argument defaults, and audit trail. Each module gets its own isolating classloader for dependency separation; an optional `sha256` pins the exact jar content.
 
-The security posture is deliberate: loading is **operator-only and fail-fast** — a missing jar or a bad hash is a boot error, and there is no runtime module-load operation, because in-process code is total compromise and deserves explicit, restart-gated intent.
+The security posture is deliberate: boot loading is **operator-only and fail-fast** — a missing jar or a bad hash is a boot error. A module can also be loaded on a running venue with `v/ops/venue/module/load`, but only under venue authority (`adapter/manage` on `<venue DID>/adapters`) *and* an explicit `dynamicModules` policy that is off by default, staged to a declared directory, and content-pinnable by `sha256`. In-process code is total compromise, so the default remains explicit, restart-gated intent; the runtime path exists for operators who deliberately opt into it. A runtime-loaded module is not persisted — after a restart, config is authoritative again.
 
 The shipped [SQL](./sql) and [Python](./python) adapters are venue modules — working references for writing your own.
 

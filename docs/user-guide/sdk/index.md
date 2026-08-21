@@ -20,6 +20,42 @@ SDKs are available for major language ecosystems.
 | [TypeScript](./typescript) | `@covia/covia-sdk` | [covia-ai/covia-sdk](https://github.com/covia-ai/covia-sdk) | Available |
 | [Rust](./rust) | — | — | Planned |
 
+Every SDK speaks the same [REST API](../api), so anything one SDK can do, all of them can — but they don't all wrap it the same way, and they are versioned independently of the venue. The table below is the map.
+
+## Cross-SDK parity
+
+The SDKs were written for their own ecosystems, so the same operation has a different **shape** in each. Where a cell says *(REST)*, the SDK has no dedicated wrapper and you call the operation through `invoke` / `run` like any other.
+
+| Concern | Java | Python | TypeScript |
+| ------- | ---- | ------ | ---------- |
+| Surface style | Flat methods on `Venue` | Flat methods, plus manager **properties** | Manager **properties** throughout |
+| Connect | `Grid.connect(conn)` | `Grid.connect(url)` (also a context manager) | `await Grid.connect(url)` |
+| Invoke → job | `venue.invoke(op, input)` → `CompletableFuture<Job>` | `venue.invoke(op, input)` → `Job` | `venue.operations.invoke(op, input)` |
+| Invoke → result | `venue.run(op, input)` | `venue.run(op, input)` | `venue.operations.run(op, input)` |
+| Await a job | `venue.awaitJobResult(id)` | `job.wait(timeout=…)` / `job.result(timeout=…)` | `job.wait()` / `job.result()` |
+| Terminal check | `Status` constants | `job.is_finished` (snake_case) | `job.isFinished` (camelCase) |
+| Status type | `covia.grid.Status` constants | `JobStatus` enum | `RunStatus` enum, exported as `JobStatus` too |
+| Job control | `venue.cancelJob` / `pauseJob` / `resumeJob` / `deleteJob` / `listJobs` | `job.cancel()`, `venue.jobs` | `venue.jobs` |
+| Assets | `venue.getAsset` / `registerAsset` / `putAssetContent` | `venue.assets` | `venue.assets` |
+| Agents | *(REST)* | `venue.agents` | `venue.agents` |
+| Secrets | *(REST)* | `venue.secrets` | `venue.secrets` |
+| Workspace | *(REST)* | `venue.workspace` | `venue.workspace` |
+| UCAN | `covia.grid.ucan` | `venue.ucan` | `venue.ucan` |
+| Skills | *(REST)* | *(REST)* | `venue.skills` |
+| Memory | *(REST)* | *(REST)* | `venue.memory` |
+| Adapters | *(REST)* | *(REST)* | `venue.adapters` |
+| Async model | `CompletableFuture` everywhere | Sync by default; `covia.async_api` mirrors it | `Promise` everywhere |
+
+**Job status is one vocabulary across all three**, defined by the venue and mirrored by each SDK:
+
+`PENDING` → `STARTED` → `COMPLETE` | `FAILED` | `CANCELLED` | `REJECTED` | `TIMEOUT`
+
+plus the interactive states `PAUSED`, `INPUT_REQUIRED` and `AUTH_REQUIRED`. TypeScript names the enum `RunStatus` and exports `JobStatus` as an alias for parity with Python.
+
+:::tip Naming follows the host language
+`is_finished` in Python and `isFinished` in TypeScript are the same property — each SDK uses its own ecosystem's casing rather than a single cross-language spelling. Expect the same for every multi-word name.
+:::
+
 ## Core Concepts
 
 All SDKs share the same conceptual model:

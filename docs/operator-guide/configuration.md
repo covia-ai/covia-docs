@@ -92,7 +92,8 @@ See [Authentication](./auth) for OAuth setup, token types, and admission.
 | `a2a` | off unless present | Agent-to-Agent protocol config (`a2a.defaultChatOp`, `a2a.agentInfo`). Endpoints register only when this block is present. |
 | `webdav.enabled` | `false` | Mount DLFS over WebDAV at `/dlfs/`. |
 | `file.roots` | ephemeral `tmp` root | Named filesystem roots for the [File adapter](../user-guide/adapters/file). Forms: a path string, `{path, readOnly}`, `{dlfs, subpath, readOnly}` (a DLFS drive clamped to a subtree), or `{temp: true, prefix}`. With no roots configured the adapter creates a single ephemeral `tmp` root, deleted on exit. |
-| `modules` | — | External adapter jars loaded at boot: a path string or `{path, sha256, config}`. `sha256` pins jar content; loading is fail-fast and operator-only — there is deliberately no runtime module-load operation. See [venue modules](../user-guide/adapters/jvm#venue-modules). |
+| `modules` | — | External adapter jars loaded at boot: a path string or `{path, sha256, config}`. `sha256` pins jar content; boot loading is fail-fast. See [venue modules](../user-guide/adapters/jvm#venue-modules). |
+| `dynamicModules` | off | Policy for loading modules on a **running** venue via `v/ops/venue/module/load`: `{enabled, dir, anyPath}`. With `enabled`, the module must be a jar name inside the staging directory `dir` (no absolute paths, no `..`) unless `anyPath` widens it. Off by default — leave it off unless you intend operators to load code at runtime. |
 | `recordReadOnlyOperations` | `false` | Record even declared-read-only `/api/v1/run` operations as durable jobs. |
 | `enablePrivateJobs` | *(deprecated)* | No longer enables `private: true` on `/invoke` — invoke always creates a durable job. Read-only result-oriented execution goes through `/api/v1/run`. |
 | `defaultTransitionOp` | `v/ops/llmagent/chat` | Default agent transition operation when an agent config omits `operation`. |
@@ -114,7 +115,14 @@ Per-adapter settings live under `adapters.<name>`:
 | `adapters.hitl.maxGrantLifetimeSecs` | none | Ceiling on the lifetime of [HITL](../user-guide/adapters/hitl)-minted capability grants; offers exceeding it are rejected before the human ever sees them. |
 | `adapters.orchestrator.maxItems` / `maxConcurrency` | `50` / `8` | Bounds on orchestrator `foreach` fan-out. |
 | `adapters.langchain.ollamaUrl` | — | Local Ollama endpoint for the LangChain adapter. |
+| `adapters.skills.defaultSkillsets` / `defaultSkills` | `v/skills/root` | The entry point the `skills:list` operation lists when no `skillset` is given, published at `v/info/adapters/skills`. Governs that operation only — agents declare their own sources. See [Skills adapter](../user-guide/adapters/skills). |
+| `adapters.<name>.enabled` | `true` | Boot switch for a non-kernel adapter. `false` leaves it registered but retracted — no catalog, no introspection, no dispatch. |
 | `adapters.sql.databases.<name>` | — | *(SQL module)* Operator-registered JDBC connections: `{url, user, password}`, with `s/NAME` secret references for passwords. `adapters.sql.path` makes venue-local databases persistent. See [SQL adapter](../user-guide/adapters/sql). |
+| `adapters.telegram.bots.<name>` | — | *(Telegram module)* Operator-declared bots: `{token, user, agent \| operation, reply, allow, open, parseMode, greeting}`. `adapters.telegram.apiUrl` overrides the Bot API base URL. See [Telegram adapter](../user-guide/adapters/telegram). |
+| `adapters.discord.bots.<name>` | — | *(Discord module)* As Telegram, plus `mentionOnly`. See [Discord adapter](../user-guide/adapters/discord). |
+| `adapters.claudecode.projects.<name>` | — | *(Claude Code module)* Directories Claude Code may run in: `{path, user, description, options}`. `maxSessions` (4) and `idleSeconds` (900) bound the live process pool; `command`, `env` and `defaults` are operator-only. See [Claude Code adapter](../user-guide/adapters/claudecode). |
+
+Adapter settings can also be applied to a **running** venue with `v/ops/venue/adapter/configure` (and an adapter switched off with `v/ops/venue/adapter/disable`) — venue-owned operations requiring `adapter/manage` on `<venue DID>/adapters`. Runtime changes are **not persisted**: after a restart this file is authoritative again. See [Runtime lifecycle](../user-guide/adapters/#runtime-lifecycle).
 
 ## Secrets bootstrap
 

@@ -70,7 +70,7 @@ Authentication proves control of a DID; it does not make someone a member of you
 
 Everything that adds code or capability to a venue is operator-gated:
 
-- **Venue modules** load only from config, at boot, with optional `sha256` content pinning — and there is deliberately no runtime module-load operation, because in-process code is total compromise.
+- **Venue modules** load from config at boot, with optional `sha256` content pinning. Loading a module on a *running* venue is possible but doubly gated: it requires the venue-owned `adapter/manage` authority *and* an explicit `dynamicModules` policy, which is **off by default**. With it enabled, the jar must sit inside a declared staging directory unless `dynamicModules.anyPath` widens that, and `sha256` pins the content. In-process code is total compromise, so treat enabling that policy as a deliberate decision, not a convenience.
 - **The Python adapter is not a sandbox**: configured scripts run with the venue's full authority. The operator selects every script and allowlists every callable; callers can never submit source. Use containers for untrusted code.
 - **`strictConfig`** rejects unknown config fields at startup (typo-proofing your security settings); known fields are always validated fatally either way. **`strictAssets`** (default on) refuses to boot a venue whose operations failed to install.
 

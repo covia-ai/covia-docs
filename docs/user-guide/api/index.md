@@ -58,18 +58,21 @@ The `did` is the venue's persistent `did:key` identity, also published in its [D
 
 ### Assets
 
-Across the API and in operation inputs (e.g. `asset:get`, the `file:write` `asset` field, grid operation references), an asset can be referenced by **bare hex hash**, by `a/<hash>`, or by `/a/<hash>` — these are equivalent. The `a/` form matches the per-user namespace convention used elsewhere (`w/`, `o/`).
+Asset **references** resolve generally across the API and in operation inputs. A reference may be a bare hex hash, `a/<hash>`, `/a/<hash>`, a venue-namespace path (`v/`, `w/`, `o/`), or a DID URL — all of these address the same asset, and venue listings return owner-qualified references that round-trip without changing namespace.
+
+Two canonical endpoints carry the two halves of an asset: `assets/<ref>` is its **metadata**, `content/<ref>` is its **bytes**.
 
 #### `GET /api/v1/assets`
 
-Lists the **caller's own pinned assets** (the per-user `a/` namespace) — not every asset on the venue. The venue's operation catalog is discovered via `GET /api/v1/operations` (or the `covia:functions` / `covia:inspect` operations), not here.
+Lists the **venue-level asset catalog**, as fully-qualified asset references. The venue's operation catalog is discovered via `GET /api/v1/operations` (or the `covia:functions` / `covia:inspect` operations), not here.
 
 **Query Parameters:**
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
+| `scope` | string | `own` (or `mine`) lists the **authenticated caller's own** `a/` assets — those populated by `asset:store` / `asset:pin` — instead of the venue catalog. Requires authentication; persists no Job. |
 | `offset` | integer | Starting index (0-based). Default: 0 |
-| `limit` | integer | Maximum results (max 1000). Default: all |
+| `limit` | integer | Maximum results (max 1000). Default: the first page |
 
 **Response:**
 ```json
@@ -122,15 +125,9 @@ Retrieves metadata for a specific asset.
 
 Returns the asset metadata JSON as originally registered.
 
-#### `GET /api/v1/assets/{id}/content`
+#### `GET /api/v1/content/<ref>`
 
-Retrieves the content of an artifact asset.
-
-**Path Parameters:**
-
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `id` | string | Asset ID (hex string) |
+Retrieves an asset's **content bytes** by any asset reference — hash, `a/`, `v/`, `w/`, `o/`, a leading-slash form, or a DID URL.
 
 **Query Parameters:**
 
@@ -140,7 +137,11 @@ Retrieves the content of an artifact asset.
 
 **Response:** `200 OK`
 
-Returns the binary content with appropriate `Content-Type` header based on the asset metadata.
+Returns the binary content with a `Content-Type` taken from the asset metadata.
+
+#### `GET /api/v1/assets/{id}/content`
+
+The single-segment hash form, kept for compatibility. `GET /api/v1/content/<ref>` is the canonical route and accepts every reference form.
 
 #### `PUT /api/v1/assets/{id}/content`
 
@@ -329,6 +330,74 @@ Gets details for a specific operation by name.
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
 | `name` | string | Operation name (e.g., `covia:read`, `agent:create`) |
+
+---
+
+### Values — job-free lattice reads
+
+Reads are pure, so they should not mint durable audit records. These `GET` routes read lattice state **synchronously, capability-checked, and without persisting a Job** — the same accessors the `covia:read` / `list` / `slice` / `inspect` / `aggregate` operations use, so read semantics cannot drift between the two forms. The operation forms remain available for callers that want a job record.
+
+| Route | Returns |
+| ----- | ------- |
+| `GET /api/v1/values/read` | The literal value at a path |
+| `GET /api/v1/values/list` | The keys / structure of a node |
+| `GET /api/v1/values/slice` | A paginated slice of a sequence |
+| `GET /api/v1/values/inspect` | A rendered view (`{result}`) |
+| `GET /api/v1/values/aggregate` | A count, optionally grouped |
+| `GET /api/v1/values/count` | Cardinality at a path |
+
+**Common query parameters:**
+
+| Parameter | Description |
+| --------- | ----------- |
+| `path` | *(required)* Lattice path — `w/notes`, `g/my-agent/status`, `v/info/adapters` |
+| `agent` | Required for `n/`, `t/` and `c/` paths: a bare agent id under the caller, or a full agent DID |
+| `task` | Required for `t/`: the task id (the `agent:request` Job id) |
+| `session` | Required for `c/`: the session id |
+| `maxSize` | Byte guard (default 1,000,000) — a larger value is withheld and the response carries `truncated: true` with its size |
+
+Data routes answer `{exists, …}`; **absence is `200 {exists: false}`**, not a 404. `values/read` supports conditional reads — an `ETag` over the value hash, and `304 Not Modified`.
+
+Reads resolve against **local** lattice state only: they never speculatively fetch from a remote venue.
+
+```bash
+curl "$VENUE/api/v1/values/read?path=w/notes" -H "Authorization: Bearer $TOKEN"
+```
+
+#### Field projection on `list`
+
+`values/list` accepts `fields` — a comma-separated list of subpaths to read from each listed child — and adds a `values` map to the response, one entry per key on the page:
+
+```bash
+curl "$VENUE/api/v1/values/list?path=w/orders&limit=20&fields=status,meta/updated"
+```
+
+This fixes the collection-view N+1 (a list followed by N reads) in one round trip, against one snapshot of the parent. Projection applies **after** the `limit`/`offset` page, and is capped at 16 fields — exceeding that is a `400`, never a silent truncation. A non-keyed node with `fields` is a `400`. There is deliberately no filtering or ordering here: this is output shape only.
+
+---
+
+### Agents
+
+#### `GET /api/v1/agents`
+
+Lists the authenticated caller's agents. Job-free.
+
+#### `GET /api/v1/agents/{id}`
+
+One of the caller's agents — the same payload as `agent:info`. Job-free.
+
+---
+
+### Schedules
+
+#### `GET /api/v1/schedules`
+
+The authenticated caller's pending scheduled events, each `{handle, op, time}`, time-ordered — including events queued by the caller's agents. Job-free, so a scheduler view can refresh without writing a Job per read. The `scheduler:list` operation remains available.
+
+**Response:** `200 OK`
+```json
+{ "events": [ { "handle": "0x4f3a...", "op": "v/ops/agent/trigger", "time": 1749650400000 } ] }
+```
 
 ---
 
