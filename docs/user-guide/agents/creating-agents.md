@@ -20,7 +20,7 @@ The simplest possible agent has just an ID:
 }
 ```
 
-This creates an agent with default settings: `llmagent:chat` transition, `langchain:openai` backend, `gpt-5.4-mini` model, and the platform's default tool set. It will respond conversationally to any task.
+This creates an agent with default settings: `llmagent:chat` transition, `langchain:openai` backend, that backend's default model, and the platform's default tool set. It will respond conversationally to any task.
 
 ## Configuration
 
@@ -72,13 +72,16 @@ The `config` field controls agent behaviour. All fields are optional — default
 |-------|------|---------|-------------|
 | `operation` | string | `v/ops/llmagent/chat` | Level 2 transition function. Use `v/ops/goaltree/chat` for goal tree. |
 | `systemPrompt` | string | Generic assistant | The system message defining the agent's role and instructions. |
-| `model` | string | `gpt-5.4-mini` | LLM model name passed to the backend. |
+| `model` | string | *backend default* | LLM model name passed to the backend. Ask `langchain:models` what a venue offers. |
 | `llmOperation` | string | `v/ops/langchain/openai` | Level 3 LLM operation. See [LLM Backends](./llm-backends). |
 | `tools` | array | — | Operations the agent can call. Strings or `{operation, name, description}` maps. |
 | `defaultTools` | boolean | `true` | Include the platform's default tools (workspace CRUD, agent management, assets, schemas). Set `false` for explicit control. |
 | `caps` | array | — | Capability restrictions. Each entry: `{with: "path/", can: "crud/read"}`. |
 | `context` | array | — | Lattice paths to load into context every turn. |
-| `skills` | array | — | Skill sources (`w/skills`, `v/skills`, `a/<hash>`). Injects the skills index and offers `skill_load`. See [Skills](./tools-and-context#skills). |
+| `skillsets` | array | — | Directories of skills (`w/skills`, `v/skills/root`). The usual declaration. |
+| `skills` | array | — | Individual skills — one path or `a/<hash>` each, for a curated index. |
+
+Declaring either kind injects the skills index and offers `skill_load`; declaring neither turns skills off entirely. The two kinds do not interchange — a directory listed under `skills` is not walked. See [Skills](./tools-and-context#skills).
 | `outputs` | object | — | Typed output schemas for `complete` and `fail` (Goal Tree only). |
 | `responseFormat` | string / object | — | `"text"`, `"json"`, or `{name, schema}` for strict structured responses. |
 

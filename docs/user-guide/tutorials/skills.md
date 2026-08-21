@@ -13,7 +13,7 @@ In this tutorial you'll browse the skills a venue already ships, watch a lean ag
 
 **You'll need:** a running venue (`docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest`, or see [Venue Quick Start](../../operator-guide/venue-start)) and an LLM API key for the agent steps — the examples use OpenAI, but any [backend](../agents/llm-backends) works, including a local Ollama with no key at all.
 
-All calls go to `POST /api/v1/invoke`. Every operation here is also an MCP tool (`skills`, `agent_create`, `covia_write`, …), so you can drive the whole tutorial from Claude instead — see [Give Claude Your Own Tools](./claude-mcp).
+All calls go to `POST /api/v1/invoke`. Every operation here is also an MCP tool (`skills_list`, `skills_read`, `agent_create`, `covia_write`, …), so you can drive the whole tutorial from Claude instead — see [Give Claude Your Own Tools](./claude-mcp).
 
 ## 1. See what the venue already knows
 
@@ -21,24 +21,32 @@ Every venue ships a skill library covering its own mechanisms. It's public — n
 
 ```json
 POST /api/v1/invoke
-{ "operation": "v/ops/skills", "input": { "command": "list" }, "wait": true }
+{ "operation": "v/ops/skills/list", "wait": true }
 ```
 
-```
-- workspace — Read and write your durable lattice workspace — paths, namespaces, lists, deep structures. Load before storing or querying any per-user data.
-- agents — Create, configure and delegate to other agents on this venue. Load when work should be done by a separate agent, or to manage existing agents.
-- grid — Run operations on OTHER venues — cross-venue federation, remote jobs, hash-verified definitions. Load when work or data lives on a different venue.
-- discovery — Find out what a venue can do: adapters, operations and their schemas, published assets. Load on an unfamiliar venue or when no current tool fits.
-- provenance — The audit trail: every invocation leaves an immutable job record. Load to inspect what ran, debug failures, or verify another agent's work.
-...
+With no `skillset`, you get the venue's configured entry point — `v/skills/root` out of the box. The result maps each skill's **path** to what it is:
+
+```json5
+{
+  "v/skills/root/workspace": { name: "workspace", description: "Read and write your durable lattice workspace — paths, namespaces, lists, deep structures. Load before storing or querying any per-user data.", id: "0x8cd1…" },
+  "v/skills/root/agents":    { name: "agents",    description: "Create, configure and delegate to other agents on this venue.", id: "0x41af…" },
+  "v/skills/root/grid":      { name: "grid",      description: "Run operations on OTHER venues — cross-venue federation, remote jobs, hash-verified definitions.", id: "0x93bc…" },
+  "v/skills/root/discovery": { name: "discovery", description: "Find out what a venue can do: adapters, operations and their schemas, published assets.", id: "0x2d70…" }
+}
 ```
 
-That's the whole design in one screen. Each line says **what the skill does and when to load it** — enough for an agent to choose, small enough that twenty of them cost almost nothing. The bodies stay out of context until someone asks for one.
+That's the whole design in one screen. Each description says **what the skill does and when to load it** — enough for an agent to choose, small enough that eight of them cost almost nothing. The bodies stay out of context until someone asks for one.
 
-Read one in full without loading it:
+Each of those eight is an **entry point**: load it and it reveals its family. `workspace` opens `v/skills/data`, `agents` opens `v/skills/agents`, and so on — so the always-on index stays short while every skill is one load away. List a family directly by naming it:
 
 ```json
-{ "operation": "v/ops/skills", "input": { "command": "read", "name": "provenance" }, "wait": true }
+{ "operation": "v/ops/skills/list", "input": { "skillset": "v/skills/data" }, "wait": true }
+```
+
+Read one in full without loading it, addressing it by the path the listing gave you:
+
+```json
+{ "operation": "v/ops/skills/read", "input": { "skill": "v/skills/ops-tools/provenance" }, "wait": true }
 ```
 
 ```json5
@@ -47,13 +55,14 @@ Read one in full without loading it:
   description: "The audit trail: every invocation leaves an immutable job record...",
   body: "## Provenance\nA venue is a system of record: every operation invocation persists a job record under `j/`...",
   tools: ["v/ops/covia/list", "v/ops/covia/read", "v/ops/covia/slice", "v/ops/covia/inspect", "v/ops/covia/aggregate"],
-  path: "v/skills/provenance"
+  path: "v/skills/ops-tools/provenance",
+  id: "0x5f2a…"
 }
 ```
 
 `body` is the instructions an agent would receive; `tools` are the operations that would join its palette. `read` is how you audit a skill before trusting it — see exactly what would enter an agent's prompt.
 
-By default `list` and `read` search `w/skills` (yours) then `v/skills` (the venue's). Pass `sources` to look anywhere else, including a single asset: `{ "command": "list", "sources": ["a/8cd17cbd..."] }`.
+`read` takes a **path or an asset ref, never a name**: a name only means something against a declared set of sources, and `list` is how you turn a name into a path. (An agent's own by-name lookup is `skill_load`, which does have its sources in scope.)
 
 ## 2. Create a lean agent
 
@@ -65,23 +74,25 @@ The `skilled` template is the recommended starting point: read and list, plus th
   "wait": true }
 ```
 
-Its config is deliberately small — the interesting line is `skills`:
+Its config is deliberately small — the interesting line is `skillsets`:
 
 ```json
 {
   "tools": ["v/ops/covia/read", "v/ops/covia/list"],
-  "skills": ["w/skills", "v/skills"],
+  "skillsets": ["w/skills", "v/skills/root"],
   "defaultTools": false
 }
 ```
 
-Two sources, searched in order. Nomad's index is now the union of your workspace skills and the venue's — and because `w/skills` comes first, **your skill shadows a venue skill of the same name**. That's how you override the house behaviour without forking anything.
+Two skillsets — directories of skills — searched in order. Nomad's index is now the union of your workspace skills and the venue's entry points, and because `w/skills` comes first, **your skill shadows a venue skill of the same name**. That's how you override the house behaviour without forking anything.
+
+`skillsets` and `skills` are separate declarations: a `skillsets` entry is a *directory*, a `skills` entry is exactly *one* skill (`"skills": ["v/skills/ops-tools/models"]`). The kinds don't interchange, so a directory listed under `skills` is not walked — which is why the venue's entry point is `v/skills/root` (skills) and not `v/skills` (skillsets).
 
 Any agent can be given sources the same way:
 
 ```json
 { "operation": "v/ops/agent/update",
-  "input": { "agentId": "Scribe", "config": { "skills": ["w/skills", "v/skills"] } },
+  "input": { "agentId": "Scribe", "config": { "skillsets": ["w/skills", "v/skills/root"] } },
   "wait": true }
 ```
 
@@ -164,7 +175,7 @@ Three fields carry the whole thing:
 Verify it before anyone loads it:
 
 ```json
-{ "operation": "v/ops/skills", "input": { "command": "read", "name": "status-reports" }, "wait": true }
+{ "operation": "v/ops/skills/read", "input": { "skill": "w/skills/status-reports" }, "wait": true }
 ```
 
 That returns exactly what a loading agent will receive. Nomad's index picks it up on its **next turn** — sources are re-resolved every turn, so there's nothing to restart, redeploy, or invalidate. Edit the body and the next turn of every agent carrying it sees the new text.
@@ -228,15 +239,15 @@ A loaded skill costs budget every turn, so agents should unload what they've fin
 { "name": "context_unload", "input": { "path": "w/skills/status-reports" } }
 ```
 
-The body, its context entries, and its tools all go from the next turn onward. An agent's Context Map shows what it's currently carrying, with skills marked, and the `[Skills]` index marks loaded ones with `(loaded)` so it never loads the same thing twice.
+The body, its context entries, and its tools all go from the next turn onward. Every loaded element carries its unload key in its own header — `[Skill: status-reports — w/skills/status-reports]` — which is exactly what `context_unload` takes, and the `[Skills]` index marks loaded ones with `(loaded)` so an agent never loads the same thing twice.
 
 ## Go further
 
 - **Bundle a tool with its manual** — an asset with both an `operation` facet and a `skill` facet is a self-documenting tool: loading it injects the instructions *and* offers the operation. One asset, one identity.
 - **A skill with no body** is a pure toolset — a curated tool bundle plus its index line, useful for grouping operations an agent should acquire together.
 - **Bundle context too** — `skill.context` entries load alongside the body, so a skill can arrive with the reference data it needs.
-- **Index without loading** — pin `{ "op": "v/ops/skills", "input": { "command": "list" } }` into `config.context` to show an agent what exists without giving it `skill_load`.
-- **Ship skills with a module** — a venue module jar carries its own skill definitions and installs them into `v/skills` when the module loads, so capabilities arrive with the code that implements them.
+- **Index without loading** — pin `{ "op": "v/ops/skills/list", "input": { "skillset": "v/skills/root" } }` into `config.context` to show an agent what exists without giving it `skill_load`.
+- **Ship skills with a module** — every adapter installs its own skill, so a skill is published exactly when its adapter is active and retracted when it is disabled or unloaded. A venue module jar brings its skills with the code that implements them, and `v/adapters/<name>/skills` is a ready-made skillset for everything one adapter offers.
 
 ## Related
 
