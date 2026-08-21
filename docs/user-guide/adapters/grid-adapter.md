@@ -34,7 +34,7 @@ Returns the operation's output directly.
 {
   "operation": "v/ops/grid/run",
   "input": {
-    "operation": "v/ops/test/echo",
+    "operation": "v/test/ops/echo",
     "input": { "message": "hello" },
     "venue": "https://other-venue.covia.ai"
   }
@@ -115,7 +115,7 @@ The `operation` parameter accepts multiple formats:
 | Venue catalog path | `v/ops/json/merge` | Operation from the venue's catalog |
 | User pin | `o/my-pipeline` | Named operation from your workspace |
 | Asset ID | `0x7a8b9c0d...` | Content-addressed asset hash |
-| DID URL | `did:web:venue.example.com/v/ops/test/echo` | Operation on a specific remote venue |
+| DID URL | `did:web:venue.example.com/v/test/ops/echo` | Operation on a specific remote venue |
 
 ## Patterns
 

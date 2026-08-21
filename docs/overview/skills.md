@@ -35,7 +35,7 @@ Those `tools` entries are live operations from the venue's catalog — the momen
 
 A well-built agent starts lean — a couple of read tools — and carries a one-line index of the skills within reach. When a task calls for more, the agent loads the skill, its instructions and tools join the working context, and when the job is done the agent unloads it. No sprawling system prompts, no paying every turn for expertise used once.
 
-**Skills reveal skills.** A loaded skill can make further skills discoverable, so a library doesn't have to be flat. A venue ships dozens, but an agent starts with an eight-line index of entry points — workspace, agents, grid, discovery, auth, venue, skills, covia — each of which opens its family on load. The always-on cost stays at eight lines while everything remains one step away, and nothing is walked until an agent asks for it.
+**Skills reveal skills.** A loaded skill can make further skills discoverable, so a library doesn't have to be flat. A venue ships dozens, but an agent starts with a handful of entry points — workspace, agents, grid, discovery, auth, venue, skills, covia — each of which opens its family on load. The always-on cost stays at a few lines while everything remains one step away, and nothing is walked until an agent asks for it.
 
 ## Write once, teach anywhere
 

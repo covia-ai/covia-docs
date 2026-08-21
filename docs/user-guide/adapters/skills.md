@@ -61,8 +61,10 @@ Returns `{name, description, path, id, tools, body?, skills?, skillsets?, contex
 
 There is deliberately **no operation that enumerates skillsets**. A skillset is not a registered thing — it is any lattice path that happens to contain skill assets — so listing what a venue ships is an ordinary lattice read (`v/ops/covia/list` on `v/skills`, whose keys are the skillsets).
 
-:::note Breaking change in 0.9.4
-These replace the single command-dispatched `v/ops/skills` operation. Calls of the form `{"command": "list", …}` no longer resolve; use `v/ops/skills/list` and `v/ops/skills/read`, which take a single skillset and a single skill respectively.
+:::note New in 0.9.4
+These two operations replace the single command-dispatched `v/ops/skills`, whose `{"command": "list", …}` form no longer resolves. The same release reorganises the venue library from a flat `v/skills/<name>` into skillsets under `v/skills/<set>/`, with `v/skills/root` as the entry index, and splits agent configuration into `skills` and `skillsets`.
+
+On a 0.9.3 venue you will still find the flat layout and the single `v/ops/skills` operation. Ask the venue rather than assuming: `v/info/adapters/skills` publishes its configured entry point.
 :::
 
 ## Access Control
@@ -75,7 +77,22 @@ Loading a skill grants no authority either way: its tools are capability-checked
 
 ## The Venue Skill Library
 
-Every venue materialises a library under `v/skills/<skillset>/`, with **`v/skills/root` as the entry index** — eight entry-point skills, each opening a family: `workspace`→`data`, `agents`→`agents`, `grid`→`grid`, `discovery`→`ops-tools`+`adapters`, `auth`→`auth`+`caps-permissions`, `venue`→`venue`+`admin`, `skills`→`building`, `covia`→`convex`. That keeps an agent's always-on index at eight lines while every skill stays one load away.
+Every venue materialises a library under `v/skills/<skillset>/`, with **`v/skills/root` as the entry index**: a short list of entry-point skills, each of which opens a family when loaded.
+
+| Entry point | Opens |
+|-------------|-------|
+| `workspace` | `v/skills/data` |
+| `agents` | `v/skills/agents` |
+| `grid` | `v/skills/grid` |
+| `discovery` | `v/skills/ops-tools`, `v/skills/adapters` |
+| `auth` | `v/skills/auth`, `v/skills/caps-permissions` |
+| `venue` | `v/skills/venue`, `v/skills/admin` |
+| `skills` | `v/skills/building` |
+| `covia` | `v/skills/convex` |
+
+That takes an agent's always-on index from around two dozen lines to a handful, while every skill stays one load away. The exact contents depend on which adapters are active, which is the point — read `v/skills/root` rather than assuming.
+
+An entry point is installed at **both** its family path and its `root/` mirror, from the same resource, so both addresses carry identical metadata and content-identity dedup treats them as one skill — never two entries in an agent's context.
 
 **Adapters own their skills.** Each built-in adapter installs its own skill, so a skill is published exactly when its adapter is active and retracted when it is disabled or unloaded; modules ship theirs from their own jars (the [SQL module](./sql)'s `sql`, [Telegram](./telegram)'s `telegram`). A skillset therefore only ever lists what the venue actually offers. The platform skills the skills adapter itself owns are `covia`, `venue`, `discovery`, `provenance`, `skills`, `skill-authoring` and `lattice`.
 

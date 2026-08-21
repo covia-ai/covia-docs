@@ -15,6 +15,10 @@ In this tutorial you'll browse the skills a venue already ships, watch a lean ag
 
 All calls go to `POST /api/v1/invoke`. Every operation here is also an MCP tool (`skills_list`, `skills_read`, `agent_create`, `covia_write`, …), so you can drive the whole tutorial from Claude instead — see [Give Claude Your Own Tools](./claude-mcp).
 
+:::note Venue version
+This tutorial follows the 0.9.4 skills surface: `v/ops/skills/list` / `v/ops/skills/read`, skillsets under `v/skills/<set>/`, and `config.skillsets`. On a 0.9.3 venue you will find the earlier flat layout and a single command-dispatched `v/ops/skills`. `GET /api/v1/status` reports the version.
+:::
+
 ## 1. See what the venue already knows
 
 Every venue ships a skill library covering its own mechanisms. It's public — no key, no agent, no authentication required:
