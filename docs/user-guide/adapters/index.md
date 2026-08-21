@@ -13,11 +13,18 @@ Adapters are how a venue gets its capabilities. Each adapter contributes a famil
 | Adapter | Operations | What it does |
 |---------|-----------|--------------|
 | [LangChain](./langchain-adapter) | `langchain:*` | Call LLMs — OpenAI, Anthropic, Ollama, xAI, and OpenAI-compatible endpoints |
-| [Skills](./skills) | `v/ops/skills` | Skill discovery and retrieval; every venue ships a skill library |
+| [Skills](./skills) | `skills:list`, `skills:read` | Skill discovery and retrieval; every venue ships a skill library |
 | [User Memory](./memory) | `v/ops/memory` | Durable per-user memory that agents recall every turn and edit by number |
 | [Human-in-the-Loop](./hitl) | `hitl:*` | Park a job for human approval, choices, or capability grants |
 
 Agent execution (`agent:*`, `llmagent:*`, `goaltree:*`) is documented under [Agents](../agents/).
+
+## Messaging and chat front doors
+
+| Adapter | Operations | What it does |
+|---------|-----------|--------------|
+| [Telegram](./telegram) *(module)* | `telegram:*` | Telegram bots as a venue front door; agents that send Telegram messages |
+| [Discord](./discord) *(module)* | `discord:*` | Discord bots — DMs and mentions routed to agents or operations |
 
 ## Federation and connectivity
 
@@ -60,9 +67,41 @@ Agent execution (`agent:*`, `llmagent:*`, `goaltree:*`) is documented under [Age
 | [JVM](./jvm) | `jvm:*` | In-process utility ops, plus the venue-module mechanism for arbitrary JVM code |
 | [SQL](./sql) *(module)* | `sql:*` | Governed SQL over any JDBC database, delegable per database |
 | [Python](./python) *(module)* | `python:*` | Operator-configured Python operations, in-process via FFM |
+| [Claude Code](./claudecode) *(module)* | `claudecode:*` | Drive the Claude Code CLI in venue-authorised project directories |
 
-SQL and Python are optional [venue modules](./jvm#venue-modules) — separate artifacts on Maven Central (`ai.covia:covia-sql`, `ai.covia:covia-python-adapter`), loaded by config.
+SQL, Python, Telegram, Discord and Claude Code are optional [venue modules](./jvm#venue-modules) — separate artifacts (`ai.covia:covia-sql`, `ai.covia:covia-python-adapter`, `ai.covia:covia-telegram`, `ai.covia:covia-discord`, `ai.covia:covia-claude-code`), shipped as module jars with each release and loaded by config or at runtime.
 
 ## How operations are named and invoked
 
 Operations are written as `adapter:op` (e.g. `grid:run`) or as a venue catalog path (`v/ops/grid/run`). Invoke them over [REST](../api/) (`POST /api/v1/invoke`), through an [SDK](../sdk/), as [MCP](../mcp/) tools, or as agent tools. Because every operation is self-describing, both humans and agents can discover and call them.
+
+## Runtime lifecycle
+
+Adapters and modules can be changed on a **running** venue, without a restart:
+
+| Operation | Purpose |
+|-----------|---------|
+| `v/ops/venue/adapters` | Full registry view — active and disabled adapters (kernel flag, owning module, operations) plus loaded modules |
+| `v/ops/venue/adapter/enable` / `disable` | Retract or restore a non-kernel adapter's catalog, introspection and dispatch |
+| `v/ops/venue/adapter/configure` | Apply a new effective configuration — the same shape as the `adapters.<name>` config block, replacing it unless `merge: true` |
+| `v/ops/venue/module/load` / `unload` | Load or unload a module jar |
+
+These are **venue-owned**: they authorise only for direct execution as the venue identity, or a venue-rooted delegation over `<venue DID>/adapters` with `adapter/manage`. An ordinary authenticated user cannot switch adapters off or load code, whatever their own namespace scope.
+
+Module loading is additionally gated by the operator's `dynamicModules` policy — off by default; when enabled, the module must be a jar name inside the staging directory `dynamicModules.dir` unless `dynamicModules.anyPath` widens it, and an optional `sha256` pins the jar's content.
+
+**Runtime changes are not persisted.** After a restart the venue config is authoritative again — the config file remains the record of what a venue is.
+
+## What an adapter publishes about itself
+
+Each adapter owns a subtree at `v/adapters/<name>/`, published when it becomes active and retracted when it is disabled or unloaded:
+
+| Path | Contents |
+|------|----------|
+| `v/adapters/<name>/info` | Facts the adapter publishes about itself — also merged into `v/info/adapters/<name>` |
+| `v/adapters/<name>/config` | Only what the adapter explicitly allow-lists as public — nothing by default |
+| `v/adapters/<name>/ops/` | Its operations, mirrored from the canonical catalog (same values, equally invocable) |
+| `v/adapters/<name>/skills/` | Its [skills](./skills) — so a skill is published exactly when its adapter is active |
+| `v/adapters/<name>/templates/` | Its agent templates |
+
+This is why discovery answers are always true of the venue you are actually talking to: a disabled adapter's operations, skills and templates disappear with it, and `v/adapters/<name>/skills` is itself a ready-made skillset for everything one adapter offers.
