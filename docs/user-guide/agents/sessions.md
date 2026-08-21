@@ -89,6 +89,15 @@ Sessions are plain lattice data — read them directly with the `covia` adapter:
 
 `agent:context` is the higher-level equivalent — it shows the exact LLM input the agent would assemble for a session. See [Agent Operations](./operations#agent-context).
 
+## Managing sessions
+
+| Operation | Purpose |
+|-----------|---------|
+| [`agent:rename-session`](./operations#agent-rename-session) | Set or clear a session's free-form title — easier to pick out of a list than a raw id |
+| [`agent:delete-session`](./operations#agent-delete-session) | Delete the session record: history, pending messages, metadata |
+
+Deleting a session is how you hold a **private conversation and remove it afterwards**. It does not touch Job records — callers hold their own Job ids and delete those separately — and any in-flight chat on the session is failed. Operators can switch the operation off with `adapters.agent.sessionDelete: false` where conversations are meant to be part of the record.
+
 ## Related
 
 - [Agent Operations](./operations) — `agent:request`, `agent:chat`, `agent:message`, and the rest

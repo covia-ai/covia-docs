@@ -249,6 +249,29 @@ Remove a pending task from an agent's queue.
 | `agentId` | string | *required* | Agent identifier |
 | `taskId` | string | *required* | Task Job ID (hex) |
 
+### agent:delete-session {/* #agent-delete-session */}
+
+Delete a session on an agent — its history, pending messages, and metadata. This is how you hold a private conversation and remove it afterwards.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `agentId` | string | *required* | Agent identifier |
+| `sessionId` | string (hex) | *required* | The session to delete |
+
+Job records are **not** touched: callers hold their own Job ids and delete those separately through the jobs API. Any in-flight chat on the session is failed.
+
+Operators can disable the operation entirely with `adapters.agent.sessionDelete: false` — worth knowing if a venue's retention policy says conversations are the record.
+
+### agent:rename-session {/* #agent-rename-session */}
+
+Set or clear a session's free-form title. A titled session is far easier to pick out of a list than a raw id and timestamp.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `agentId` | string | *required* | Agent identifier |
+| `sessionId` | string (hex) | *required* | The session to title |
+| `title` | string | — | The title. Omit it, or pass an empty string, to clear it back to unset. |
+
 ## Inspection
 
 ### agent:info

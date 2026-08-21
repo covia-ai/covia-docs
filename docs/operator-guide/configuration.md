@@ -45,6 +45,7 @@ All keys below are venue-entry keys unless noted, dotted paths showing nesting
 | Key | Default | Description |
 |-----|---------|-------------|
 | `name` | — | Human-readable venue name, surfaced in status. |
+| `description` | — | Optional human-readable description of the venue, alongside `name`. |
 | `port` | `8080` | HTTP listen port. |
 | `bindAddress` | all interfaces (`0.0.0.0`) | Network interface the HTTP connector binds to. Set `127.0.0.1` to restrict the venue to loopback — see [Embedded Venue](./embedded-venue). A loopback bind also flips the defaults for `rateLimit` (off) and `allowPrivateNetwork` (on). Distinct from `hostname`. |
 | `hostname` | — | The venue's *advertised* public host, used to derive `baseUrl` and a `did:web` alias in the DID document. Leave unset for a loopback/embedded venue (identity stays `did:key`). |
