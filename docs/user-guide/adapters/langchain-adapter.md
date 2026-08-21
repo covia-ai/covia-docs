@@ -14,12 +14,16 @@ This adapter powers the Level 3 (LLM call) layer in the [agent architecture](/do
 
 | Operation | Provider | Default Model | API Key Secret |
 |-----------|----------|---------------|----------------|
-| `langchain:openai` | OpenAI | `gpt-5.4-mini` | `OPENAI_API_KEY` |
-| `langchain:anthropic` | Anthropic | `claude-sonnet-4-6` | `ANTHROPIC_API_KEY` |
+| `langchain:openai` | OpenAI | `gpt-5.6-terra` | `OPENAI_API_KEY` |
+| `langchain:anthropic` | Anthropic | `claude-sonnet-5` | `ANTHROPIC_API_KEY` |
+| `langchain:gemini` | Google Gemini | `gemini-3.6-flash` | `GOOGLE_API_KEY` |
+| `langchain:xai` | xAI (Grok) | `grok-4.3` | `XAI_API_KEY` |
+| `langchain:deepseek` | DeepSeek | `deepseek-v4-flash` | `DEEPSEEK_API_KEY` |
+| `langchain:mistral` | Mistral | `mistral-medium-latest` | `MISTRAL_API_KEY` |
+| `langchain:openrouter` | OpenRouter | `openrouter/auto` | `OPENROUTER_API_KEY` |
 | `langchain:ollama` | Ollama (local) | `qwen` | None required |
-| `langchain:xai` | xAI (Grok) | `grok-4` | `XAI_API_KEY` |
 
-Other OpenAI-compatible providers (DeepSeek, Google Gemini, gateways) work through `langchain:openai` by setting the `url` field — e.g. `"url": "https://api.deepseek.com/v1"`.
+Any other OpenAI-compatible provider or local gateway works through `langchain:openai` by setting the `url` field. `langchain:models` reports what this venue actually offers — providers, models, recommendations by intent, and each operation’s declared [`model` facet](../agents/llm-backends#what-a-model-declares-about-itself).
 
 ### Setting API Keys
 
@@ -54,7 +58,7 @@ Keys are resolved from the caller's secret store at invocation time. A backend t
 {
   "operation": "v/ops/langchain/anthropic",
   "input": {
-    "model": "claude-sonnet-4-6",
+    "model": "claude-sonnet-5",
     "messages": [
       { "role": "system", "content": "You are a helpful assistant." },
       { "role": "user", "content": "Explain lattice technology in one paragraph." }

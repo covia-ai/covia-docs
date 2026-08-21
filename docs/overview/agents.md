@@ -26,9 +26,9 @@ A **skill** is a named bundle of instructions, context, and tools that an agent 
 
 ### Context
 
-Each turn, the context builder reassembles the agent's input from scratch: system prompt, tools, pinned context entries, loaded paths, pending results, and the session conversation. Agents manage their own working set with `context_load` and `context_unload`, every entry carries a byte budget with budget-aware rendering, and the Goal Tree adapter compacts automatically under pressure — so context is an engineered, inspectable resource rather than an ever-growing transcript.
+Before **every inference**, one assembler rebuilds the agent's input from scratch — identity, tools, pinned context, the skills index, loaded elements, pending results, the conversation, and the current input — in a fixed sequence ordered by how often each part changes, so the cacheable prefix is large by construction rather than by careful prompt-writing. Agents curate their own working set with `context_load` and `context_unload`; the budget is the model's own declared context size, and pressure is surfaced to the agent rather than resolved by silent eviction. Because assembly is a pure function, `agent:context` shows you the exact prompt an agent would receive — context is an engineered, inspectable resource, not an ever-growing transcript.
 
-→ [The context layer](./context) · [Context assembly](../user-guide/agents/tools-and-context#context-assembly-pipeline) · [Context budgets](../user-guide/agents/tools-and-context#context-budgets)
+→ [The context layer](./context) · [Context assembly](../user-guide/agents/tools-and-context#context-assembly) · [Context budgets](../user-guide/agents/tools-and-context#context-budgets)
 
 ### Memory
 

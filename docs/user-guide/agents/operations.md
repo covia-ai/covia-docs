@@ -258,14 +258,53 @@ List all agents owned by the caller.
 
 ### agent:context {/* #agent-context */}
 
-Inspect the exact LLM context an agent would receive — the complete Level 3 input as assembled by the context builder. Requires the agent's transition adapter to support inspection (the built-in adapters do).
+Assemble the exact context an agent would send to its model **for one hypothetical call**, without calling the model. You describe the call; the venue runs the same Spec through the same assembler a live transition uses, so what you see matches what the model would get by construction rather than by two code paths agreeing.
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `agentId` | string | *required* | Agent identifier |
-| `task` | any | — | Optional task to simulate as a goal (shows first-iteration context) |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `agentId` | string *(required)* | Agent to inspect |
+| `message` | string or object | A hypothetical inbox message — a string, or `{message, caller?}`. Renders as the current input, with venue attribution when the caller isn't the agent's own principal. |
+| `messages` | array | Several inbox messages, same forms |
+| `pending` | array | Job results arriving this cycle, as `{jobId, status, output}` |
+| `task` | any | A task input — rendered as the outstanding task (LLM Agent) or the goal (Goal Tree), with the task tools offered |
+| `sessionId` | string (hex) | Render against a real session's conversation, exactly as a live transition on it would see |
 
-The response is the L3 input as JSON — system prompt, context entries with byte sizes, tool definitions, and conversation. Invaluable for debugging agent behaviour.
+The response is the Level 3 input — `model`, `messages`, `tools`, `cacheMarks` — plus assembly diagnostics:
+
+| Field | Meaning |
+|-------|---------|
+| `budget` | `{bytes, used, remaining}` — the model's declared context budget and what this call spends of it |
+| `marks` | Message counts at each band boundary: `head`, `live`, `conversation`, `toolLoop` |
+| `labels` | The label dialect in force (see [Tools and Context](./tools-and-context#context-assembly)) |
+| `sessionTokens` | Measured usage, when the session has any |
+
+With nothing to act on, the context shows the empty-state signal a wake-up would see.
+
+```json
+{
+  "operation": "v/ops/agent/context",
+  "input": { "agentId": "Alice", "message": "which vendors are overdue?" }
+}
+```
+
+### agent:step {/* #agent-step */}
+
+Step an agent's harness through **one iteration** on a reply you supply — no model call. Describe the call exactly as for `agent:context`, and add `assistant`: the reply the model would have given, as a string or `{content?, toolCalls?: [{id?, name, arguments?}]}`.
+
+The tool calls are dispatched the way a live cycle dispatches them — same routes, same capability checks, same authority — so **the tools' side effects are real**. Their results are rendered, and you get back the prompt the next inference would receive.
+
+The agent itself is untouched: nothing persists to its session, timeline or tasks. `complete_task` / `fail_task` (LLM Agent) and `complete` / `fail` (Goal Tree) are validated as live but reported as a terminal outcome rather than resolving anything, and Goal Tree's `subgoal` is not run — it would start a child frame and call the model.
+
+| Field returned | Meaning |
+|----------------|---------|
+| `assistant` | The reply as it would be recorded |
+| `turns` | What this iteration appends to the conversation |
+| `calls` | `[{id, name, arguments, result, isError?, ms}]` |
+| `terminal` | `{status: "complete" or "failed", value}` when a control tool was called |
+| `done` / `response` | Whether the cycle ends here, and with what |
+| `next` | The following prompt, as `agent:context` reports it |
+
+Together these two make an agent testable without spending an inference: `agent:context` shows what the model would see, `agent:step` shows what the harness would do with a given reply.
 
 ## Deep Inspection via Lattice
 
@@ -289,19 +328,31 @@ For detailed debugging beyond `agent:info`, read the agent's lattice state direc
 
 ### Timeline Entries
 
-Each successful run appends a timeline entry:
+Each run appends a timeline entry recording **every inference of the cycle** — the standing `context` and `tools` once, then per inference what was newly `sent`, the `reply` verbatim (or `error`), and the tool `calls` it requested with their results and timings:
 
 ```json
 {
   "start": 1782864000000,
   "end": 1782864012000,
   "op": "v/ops/goaltree/chat",
+  "sessionId": "0xabcd...",
   "tasks": [{ "task": "Summarise vendor records" }],
-  "messages": [],
-  "result": { "answer": "Three vendors..." },
-  "taskResults": { "0x1234": { "status": "COMPLETE", "output": { } } }
+  "inferences": [
+    {
+      "ts": 1782864000100, "ms": 4200,
+      "op": "v/ops/langchain/anthropic", "model": "claude-sonnet-5",
+      "sent": [],
+      "reply": { "toolCalls": [{ "name": "covia_list", "arguments": { "path": "w/vendors" } }] },
+      "calls": [{ "id": "c1", "name": "covia_list", "result": {}, "ms": 12 }]
+    }
+  ],
+  "result": { "answer": "Three vendors..." }
 }
 ```
+
+`sent` carries the messages added since the previous inference — the standing head and live surface are recorded once, on the inference that first sent them. A `subgoal` call carries its child frame's record (`frame`) in the same shape, so popped subgoals keep their history, and a cycle whose transition throws still writes its entry with the inferences that ran.
+
+This is the audit trail: what the model was actually shown, what it actually said, and what actually ran as a result.
 
 ## Error Handling and Recovery
 

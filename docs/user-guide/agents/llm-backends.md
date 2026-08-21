@@ -9,35 +9,44 @@ The Level 3 LLM call is a stateless operation that sends messages and tool defin
 
 ## Available Backends
 
-| Operation | Provider | Notes |
-|-----------|----------|-------|
-| `v/ops/langchain/openai` | OpenAI | Supports structured outputs (strict JSON schema). Also the route for any OpenAI-compatible endpoint (see below). |
-| `v/ops/langchain/anthropic` | Anthropic | Claude models via the native Anthropic API. |
-| `v/ops/langchain/ollama` | Ollama | Local models. Requires Ollama running and reachable from the venue host. No API key. |
-| `v/ops/langchain/xai` | xAI (Grok) | Pre-configured OpenAI-compatible operation pointed at `https://api.x.ai/v1`. |
+Each provider has its own named operation, so you select one by reference rather than by assembling a URL:
 
-Each operation supplies a **default model** when you don't set one, but you can pass any model the provider supports via the `model` field. Current defaults are:
+| Operation | Provider | Default model | Secret |
+|-----------|----------|---------------|--------|
+| `v/ops/langchain/openai` | OpenAI | `gpt-5.6-terra` | `OPENAI_API_KEY` |
+| `v/ops/langchain/anthropic` | Anthropic | `claude-sonnet-5` | `ANTHROPIC_API_KEY` |
+| `v/ops/langchain/gemini` | Google Gemini | `gemini-3.6-flash` | `GOOGLE_API_KEY` |
+| `v/ops/langchain/xai` | xAI (Grok) | `grok-4.3` | `XAI_API_KEY` |
+| `v/ops/langchain/deepseek` | DeepSeek | `deepseek-v4-flash` | `DEEPSEEK_API_KEY` |
+| `v/ops/langchain/mistral` | Mistral | `mistral-medium-latest` | `MISTRAL_API_KEY` |
+| `v/ops/langchain/openrouter` | OpenRouter | `openrouter/auto` | `OPENROUTER_API_KEY` |
+| `v/ops/langchain/ollama` | Ollama (local) | `qwen` | *(none)* |
 
-| Backend | Default model | Secret |
-|---------|---------------|--------|
-| OpenAI | `gpt-5.4-mini` | `OPENAI_API_KEY` |
-| Anthropic | `claude-sonnet-4-6` | `ANTHROPIC_API_KEY` |
-| Ollama | `qwen` | _(none)_ |
-| xAI | `grok-4` | `XAI_API_KEY` |
+Pass any model the provider supports via the `model` field. OpenRouter takes any vendor-prefixed model id (`anthropic/claude-sonnet-5`, `google/gemini-3.5-flash`), and `openrouter/auto` delegates the choice to the router.
 
-### OpenAI-compatible providers
+### Discovering what a venue offers
 
-Many providers (xAI, DeepSeek, Google Gemini, local gateways) expose an OpenAI-compatible API. Reach them through `v/ops/langchain/openai` by setting the `url` (and the appropriate secret):
+Rather than hard-coding the table above, ask the venue:
+
+```json
+{ "operation": "v/ops/langchain/models" }
+```
+
+`langchain:models` reports each provider, its models, its recommendations by intent (`balanced`, `quality`, `economical`, `coding`, `reasoning`, `highVolume`), and the [`model` facet](#what-a-model-declares-about-itself) each operation declares — verbatim. That is what an agent should use when choosing a model, since it reflects the venue actually answering.
+
+### OpenAI-compatible endpoints
+
+Any other OpenAI-compatible provider or local gateway is reachable through `v/ops/langchain/openai` by setting `url`:
 
 ```json
 {
   "llmOperation": "v/ops/langchain/openai",
-  "model": "deepseek-chat",
-  "url": "https://api.deepseek.com/v1"
+  "model": "some-model",
+  "url": "https://api.example.com/v1"
 }
 ```
 
-`v/ops/langchain/xai` is simply this pattern packaged as a named operation.
+The named operations above are this pattern packaged, with the provider's own defaults and declared traits attached.
 
 ## Configuration
 
@@ -50,7 +59,7 @@ Set the backend via `llmOperation` in agent config. The `model` is optional — 
     "agentId": "claude-agent",
     "config": {
       "llmOperation": "v/ops/langchain/anthropic",
-      "model": "claude-sonnet-4-6",
+      "model": "claude-sonnet-5",
       "systemPrompt": "You are a helpful assistant."
     }
   }
@@ -96,6 +105,42 @@ that's the second row.
 
 When an agent uses typed outputs (Goal Tree `outputs` config, a per-request `responseSchema`, or `responseFormat`), the OpenAI backend enables strict JSON-schema mode so the response conforms to the schema. See [Creating Agents](./creating-agents) and [Goal Tree](./goal-tree).
 
+## What a model declares about itself
+
+Providers differ in ways that change how a prompt must be **shaped** and **sized**. Those facts are declared as data on the LLM operation asset — a `model` facet beside the `operation` facet — rather than branched on by provider name in code:
+
+```json
+{
+  "name": "Anthropic Chat",
+  "operation": { "adapter": "langchain:anthropic" },
+  "model": {
+    "options": { "systemMessages": "single", "requiresUserMessage": true, "cachePrefix": true },
+    "budget": { "bytes": 400000 }
+  }
+}
+```
+
+| Option | Meaning |
+|--------|---------|
+| `systemMessages` | `"multiple"` (the norm), `"single"` (one system parameter, no system role in the message list), or `"none"` (system content folded into the first user message) |
+| `requiresUserMessage` | The request is rejected without at least one non-system message |
+| `cachePrefix` | The provider caches an explicitly marked stable prefix |
+| `toolCalling` | `false` declares a model that cannot call tools — `agent:create` warns when an agent declares tools or skills against it |
+| `toolCallingByModel` | Tool support varies per model, so it is probed where the provider advertises capabilities (Ollama) |
+| `labels` | `"bracket"` (default), `"xml"` or `"header"` — the dialect context elements are labelled in |
+
+`budget.bytes` is an estimate of the context size appropriate for the model, in UTF-8 bytes — what the assembler targets, not the hard window the provider enforces. It is the **only** context budget the agent runtime uses (see [Context Budgets](./tools-and-context#context-budgets)). `byModel` carries the same shape again, keyed by model id, layered over the provider-level values one key deep — which is how one OpenRouter or Ollama operation serves models of very different sizes.
+
+Everything in the facet is optional: an absent facet means the OpenAI-compatible norm, so a provider declares only what *differs*.
+
+## Prompt caching
+
+On Anthropic, caching is end to end and automatic. The assembler marks its band boundaries — tool definitions, the system slot, the conversation as it stood when the cycle began, and the tool loop so far — and the backend turns those marks into per-message `cache_control` breakpoints alongside the system prompt and tools.
+
+Because [the section sequence is ordered by change frequency](./tools-and-context#bands), the cacheable prefix is large and stable by construction rather than by careful prompt-writing.
+
+Usage reports `cacheRead` and `cacheWrite` tokens, which also roll up into the agent's cycle tally and the session's token totals. Pass `cache: false` on a call to switch caching off for it.
+
 ## Message Format
 
 All backends use the same message format:
@@ -127,7 +172,7 @@ You may pass a single `prompt` string and/or `systemPrompt` instead of a full `m
 }
 ```
 
-`tokens` and `finishReason` are surfaced when the provider reports them. If `toolCalls` is present, the Level 2 adapter executes them and calls the LLM again.
+`tokens` and `finishReason` are surfaced when the provider reports them, with `cacheRead` / `cacheWrite` alongside them where the provider reports caching. If `toolCalls` is present, the Level 2 adapter executes them and calls the LLM again.
 
 ## Related
 
