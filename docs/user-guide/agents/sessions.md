@@ -16,7 +16,8 @@ Each session lives in the agent record at `g/<agentId>/sessions/<sessionId>`, wh
 | `frames` | The conversation. For a plain LLM Agent this is a single root frame; for a [Goal Tree](./goal-tree) agent it's a stack of frames. The root conversation is at `frames/0/conversation`. |
 | `pending` | The session's intake queue — messages delivered but not yet consumed by a run. |
 | `c` | Session-scoped scratch workspace (addressed as `c/...` from within a transition). |
-| `meta` | `{ parties, created, turns }` — the caller DIDs on the session, when it was created, and a turn counter. |
+| `meta` | `{ parties, created, turns, tokens }` — the caller DIDs on the session, when it was created, a turn counter, and the session’s rolled-up token usage (including `cacheRead` / `cacheWrite` where the provider reports [prompt caching](./llm-backends#prompt-caching)). |
+| `loads` | The session tier of the [context scope chain](./tools-and-context#the-scope-chain) — what `context_load` and `skill_load` write while this session is innermost. |
 
 ## Getting a session id
 

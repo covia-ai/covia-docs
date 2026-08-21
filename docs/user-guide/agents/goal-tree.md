@@ -59,7 +59,9 @@ Ancestor frames are visible as progressively summarised context — the parent a
 
 ## Harness Tools
 
-The Goal Tree provides built-in harness tools, available to the agent regardless of `config.tools`:
+The Goal Tree provides built-in harness tools, available to the agent regardless of `config.tools`.
+
+`complete` / `fail` finish the current **frame**. Separately, when the agent has an outstanding **task**, both runtimes offer `complete_task` / `fail_task` — one task boundary, the same on either harness, with the task rendered last on every inference and resolved at tool time. That is why an [LLM Agent](./llm-agent) configuration runs unchanged on the Goal Tree: the task contract does not change with the harness. A task still open when the root frame completes takes the frame's outcome.
 
 ### subgoal
 
@@ -82,6 +84,8 @@ Finish the current goal with a result.
 If `config.outputs.complete.schema` is defined, the input is validated against that schema using the LLM's strict structured output mode.
 
 A text-only response (no tool calls) implicitly completes the goal — no explicit `complete` call needed.
+
+**One completion rule, both runtimes.** `complete_task` / `fail_task`, `complete` / `fail` and a typed reply are all judged the same way: if nothing was delivered — no value, a blank string, an empty object — the turn's text is the result; JSON supplied as text is parsed when it conforms to the schema; and a mismatch is rejected with the reason *and the schema*, so the agent is asked again with something it can act on rather than a generic notice.
 
 ### fail
 
@@ -150,6 +154,8 @@ Without `outputs`, the `complete` tool accepts any JSON object.
 | Compaction | Not supported | Built-in `compact` tool |
 | Implicit complete | N/A | Text response auto-completes |
 | Best for | Simple conversation | Complex multi-step tasks |
+
+What is **not** different: context assembly (one assembler, one sequence, one budget — see [Tools and Context](./tools-and-context#context-assembly)), the task boundary, and the completion rule. The two harnesses differ in what they put into the assembler's Spec — a frame stack versus a single session frame — not in how the result is built or judged. Choosing between them is a question about the shape of the work, not about which features you get.
 
 ## Patterns
 

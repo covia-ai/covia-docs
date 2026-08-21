@@ -105,4 +105,5 @@ For complex tasks requiring hierarchical decomposition, subgoals, or typed struc
 
 - [Goal Tree](./goal-tree) — hierarchical goal decomposition
 - [Tools and Context](./tools-and-context) — tool resolution and context budgets
+- [Goal Tree](./goal-tree) — the other harness; an LLM Agent configuration runs on it unchanged
 - [LLM Backends](./llm-backends) — configuring the Level 3 provider
