@@ -64,7 +64,7 @@ Two canonical endpoints carry the two halves of an asset: `assets/<ref>` is its 
 
 #### `GET /api/v1/assets`
 
-Lists the **venue-level asset catalog**, as fully-qualified asset references. The venue's operation catalog is discovered via `GET /api/v1/operations` (or the `covia:functions` / `covia:inspect` operations), not here.
+Lists the **venue-level asset catalog**, as fully-qualified asset references. The venue's operation catalog is discovered via `GET /api/v1/operations` — or on the lattice, by listing `v/ops` with `covia:list` and previewing with `covia:inspect` — not here.
 
 **Query Parameters:**
 
