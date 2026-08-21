@@ -79,6 +79,39 @@ The result is a JWT the audience presents as a bearer token. Because UCANs atten
 
 A resource owner with their own `did:key` keypair can equally sign grants over their own namespace **directly** — no venue involvement. Such self-sovereign grants verify on any venue that holds the data.
 
+## Ability reference
+
+`crud/read`, `crud/write`, `crud/delete` (with the umbrella `crud`) and `invoke` are the generic abilities. On top of those, Covia defines domain families for the surfaces that need more than CRUD:
+
+| Ability | Guards |
+|---------|--------|
+| `asset/read` | Reading asset metadata and content by hash |
+| `asset/store` | Storing and pinning assets |
+| `secret/write` | Writing a secret (`s/<name>`) |
+| `agent/create` | Creating agents |
+| `agent/request` | Sending a tracked task to an agent |
+| `agent/message` | Sending a one-way message to an agent |
+| `agent/write` | Updating, suspending, resuming, deleting an agent |
+| `hitl/request` | Raising a [human-in-the-loop](./adapters/hitl) request |
+| `mcp/manage` | Managing bridged [MCP](./mcp/) servers — guarded on `v/mcp` |
+| `adapter/manage` | Adapter and module lifecycle — guarded on `<venue DID>/adapters`, and **venue-owned**: an ordinary authenticated caller cannot hold it over their own namespace |
+| `user/create`, `user/read` | Administrative [user](./adapters/user) registration and lookup |
+| `user/authentication-manage` | Managing a user's authenticator keys |
+| `venue/relay` | Relaying a request on another venue's behalf ([federation](./tutorials/federation)) |
+| `grant/…` | Issuing grants over a resource — the right to *delegate*, which access alone never implies |
+
+Optional [venue modules](./adapters/jvm#venue-modules) add their own, scoped to the thing they govern rather than to the venue:
+
+| Ability | Resource | Module |
+|---------|----------|--------|
+| `sql/…` | A registered database | [SQL](./adapters/sql) |
+| `telegram/send`, `telegram/call`, `telegram/manage` | `<owner>/telegram/<bot>` | [Telegram](./adapters/telegram) |
+| `discord/send`, `discord/call`, `discord/manage` | `<owner>/discord/<bot>` | [Discord](./adapters/discord) |
+| `claudecode/run` | `<owner>/claudecode/<project>` | [Claude Code](./adapters/claudecode) |
+| `claudecode/manage` | `<venueDID>/claudecode/projects` | [Claude Code](./adapters/claudecode) |
+
+Abilities are **hierarchical paths**, so a grant of `agent` covers `agent/create` and its siblings, and `*` covers everything. Because an adapter's abilities disappear with the adapter, a grant naming one is inert on a venue where that module isn't loaded.
+
 ## Capability-gated adapters
 
 Capability checks apply across the venue. In particular, the [`file:`](./adapters/file) adapter is gated on typed resources (`file://<root>/<path>`) and the [`dlfs:`](./adapters/dlfs) adapter on DID-scoped drive paths (`dlfs/<drive>/<path>`, owner-prefixed for cross-user access: `did:key:zAlice.../dlfs/<drive>/<path>`), so a grant can scope filesystem access down to a single root, drive, or path.
