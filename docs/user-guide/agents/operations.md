@@ -136,10 +136,25 @@ Create a new agent. See [Creating Agents](./creating-agents) for full configurat
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `agentId` | string | *required* | Agent identifier |
-| `config` | object / string | — | Inline config map, or a string reference: template (`template:worker`), workspace path (`w/templates/reader`), asset ref (`a/<hash>`), DID URL, or venue operation name. |
-| `state` | any | — | Initial agent state |
-| `overwrite` | boolean | `false` | Replace/update an occupied slot (SLEEPING/SUSPENDED update in place; TERMINATED wipes and re-creates; RUNNING is rejected). |
+| `agentId` | string | *required* | Agent identifier. **Must be unused** — an existing agent is an error. |
+| `config` | object / string / array | — | One config layer, or an **ordered array** of layers. A layer is an inline map or a string reference: template (`template:worker`), workspace path (`w/templates/reader`), asset ref (`a/<hash>`), or DID URL. Later layers override earlier ones — nested maps merge recursively, arrays replace. A resolved composition may carry `state`, used as the agent's initial state. |
+| `definition` | object | — | The agent definition, where it is supplied directly rather than composed from config layers. |
+
+Omit `config` entirely for the recommended `skilled` default. Pass `config: {}` only when you deliberately want a minimal configuration.
+
+```json
+// Layers merge left to right
+{ "operation": "v/ops/agent/create",
+  "input": {
+    "agentId": "Alice",
+    "config": ["template:worker", "w/agent-config/providers/anthropic", { "model": "claude-sonnet-5" }]
+  }
+}
+```
+
+:::caution No `overwrite`
+`agent:create` no longer accepts `overwrite` — a request carrying it **fails**. To change an existing agent use `agent:update` (history-preserving); to replace one, call `agent:delete` with `remove: true` and then create it again. The same applies to `agent:fork`.
+:::
 
 ### agent:update
 

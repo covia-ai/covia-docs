@@ -295,12 +295,12 @@ properties: `venue.agents`, `venue.secrets`, `venue.workspace`, `venue.ucan`.
 ### Agents
 
 ```python
-# Create (or update in place with overwrite=True)
+# Create — the name must be unused
 venue.agents.create("Alice", config={
     "systemPrompt": "You are a helpful assistant.",
     "model": "gpt-5.4-mini",
     "tools": ["v/ops/covia/read", "v/ops/covia/list"],
-}, overwrite=True)
+})
 
 # Session-scoped chat — omit session_id on the first call, then reuse it
 reply = venue.agents.chat("Alice", "Hi Alice")
@@ -315,6 +315,10 @@ venue.agents.suspend("Alice")
 venue.agents.resume("Alice")
 venue.agents.delete("Alice")
 ```
+
+:::caution `overwrite` no longer works
+`AgentManager.create()` still accepts an `overwrite` keyword, but venues from 0.9.2 onward **reject** a create request carrying it — `agent:create no longer supports overwrite`. Use `venue.agents.update(...)` to change an agent in place, or delete it with `remove=True` and create it again. The keyword is only sent when you pass it, so calls that omit it are unaffected.
+:::
 
 ### Secrets
 

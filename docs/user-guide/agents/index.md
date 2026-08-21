@@ -68,7 +68,7 @@ An agent transitions through four states:
 | **SLEEPING** | Idle, ready to run. Default after creation or a successful run. |
 | **RUNNING** | A transition is in flight. New tasks and messages are queued. |
 | **SUSPENDED** | Last run failed. Dormant — does not auto-retry. State and tasks are preserved for debugging. |
-| **TERMINATED** | Logically deleted. Preserves audit record; can be revived with `overwrite: true`. |
+| **TERMINATED** | Logically deleted. The audit record is preserved; the name is freed by `agent:delete` with `remove: true`, after which it can be created again. |
 
 ## Quick Example
 

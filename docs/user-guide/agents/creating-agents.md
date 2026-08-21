@@ -235,48 +235,56 @@ Explicit fields you pass alongside the reference are merged on top of the resolv
 
 ## Initial State
 
-An agent can be created with pre-populated state by including a `state` field at the top level:
+An agent can be created with pre-populated state by putting `state` **inside a config layer** — a resolved config composition may carry it, and it is then used as the agent's initial state. (`state` is a top-level field of `agent:update`, not of `agent:create`.)
 
 ```json
 {
   "operation": "v/ops/agent/create",
   "input": {
     "agentId": "Alice",
-    "config": { "operation": "v/ops/goaltree/chat" },
-    "state": {
-      "config": {
-        "model": "gpt-5.4-mini",
-        "systemPrompt": "You are Alice...",
-        "tools": ["v/ops/covia/read"]
+    "config": {
+      "operation": "v/ops/goaltree/chat",
+      "state": {
+        "config": {
+          "model": "gpt-5.4-mini",
+          "systemPrompt": "You are Alice...",
+          "tools": ["v/ops/covia/read"]
+        }
       }
     }
   }
 }
 ```
 
+To set state on an agent that already exists, `agent:update` takes `state` at the top level.
+
 The `state` is opaque to the framework — its structure depends on the Level 2 adapter. For both `llmagent:chat` and `goaltree:chat`, the state includes a `config` sub-map with LLM settings.
 
-## Idempotent Creation
+## Creating over an existing agent
 
-By default, `agent:create` is idempotent. If an agent with the given ID already exists:
-- The call succeeds (no error)
-- The existing agent is unchanged
-- The response indicates `created: false`
+`agent:create` requires an **unused** name. If an agent with that id already exists the call **fails** — it is not idempotent, and it does not silently leave the existing agent in place:
 
-To replace an existing agent, use `overwrite: true`:
+```
+Agent already exists: Alice; update it, or delete it with remove=true before creating it again
+```
+
+There is no `overwrite` flag; a request carrying one fails with a message saying so. The two ways forward are deliberate, because they differ in what happens to the agent's history:
+
+**Change it in place** — `agent:update` merges config or state and preserves the agent's sessions, tasks and timeline. This is what you almost always want:
 
 ```json
 {
-  "operation": "v/ops/agent/create",
+  "operation": "v/ops/agent/update",
   "input": {
     "agentId": "Alice",
-    "overwrite": true,
     "config": { "systemPrompt": "Updated instructions..." }
   }
 }
 ```
 
-This updates the config in place for SLEEPING or SUSPENDED agents. For TERMINATED agents, it revives the agent with fresh state.
+**Replace it outright** — `agent:delete` with `remove: true` frees the name, discarding the record, after which `agent:create` succeeds again. Deleting without `remove` leaves the agent TERMINATED: the audit record survives and the name stays taken.
+
+Making the destructive path explicit is the point. An `overwrite` flag quietly decided, on the caller's behalf, whether a running agent's history was worth keeping.
 
 ## AP Demo Example
 
