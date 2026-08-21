@@ -130,7 +130,7 @@ Marks the in-scope task failed. Exposed to LLMs as the harness tool **`fail_task
 
 ## Lifecycle Management
 
-### agent:create
+### agent:create {/* #agent-create */}
 
 Create a new agent. See [Creating Agents](./creating-agents) for full configuration details.
 
@@ -230,10 +230,15 @@ Terminate an agent.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `agentId` | string | *required* | Agent identifier |
+| `agentId` | string | — | One agent to delete |
+| `agentIds` | array | — | Exact agent names to delete in one Job — no prefixes, no wildcards, maximum 100. Every id is validated before any deletion begins, so a bad name fails the whole call rather than half-completing it. |
 | `remove` | boolean | `false` | Permanently delete the record (frees the name) |
 
-By default the agent is marked TERMINATED — preserving its audit trail. Use `remove: true` to delete the record entirely.
+Supply **exactly one** of `agentId` or `agentIds`.
+
+By default the agent is marked TERMINATED — preserving its audit trail, and keeping its name taken. `remove: true` deletes the record entirely, freeing the name and making unreachable storage eligible for garbage collection. That is also the only way to reuse a name, since [`agent:create`](#agent-create) requires an unused one.
+
+The `agentIds` form returns per-agent results under `agents`.
 
 ### agent:cancelTask
 
