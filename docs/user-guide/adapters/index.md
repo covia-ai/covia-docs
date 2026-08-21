@@ -82,9 +82,9 @@ Adapters and modules can be changed on a **running** venue, without a restart:
 | Operation | Purpose |
 |-----------|---------|
 | `v/ops/venue/adapters` | Full registry view — active and disabled adapters (kernel flag, owning module, operations) plus loaded modules |
-| `v/ops/venue/adapter/enable` / `disable` | Retract or restore a non-kernel adapter's catalog, introspection and dispatch |
+| `v/ops/venue/adapter/enable` / `v/ops/venue/adapter/disable` | Retract or restore a non-kernel adapter's catalog, introspection and dispatch |
 | `v/ops/venue/adapter/configure` | Apply a new effective configuration — the same shape as the `adapters.<name>` config block, replacing it unless `merge: true` |
-| `v/ops/venue/module/load` / `unload` | Load or unload a module jar |
+| `v/ops/venue/module/load` / `v/ops/venue/module/unload` | Load or unload a module jar |
 
 These are **venue-owned**: they authorise only for direct execution as the venue identity, or a venue-rooted delegation over `<venue DID>/adapters` with `adapter/manage`. An ordinary authenticated user cannot switch adapters off or load code, whatever their own namespace scope.
 

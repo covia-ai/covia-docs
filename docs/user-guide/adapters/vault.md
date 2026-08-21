@@ -61,6 +61,7 @@ Omit `path` to list the vault root.
 | Operation | Input | Description |
 |-----------|-------|-------------|
 | `vault:read` | `path` | Read file content |
+| `vault:create` | `path`, `content?` | Create a new file — **fails if it already exists** |
 | `vault:write` | `path`, `content?` or `asset?` | Write file content |
 | `vault:list` | `path?` | List directory entries |
 | `vault:mkdir` | `path` | Create a directory |

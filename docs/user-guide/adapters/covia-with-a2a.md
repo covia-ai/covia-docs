@@ -46,20 +46,41 @@ Inbound callers are identified by the venue's [auth middleware](../../operator-g
 
 ## Outbound: calling remote A2A agents
 
-The A2A adapter turns a remote A2A agent into grid operations. Address the remote agent by its base `url`; the adapter appends `/.well-known/agent-card.json` and `/a2a` as needed.
+The A2A adapter turns a remote A2A agent into grid operations. You **import the agent once**, and then address it by reference — not by URL on every call. That is what lets authentication be configured once and never travel in a call's input.
 
-| Operation | Input | Returns |
-|-----------|-------|---------|
-| `a2a:getAgentCard` | `url` | The remote agent's card |
-| `a2a:send` | `url`, `message`, `taskId?` | The remote Task (final, or current on interrupt) |
-| `a2a:getTask` | `url`, `id` | The remote Task's current state |
-| `a2a:cancel` | `url`, `id` | The cancelled Task |
+### Import an agent
 
 ```json
 {
-  "operation": "a2a:send",
+  "operation": "v/ops/a2a/import-agent",
   "input": {
+    "name": "research-bot",
     "url": "https://agent.example.com",
+    "auth": { "kind": "bearer", "secret": "s/RESEARCH_BOT_TOKEN" }
+  }
+}
+```
+
+This fetches the agent's card and stores it as an **immutable agent Asset**, with a mutable binding at `w/a2a/agents/<name>` (`name` matches `[a-z0-9-]{1,64}`). A Covia agent on another venue is imported the same way, with `coviaAgent` (`g/<agentId>` or `<ownerDID>/g/<agentId>`) plus `venue` instead of `url`.
+
+`auth` is a **stored** binding, never a literal credential: `{scheme: "<Agent Card scheme name>", secret: "s/NAME"}` for a scheme the card declares, or `{kind: "bearer", secret: "s/NAME"}` for plain Bearer.
+
+### Call it
+
+| Operation | Input | Returns |
+|-----------|-------|---------|
+| `a2a:agent-card` | `agent` | The immutable Agent Card snapshot from the imported asset |
+| `a2a:send` | `agent`, `message`, `taskId?` | The remote Task (final, or current on interrupt) |
+| `a2a:get-task` | `agent`, `id` | The remote Task's current state |
+| `a2a:cancel` | `agent`, `id` | The cancelled Task |
+
+`agent` is the imported reference — normally `w/a2a/agents/<name>`, or its immutable `a/<hash>` id when you want to pin the exact card you imported.
+
+```json
+{
+  "operation": "v/ops/a2a/send",
+  "input": {
+    "agent": "w/a2a/agents/research-bot",
     "message": { "role": "user", "parts": [{ "type": "text", "text": "Summarise Q1 revenue" }] }
   }
 }
@@ -67,13 +88,21 @@ The A2A adapter turns a remote A2A agent into grid operations. Address the remot
 
 Pass a `taskId` to continue an existing remote Task instead of starting a new one.
 
+### Calling a URL directly
+
+`a2a:raw/agent-card`, `a2a:raw/send`, `a2a:raw/get-task` and `a2a:raw/cancel` take a `url` and per-call `bearerToken` or `bearerSecret` instead of an imported reference.
+
+These are a **diagnostic escape hatch** — useful for probing an endpoint before importing it, and not the normal path. A per-call credential is one that has to be passed around, which is exactly what importing avoids.
+
 ### Job-per-Task mirroring
 
 `a2a:send` creates a **local Job that mirrors the remote Task**. If the remote Task is already terminal, the local Job completes immediately with its result. If it's still running, the adapter polls the remote agent (`GetTask` every ~500 ms, up to a 30-minute lifetime) and propagates state to the local Job; cancelling the local Job sends a best-effort `CancelTask` to the remote. An interrupted remote Task (`input-required` / `auth-required`) surfaces that state on the local Job so the caller can respond.
 
 ### Authentication
 
-The venue's agent card does not yet advertise A2A `securitySchemes`; inbound auth is handled at the transport/middleware layer (see the [operator auth guide](../../operator-guide/auth)). The outbound adapter currently calls remote agents without attaching credentials — for authenticated remotes, place the venue behind an appropriately configured gateway.
+**Inbound:** the venue's agent card does not yet advertise A2A `securitySchemes`; authentication is handled at the transport/middleware layer (see the [operator auth guide](../../operator-guide/auth)).
+
+**Outbound:** credentials are bound at import time — `auth` on `a2a:import-agent`, always as an `s/NAME` [secret](./secret) reference — and applied to every call made through that agent reference. A credential is therefore configured once, stored encrypted, and never appears in a job's input. The `raw/*` operations take a per-call `bearerToken` or `bearerSecret`, which is one reason to prefer importing.
 
 ## Related
 

@@ -124,6 +124,9 @@ Cannot delete non-empty directories — delete contents first.
 | `dlfs:read` | `drive`, `path` | Read file content |
 | `dlfs:write` | `drive`, `path`, `content?` or `asset?` | Write file content |
 | `dlfs:mkdir` | `drive`, `path` | Create a directory |
+| `dlfs:append` | `drive`, `path`, `content?` or `asset?` | Append to a file, creating it if absent (parent directories must exist) |
+| `dlfs:stat` | `drive`, `path` | Metadata: existence, type, size, last-modified, best-guess MIME type |
+| `dlfs:tree` | `drive`, `path?`, `maxDepth?`, `maxEntries?`, `info?` | Tab-indented text tree of a directory, shaped for LLM reading — directories end `/`, `info: "size"` appends file sizes |
 | `dlfs:delete` | `drive`, `path` | Delete a file or empty directory |
 
 ## WebDAV

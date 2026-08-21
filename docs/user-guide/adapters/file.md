@@ -17,7 +17,10 @@ Agents often need real files — imports to process, outputs to write, a working
 | `file:tree` | read | Tab-indented text tree of a directory (for LLM consumption) |
 | `file:read` | read | Read a file (text, bytes, or JSON) |
 | `file:stat` | read | File metadata |
+| `file:create` | write | Create a new file — **fails if it already exists** (omit `content` for an empty one) |
 | `file:write` | write | Write/replace a file |
+| `file:copy` | write | Copy a file or directory |
+| `file:move` | write | Rename or relocate a file or directory |
 | `file:append` | write | Append to a file |
 | `file:mkdir` | write | Create a directory |
 | `file:delete` | delete | Delete a file or directory |
