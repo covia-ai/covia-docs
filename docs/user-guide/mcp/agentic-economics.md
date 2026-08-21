@@ -42,10 +42,13 @@ Perhaps most significantly, AI agents can **write and deploy smart contracts in 
 ;; An agent might generate and deploy a contract like this
 (def escrow-contract
   (deploy
-    '(do
-       (def buyer *caller*)
+    ;; Quasiquote, so ~ splices the agent's negotiated terms into the
+    ;; deployed code; everything unquoted is evaluated on the new account.
+    `(do
+       (def buyer *caller*)                       ;; whoever deployed this
        (def seller ~seller-address)
        (def amount ~payment-amount)
+       (def deadline (+ *timestamp* ~timeout-ms)) ;; fixed at deploy time
        (def release-condition ~condition-fn)
 
        (defn release []
@@ -53,7 +56,7 @@ Perhaps most significantly, AI agents can **write and deploy smart contracts in 
            (transfer seller amount)))
 
        (defn refund []
-         (when (> (- *timestamp* creation-time) timeout)
+         (when (> *timestamp* deadline)
            (transfer buyer amount))))))
 ```
 
