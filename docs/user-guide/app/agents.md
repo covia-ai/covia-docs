@@ -20,6 +20,8 @@ POST /api/v1/invoke
              "config": { "model": "claude-sonnet-5", "systemPrompt": "..." } } }
 ```
 
+After creation, the **tool & skill picker** on the agent's configuration lets you browse the venue's operations and skills and attach or detach them; each change is an `agent:update` with its own job record.
+
 SDK: `venue.agents.create(...)`, then `venue.agents.chat(...)`. See [Creating Agents](../agents/creating-agents) for the full configuration shape.
 
 ## Chat and sessions

@@ -14,9 +14,11 @@ The app is a pure client. It holds no server-side state of its own: everything y
 | Group | Entries | Notes |
 | ----- | ------- | ----- |
 | **Agents** | Create · View · Chat · Skills | The agent workbench and the venue's skills library |
-| **Grid** | Assets · Operations · Jobs · Inbox | Inbox is the human-in-the-loop queue, with a live badge |
+| **Grid** | Public Artifacts · My Artifacts · Operations · Jobs · Inbox | Public Artifacts is the venue catalog; My Artifacts is your own `a/` namespace; Inbox is the human-in-the-loop queue, with a live badge |
 | **Manage** | Secrets · Venues · Workspace | Secrets and Workspace appear when signed in |
 | **Learn** | Resources · Demos | Tutorials, videos, and seeded live demos |
+
+A bell in the top bar opens a persistent activity panel: job completions and failures, agent errors, and schedule outcomes, each entry linking the record it came from.
 
 ## Connecting venues
 
