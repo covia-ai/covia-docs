@@ -71,7 +71,7 @@ The runtime separates the substrate from the agent and the agent from the model:
 - **MCP, in both directions**: any MCP client can use a venue as a tool server; the venue can consume any external MCP server as a grid operation. See [MCP integration](../user-guide/mcp/).
 - **A2A**: agent-to-agent workflows across vendors and frameworks. See [Covia with A2A](../user-guide/adapters/covia-with-a2a).
 - **REST + DID**: the full [API](../user-guide/api/) with interactive OpenAPI docs; venue discovery via standard DID documents.
-- **Models**: LangChain4j bindings for OpenAI, Anthropic, Gemini, DeepSeek, xAI, and local models via Ollama.
+- **Models**: LangChain4j bindings for OpenAI, Anthropic, Gemini, DeepSeek, xAI, Mistral, OpenRouter, and local models via Ollama.
 - **SDKs**: [TypeScript](../user-guide/sdk/typescript) (npm), [Python](../user-guide/sdk/python) (PyPI), and [Java](../user-guide/sdk/java), with Ed25519 keypair and bearer authentication.
 
 The positioning is deliberate: Covia sits beneath existing frameworks, so its integration surface grows with each protocol's ecosystem.
