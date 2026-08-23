@@ -38,9 +38,9 @@ Delegated authority is presented as [UCAN](../capabilities) proof tokens alongsi
 | ------- | -------------- | ---- |
 | `Authorization: Bearer <ucan-jwt>` | Any request | A UCAN JWT as the bearer token itself |
 | `ucans` body field | `POST` requests (`/invoke`, `/run`) | JSON array of UCAN JWT strings |
-| `X-Covia-Ucans` header | Body-less requests (`GET` reads, SSE) | Comma-separated UCAN JWTs |
+| `X-Covia-Ucans` header | Body-less job requests (`GET /api/v1/jobs/{id}`, SSE) | Comma-separated UCAN JWTs |
 
-The `X-Covia-Ucans` header exists because a `GET` has no body to carry the `ucans` array: it is how delegated job observation and delegated lattice reads present their proofs. Capability enforcement is identical on every channel.
+The `X-Covia-Ucans` header exists because a `GET` has no body to carry the `ucans` array: it is how delegated and federated job observation presents proofs. The job-free values routes do not yet consult it, so a delegated read of another principal's path goes through the `covia:read`/`covia:list` operations with `ucans` (each a job record) until that lands. Capability enforcement is identical on every channel.
 
 ## Content Type
 
@@ -368,7 +368,7 @@ Every route takes a `path` query parameter addressing the lattice:
 | `c/` | Session-scoped scratch | Requires `agent` and `session` parameters |
 | `v/` | Venue globals: `v/ops`, `v/info`, `v/agents` | Public read |
 
-The scoping parameters accompany the virtual namespaces: `agent` is a bare agent id under the caller (or a full agent DID), `task` is the `agent:request` job id, and `session` is the session id. Delegated reads of another user's paths present UCAN proofs via the `X-Covia-Ucans` header.
+The scoping parameters accompany the virtual namespaces: `agent` is a bare agent id under the caller (or a full agent DID), `task` is the `agent:request` job id, and `session` is the session id. These routes read the caller's own namespaces; delegated reads of another user's paths currently use the `covia:read`/`covia:list` operations with `ucans` proofs.
 
 #### `GET /api/v1/values/read`
 
