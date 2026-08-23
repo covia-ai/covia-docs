@@ -84,7 +84,7 @@ Across the API and in operation inputs (e.g. `asset:get`, the `file:write` `asse
 
 #### `GET /api/v1/assets`
 
-Lists the **caller's own pinned assets** (the per-user `a/` namespace), not every asset on the venue. The venue's operation catalog is discovered via `GET /api/v1/operations` (or the `covia:functions` / `covia:inspect` operations), not here.
+Lists the **venue-level asset catalog** (content-addressed ids). Pass `scope=own` (alias `mine`) to list the **authenticated caller's own assets** instead: the per-user `a/` namespace populated by `asset:store` and `asset:pin`, read job-free (covia 0.9.2). The venue's operation catalog is discovered via `GET /api/v1/operations`, not here.
 
 **Query Parameters:**
 
@@ -92,6 +92,7 @@ Lists the **caller's own pinned assets** (the per-user `a/` namespace), not ever
 | --------- | ---- | ----------- |
 | `offset` | integer | Starting index (0-based). Default: 0 |
 | `limit` | integer | Maximum results (max 1000). Default: all |
+| `scope` | string | `own` or `mine`: list the caller's own `a/` assets instead of the venue catalog |
 
 **Response:**
 ```json
@@ -130,7 +131,7 @@ Registers a new asset with the venue.
 
 The response header includes `Location` pointing to the new asset.
 
-#### `GET /api/v1/assets/{id}`
+#### `GET /api/v1/assets/{ref}`
 
 Retrieves metadata for a specific asset.
 
@@ -138,7 +139,7 @@ Retrieves metadata for a specific asset.
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| `id` | string | Asset ID (hex string) |
+| `ref` | string | Asset reference: a bare CAD3 hash, a content-addressed `a/<hash>` path, or another resolvable asset reference (covia 0.9.3 resolves any reference form here) |
 
 **Response:** `200 OK`
 
