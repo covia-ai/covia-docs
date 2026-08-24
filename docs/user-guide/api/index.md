@@ -20,6 +20,28 @@ Authentication requirements vary by venue. See [COG-3: Authentication](/docs/pro
 
 Public venues may allow unauthenticated access to read operations, while write operations typically require authentication.
 
+### Bearer tokens
+
+Authenticated requests carry a JWT in the standard header:
+
+```
+Authorization: Bearer <jwt>
+```
+
+A venue accepts three bearer forms: a **self-issued EdDSA JWT** (signed with the caller's own Ed25519 key, identifying a `did:key` or a named venue user), a **venue-signed JWT** (issued after OAuth login), or an **external provider JWT** (verified against the provider's JWKS). See the [operator authentication guide](../../operator-guide/auth) for how venues configure these.
+
+### Presenting UCAN capability proofs
+
+Delegated authority is presented as [UCAN](../capabilities) proof tokens alongside the caller's identity. There are three transport channels, merged by the venue:
+
+| Channel | Where it works | Form |
+| ------- | -------------- | ---- |
+| `Authorization: Bearer <ucan-jwt>` | Any request | A UCAN JWT as the bearer token itself |
+| `ucans` body field | `POST` requests (`/invoke`, `/run`) | JSON array of UCAN JWT strings |
+| `X-Covia-Ucans` header | Body-less job requests (`GET /api/v1/jobs/{id}`, SSE) | Comma-separated UCAN JWTs |
+
+The `X-Covia-Ucans` header exists because a `GET` has no body to carry the `ucans` array: it is how delegated and federated job observation presents proofs. The job-free values routes do not yet consult it, so a delegated read of another principal's path goes through the `covia:read`/`covia:list` operations with `ucans` (each a job record) until that lands. Capability enforcement is identical on every channel.
+
 ## Content Type
 
 All API requests and responses use JSON:
@@ -58,11 +80,11 @@ The `did` is the venue's persistent `did:key` identity, also published in its [D
 
 ### Assets
 
-Across the API and in operation inputs (e.g. `asset:get`, the `file:write` `asset` field, grid operation references), an asset can be referenced by **bare hex hash**, by `a/<hash>`, or by `/a/<hash>` — these are equivalent. The `a/` form matches the per-user namespace convention used elsewhere (`w/`, `o/`).
+Across the API and in operation inputs (e.g. `asset:get`, the `file:write` `asset` field, grid operation references), an asset can be referenced by **bare hex hash**, by `a/<hash>`, or by `/a/<hash>`; these are equivalent. The `a/` form matches the per-user namespace convention used elsewhere (`w/`, `o/`).
 
 #### `GET /api/v1/assets`
 
-Lists the **caller's own pinned assets** (the per-user `a/` namespace) — not every asset on the venue. The venue's operation catalog is discovered via `GET /api/v1/operations` (or the `covia:functions` / `covia:inspect` operations), not here.
+Lists the **venue-level asset catalog** (content-addressed ids). Pass `scope=own` (alias `mine`) to list the **authenticated caller's own assets** instead: the per-user `a/` namespace populated by `asset:store` and `asset:pin`, read job-free (covia 0.9.2). The venue's operation catalog is discovered via `GET /api/v1/operations`, not here.
 
 **Query Parameters:**
 
@@ -70,6 +92,7 @@ Lists the **caller's own pinned assets** (the per-user `a/` namespace) — not e
 | --------- | ---- | ----------- |
 | `offset` | integer | Starting index (0-based). Default: 0 |
 | `limit` | integer | Maximum results (max 1000). Default: all |
+| `scope` | string | `own` or `mine`: list the caller's own `a/` assets instead of the venue catalog |
 
 **Response:**
 ```json
@@ -108,7 +131,7 @@ Registers a new asset with the venue.
 
 The response header includes `Location` pointing to the new asset.
 
-#### `GET /api/v1/assets/{id}`
+#### `GET /api/v1/assets/{ref}`
 
 Retrieves metadata for a specific asset.
 
@@ -116,7 +139,7 @@ Retrieves metadata for a specific asset.
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
-| `id` | string | Asset ID (hex string) |
+| `ref` | string | Asset reference: a bare CAD3 hash, a content-addressed `a/<hash>` path, or another resolvable asset reference (covia 0.9.3 resolves any reference form here) |
 
 **Response:** `200 OK`
 
@@ -178,12 +201,12 @@ Invokes an operation and creates a job to track execution.
 ```
 
 The `operation` field is a resolvable reference:
-- A **catalog path** — `v/ops/<adapter>/<op>` (e.g. `v/ops/http/get`). The usual form; list them via `GET /api/v1/operations`.
-- A **user pin** — `o/<name>` from your workspace
-- An **Asset ID** — `a/<hash>` or bare hex
-- A **DID URL** — an operation on a remote venue
+- A **catalog path**: `v/ops/<adapter>/<op>` (e.g. `v/ops/http/get`). The usual form; list them via `GET /api/v1/operations`.
+- A **user pin**: `o/<name>` from your workspace
+- An **Asset ID**: `a/<hash>` or bare hex
+- A **DID URL**: an operation on a remote venue
 
-The short `adapter:op` style (e.g. `http:get`) is the operation's *name* as used in documentation and adapter metadata — it is **not** a resolvable reference and will be rejected.
+The short `adapter:op` style (e.g. `http:get`) is the operation's *name* as used in documentation and adapter metadata; it is **not** a resolvable reference and will be rejected.
 
 **Response:** `201 Created`
 ```json
@@ -201,11 +224,11 @@ Invocation is **asynchronous by default**: the response is the job record, and y
 
 | `wait` | Behaviour |
 |--------|-----------|
-| absent / `false` | Asynchronous — `201` with a job record to poll (the default) |
+| absent / `false` | Asynchronous: `201` with a job record to poll (the default) |
 | `true` | Block up to the 120s cap; return the finished record with `200` if it completes |
 | `<integer>` | Block up to that many **milliseconds** (clamped to the 120s cap) |
 
-If the job finishes within the window you get the completed record (`200`); otherwise the current record (`201`) and you continue polling. A malformed `wait` value is rejected with `400`. The 120s cap is a server resource limit — for longer waits, poll or use SSE.
+If the job finishes within the window you get the completed record (`200`); otherwise the current record (`201`) and you continue polling. A malformed `wait` value is rejected with `400`. The 120s cap is a server resource limit; for longer waits, poll or use SSE.
 
 ```bash
 # Fire-and-poll (default)
@@ -214,6 +237,22 @@ curl -X POST .../api/v1/invoke -d '{"operation":"v/ops/http/get","input":{"url":
 # Wait inline, up to 30 seconds
 curl -X POST '.../api/v1/invoke?wait=30000' -d '{"operation":"...","input":{...}}'
 ```
+
+#### `POST /api/v1/run`
+
+Runs an operation and returns its **result**, with no job handle in the response. Use this when you only want the output; use `/invoke` when you need to track, stream, pause, or cancel the execution.
+
+**Request Body:** identical to `/invoke`: `operation` (resolvable reference), optional `input`, optional `ucans` proof array.
+
+```bash
+curl -X POST .../api/v1/run \
+  -H "Content-Type: application/json" \
+  -d '{"operation": "v/ops/schema/infer", "input": {"value": {"name": "Ada"}}}'
+```
+
+**Response:** `200 OK` with the operation output as the body, `400` for a malformed request, `403` if the operation is not authorised.
+
+Execution still uses the normal job lifecycle internally: mutating or unclassified operations are recorded as durable jobs, while an operation marked `readOnly: true` may run as a transient job that is never persisted. The HTTP request remains open until the operation completes, so bound long-running work with `/invoke` and polling instead.
 
 ---
 
@@ -274,7 +313,14 @@ Gets the current status of a job.
 
 Server-Sent Events endpoint for real-time job status updates.
 
-**Response:** SSE stream with job status events.
+**Response:** an SSE stream. Each event is named `job-update` and its `data` payload is the **full JSON job record** (the same shape as `GET /api/v1/jobs/{id}`), sent on every state change. When the job reaches a terminal status the final record is sent and the stream closes; subscribing to an already-terminal job yields one final frame, then close.
+
+```
+event: job-update
+data: {"id":"0x1234...","status":"COMPLETE","output":{...}}
+```
+
+Delegated or federated observation presents proofs via the `X-Covia-Ucans` header (see [Authentication](#presenting-ucan-capability-proofs)). Note that the browser `EventSource` API cannot set an `Authorization` header. The SDKs therefore stream over `fetch` and parse the SSE body themselves, carrying normal auth headers (TypeScript `venue.jobs.stream()`, SDK 1.9.0); plain `EventSource` clients work unauthenticated on public venues, and otherwise poll `GET /api/v1/jobs/{id}`.
 
 #### `PUT /api/v1/jobs/{id}/cancel`
 
@@ -299,6 +345,114 @@ Resumes a paused job. Only valid when the job is in `PAUSED` state. The venue re
 Deletes a job record.
 
 **Response:** `200 OK` or `404 Not Found`.
+
+---
+
+### Values (job-free lattice reads)
+
+Six `GET` routes read the venue's lattice directly, **without creating a job**. They exist so that dashboards, pollers, and agents can read state repeatedly without minting an audit record per read; capability enforcement is identical to the operation path. Clients that poll (such as the Covia web app) should always read through these routes and reserve `/invoke` for explicit actions.
+
+Every route takes a `path` query parameter addressing the lattice:
+
+| Prefix | Contents | Notes |
+| ------ | -------- | ----- |
+| `a/` | The caller's content-addressed assets | |
+| `o/` | The caller's named operation pins | |
+| `j/` | The caller's job records | |
+| `g/` | The caller's agents | e.g. `g/my-agent/status` |
+| `w/` | The caller's durable workspace | e.g. `w/notes`, `w/memory` |
+| `s/` | The caller's secret **names** | Values are never readable |
+| `h/` | The caller's human-in-the-loop inbox | |
+| `n/` | Agent-scoped notes | Requires `agent` parameter |
+| `t/` | Job-scoped temporary state | Requires `agent` and `task` parameters |
+| `c/` | Session-scoped scratch | Requires `agent` and `session` parameters |
+| `v/` | Venue globals: `v/ops`, `v/info`, `v/agents` | Public read |
+
+The scoping parameters accompany the virtual namespaces: `agent` is a bare agent id under the caller (or a full agent DID), `task` is the `agent:request` job id, and `session` is the session id. These routes read the caller's own namespaces; delegated reads of another user's paths currently use the `covia:read`/`covia:list` operations with `ucans` proofs.
+
+#### `GET /api/v1/values/read`
+
+Reads the literal value at a path.
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| `path` | string | **Required.** Lattice path, e.g. `w/notes`, `v/info/adapters` |
+| `maxSize` | integer | Byte guard (default 1,000,000): a larger value is withheld |
+
+**Response** always carries an explicit existence flag, so a stored `null` is distinguishable from an absent path:
+
+```json
+{ "exists": true, "value": { "theme": "dark" } }
+```
+
+| Shape | Meaning |
+| ----- | ------- |
+| `{"exists": true, "value": <value>}` | Path has data |
+| `{"exists": true, "value": null}` | Path holds a stored null |
+| `{"exists": false, "value": null}` | Path is absent |
+| `{"exists": true, "value": null, "truncated": true, "size": <bytes>}` | Value exceeds `maxSize`; use `slice`, `list`, or a larger guard |
+
+#### `GET /api/v1/values/list`
+
+Lists the keys and structure of a lattice node.
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| `path` | string | **Required.** Node to list, e.g. `g`, `w` |
+| `limit` | integer | Maximum keys to return (default 1000) |
+| `offset` | integer | Keys to skip (default 0) |
+| `fields` | string | Field projection: comma-separated subpaths (max 16) read from each listed child, returned as a `values` map of per-key `{exists, value, truncated?}` results. Keyed nodes only; applies after `limit`/`offset` |
+| `maxSize` | integer | Per-projected-field byte guard when `fields` is given (default 1,000,000) |
+
+The `fields` projection lets a list view fetch each child's display fields (for example `fields=status,meta/updated` over `g`) in one request instead of an N+1 fan-out.
+
+#### `GET /api/v1/values/slice`
+
+Reads a paginated slice of a lattice sequence (for example a job history or an agent timeline).
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| `path` | string | **Required.** The vector to slice, e.g. `g/my-agent/timeline` |
+| `offset` | integer | Starting element index (default 0) |
+| `limit` | integer | Maximum elements (default 100) |
+| `maxSize` | integer | Maximum encoded bytes of the returned page (default 1,000,000). An oversize page is a `400`: reduce `limit`. Slice returns exact values, never summaries |
+
+#### `GET /api/v1/values/inspect`
+
+Budget-controlled JSON5 render of a value: shape and sample content within a byte budget, for previewing large or unknown structures.
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| `path` | string | **Required.** Path to render, e.g. `g/my-agent` |
+| `budget` | integer | Render budget in bytes (default 500) |
+| `compact` | boolean | Compact rendering, no whitespace |
+
+#### `GET /api/v1/values/count`
+
+Fast-path count of entries below a path.
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| `path` | string | **Required.** Collection path, e.g. `j` |
+| `depth` | integer | Steps below the path to count at (default 1) |
+
+**Response:** `{"exists": true, "count": 1287}`
+
+#### `GET /api/v1/values/aggregate`
+
+Counts entries at a depth, optionally partitioned by a field.
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| `path` | string | **Required.** Collection path, e.g. `j` |
+| `depth` | integer | Steps below the path to count at (default 1) |
+| `groupBy` | string | Field (relative subpath) to partition by; adds a `groups` breakdown |
+
+**Response:**
+
+```json
+{ "exists": true, "count": 42, "groups": { "COMPLETE": { "count": 37 }, "FAILED": { "count": 5 } } }
+```
 
 ---
 
@@ -329,6 +483,48 @@ Gets details for a specific operation by name.
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
 | `name` | string | Operation name (e.g., `covia:read`, `agent:create`) |
+
+---
+
+### Schedules (job-free read)
+
+#### `GET /api/v1/schedules`
+
+Lists the authenticated caller's pending scheduled events, time-ordered, without creating a job (covia 0.9.2). Includes events queued by the caller's agents. Requires authentication (`401` otherwise).
+
+**Response:** an array of `{handle, op, time}` entries, where `handle` identifies the schedule for `scheduler:cancel`/`scheduler:trigger`, `op` is the target operation reference, and `time` is the next run in epoch milliseconds.
+
+---
+
+### Agents (job-free reads)
+
+Two `GET` routes read agent state without creating a job. Agent **actions** (create, chat, request, suspend, and the rest) remain operations under `v/ops/agent/`; see [Agent Operations](../agents/operations).
+
+#### `GET /api/v1/agents`
+
+Lists the authenticated caller's agents. Requires authentication (`401` otherwise).
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| `status` | boolean | `false` returns bare agent ids instead of the default annotated form |
+| `includeTerminated` | boolean | `true` includes terminated agents (hidden by default) |
+
+**Response** (default annotated form):
+
+```json
+[
+  { "agentId": "researcher", "status": "SLEEPING", "tasks": 2 },
+  { "agentId": "assistant", "status": "RUNNING", "tasks": 0 }
+]
+```
+
+Entries carry `agentId`, `status`, `tasks`, and `error` when present, so a list view needs no per-agent fan-out.
+
+#### `GET /api/v1/agents/{id}`
+
+Gets one of the caller's agents: the same payload as the `agent:info` operation. Requires authentication.
+
+**Response:** `200 OK` with the agent info record, or `404 Not Found` for a missing agent id.
 
 ---
 
@@ -391,7 +587,7 @@ Returns the DID document for the venue, following W3C DID specification.
 }
 ```
 
-The document `id` is the venue's persistent `did:key`; the same key is also listed under `assertionMethod`, `capabilityDelegation` and `capabilityInvocation`. The venue remains reachable by `did:web:<host>` references — this endpoint is what resolves them to the API `serviceEndpoint`.
+The document `id` is the venue's persistent `did:key`; the same key is also listed under `assertionMethod`, `capabilityDelegation` and `capabilityInvocation`. The venue remains reachable by `did:web:<host>` references; this endpoint is what resolves them to the API `serviceEndpoint`.
 
 #### `GET /.well-known/mcp.json`
 
