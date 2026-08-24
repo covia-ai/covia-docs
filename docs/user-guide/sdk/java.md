@@ -16,19 +16,19 @@ The Java SDK is published to [Maven Central](https://central.sonatype.com/artifa
 <dependency>
     <groupId>ai.covia</groupId>
     <artifactId>covia-core</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.3</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'ai.covia:covia-core:0.9.0'
+implementation 'ai.covia:covia-core:0.9.3'
 ```
 
 ### Development snapshots
 
-To track unreleased work, build from source and install into your local Maven repository, then depend on the snapshot version from the repo's root `pom.xml` (currently `0.9.1-SNAPSHOT` on `develop`; Gradle users also need `repositories { mavenLocal() }`):
+To track unreleased work, build from source and install into your local Maven repository, then depend on the snapshot version from the repo's root `pom.xml` (currently `0.9.4-SNAPSHOT` on `develop`; Gradle users also need `repositories { mavenLocal() }`):
 
 ```bash
 git clone https://github.com/covia-ai/covia.git

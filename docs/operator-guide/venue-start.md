@@ -42,7 +42,7 @@ Pick the channel that matches how much churn you want:
 
 The hosted example venues follow the same channels: [venue-1](https://venue-1.covia.ai) and [venue-2](https://venue-2.covia.ai) (Google Cloud) run the release channel, while [venue-3](https://venue-3.covia.ai) (AWS) and [venue-4](https://venue-4.covia.ai) (Azure) redeploy automatically from the development channel.
 
-For production, pin a specific version (a release tag for the JAR, `:0.9.0`-style image tags for Docker) and upgrade deliberately. Releases also publish the optional venue module jars (SQL, Python) with checksums alongside `covia.jar`. The development channel tracks `develop` and may change under you — it's the right choice only if you're following new features or contributing. See the [CHANGELOG](https://github.com/covia-ai/covia/blob/master/CHANGELOG.md) for what each release contains.
+For production, pin a specific version (a release tag for the JAR, `:0.9.3`-style image tags for Docker) and upgrade deliberately. Releases also publish the optional venue module jars (SQL, Python) with checksums alongside `covia.jar`. The development channel tracks `develop` and may change under you — it's the right choice only if you're following new features or contributing. See the [CHANGELOG](https://github.com/covia-ai/covia/blob/master/CHANGELOG.md) for what each release contains.
 
 ## Building the venue server
 
