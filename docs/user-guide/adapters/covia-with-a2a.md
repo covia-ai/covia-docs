@@ -6,7 +6,7 @@ sidebar_label: A2A
 
 # A2A (Agent-to-Agent)
 
-Covia speaks the [Agent-to-Agent protocol (A2A)](https://a2a-protocol.org/) **both ways**. A venue is a spec-conformant A2A v1.0 server — any A2A client can send it messages and track tasks — and the A2A adapter lets your operations and agents **call** remote A2A agents as grid operations. A2A maps cleanly onto Covia's own model: an A2A *Task* is a Covia *Job*, and an A2A *Message* is a turn in a conversation.
+The agent ecosystem is plural — many frameworks, many vendors — and your agents shouldn't be strangers to any of it. Covia speaks the [Agent-to-Agent protocol (A2A)](https://a2a-protocol.org/) **both ways**. A venue is a spec-conformant A2A v1.0 server — any A2A client can send it messages and track tasks — and the A2A adapter lets your operations and agents **call** remote A2A agents as grid operations. A2A maps cleanly onto Covia's own model: an A2A *Task* is a Covia *Job*, and an A2A *Message* is a turn in a conversation.
 
 ## Inbound: a venue as an A2A server
 

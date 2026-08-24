@@ -6,7 +6,7 @@ sidebar_label: LangChain
 
 # LangChain Adapter
 
-The LangChain adapter provides unified access to multiple LLM providers — OpenAI, Anthropic, Ollama, and xAI, plus any OpenAI-compatible endpoint — with a consistent interface for messages, tool calling, and structured output.
+Every AI workflow needs a model call somewhere, and nobody wants to wire a different vendor SDK for each provider — or lose governance the moment a prompt leaves the building. The LangChain adapter gives the venue one governed LLM surface: OpenAI, Anthropic, Ollama, and xAI, plus any OpenAI-compatible endpoint, behind a consistent interface for messages, tool calling, and structured output. Swap providers without touching the calling code; every call is a job in the audit trail.
 
 This adapter powers the Level 3 (LLM call) layer in the [agent architecture](/docs/user-guide/agents/#architecture). It can also be invoked directly for one-shot LLM calls. Covia is model-agnostic; the default models below are what a backend uses when you don't set `model`, not a recommendation.
 

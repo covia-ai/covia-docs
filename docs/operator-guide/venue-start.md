@@ -42,13 +42,13 @@ Pick the channel that matches how much churn you want:
 
 The hosted example venues follow the same channels: [venue-1](https://venue-1.covia.ai) and [venue-2](https://venue-2.covia.ai) (Google Cloud) run the release channel, while [venue-3](https://venue-3.covia.ai) (AWS) and [venue-4](https://venue-4.covia.ai) (Azure) redeploy automatically from the development channel.
 
-For production, pin a specific version (a release tag for the JAR, `:0.9.3`-style image tags for Docker) and upgrade deliberately. The development channel tracks `develop` and may change under you — it's the right choice only if you're following new features or contributing. See the [CHANGELOG](https://github.com/covia-ai/covia/blob/master/CHANGELOG.md) for what each release contains.
+For production, pin a specific version (a release tag for the JAR, `:0.9.3`-style image tags for Docker) and upgrade deliberately. Releases also publish the optional venue module jars (SQL, Python) with checksums alongside `covia.jar`. The development channel tracks `develop` and may change under you — it's the right choice only if you're following new features or contributing. See the [CHANGELOG](https://github.com/covia-ai/covia/blob/master/CHANGELOG.md) for what each release contains.
 
 ## Building the venue server
 
 The venue server is a Maven project in Java.
 
-You can build it with Maven 3.5+ using the following command in a clone of the [Covia repo](https://github.com/covia-ai/covia) root directory:
+You can build it with Java 21+ and Maven 3.7+ using the following command in a clone of the [Covia repo](https://github.com/covia-ai/covia) root directory:
 
 ```bash
 mvn clean install
@@ -64,8 +64,16 @@ A venue can be configured with a JSON / JSON5 config file to enable or disable f
 java -jar covia.jar my-config.json
 ```
 
-With no config file, the venue starts with a built-in local-test configuration.
+With no config file, the venue starts with a built-in local-test configuration (ephemeral temp store, MCP enabled).
 
-An [example configuration file](https://github.com/covia-ai/covia/blob/master/venue/config-example.json) is available as a documented template.
+The config file is a **server document**: a top-level `venues` array where each entry is one venue — a single JVM can host several. The minimal persistent venue looks like:
 
-By default a venue with no `store` configured keeps state in an ephemeral temporary store that is wiped on exit. For a venue you intend to keep, set `store` to a file path — see [Persistence](./persistence) for the durability model, and [Authentication](./auth) for locking down access. The repository's `deploy/` directory contains cloud provisioning examples (e.g. an Azure VM setup and deploy workflow) you can adapt.
+```json5
+{
+  "venues": [ { "name": "My Venue", "port": 8080, "store": "/data/venue.etch" } ]
+}
+```
+
+Validation is fail-closed: a malformed known field stops startup with a precise error; unknown fields warn (set `strictConfig: true` to reject them). The repo-root [`local-dev.json`](https://github.com/covia-ai/covia/blob/master/local-dev.json) and [`venue-config.json`](https://github.com/covia-ai/covia/blob/master/venue-config.json) are working templates.
+
+By default a venue with no `store` configured keeps state in an ephemeral temporary store that is wiped on exit. For a venue you intend to keep, set `store` to a file path — see [Persistence](./persistence) for the durability model, [Authentication](./auth) for locking down access, and [Security](./security) for the production checklist. The repository's `deploy/` directory contains cloud provisioning examples (an Azure VM setup, a Caddy TLS proxy) you can adapt.

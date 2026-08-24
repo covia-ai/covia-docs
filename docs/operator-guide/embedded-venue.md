@@ -1,6 +1,6 @@
 ---
 title: Embedded Venue
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # Embedded, Loopback, Self-Authenticated Venue
@@ -36,7 +36,7 @@ Every request then authenticates as the app owner's DID; there is no shared
 
 ## The recipe
 
-Two configuration settings change a default venue into this shape, and a third default is worth stating explicitly:
+Four settings turn a default venue into this shape:
 
 ```json5
 {
@@ -45,18 +45,21 @@ Two configuration settings change a default venue into this shape, and a third d
 
   "auth": {
     "public": { "enabled": false }
-  }
+  },
+  "users": { "autoCreate": true }
 }
 ```
 
-| Setting | Value | What it closes |
-|---------|-------|----------------|
+| Setting | Value | What it does |
+|---------|-------|--------------|
 | `bindAddress` | `127.0.0.1` | Binds the HTTP listener to loopback only, so the venue is unreachable from the LAN. (If omitted, a venue binds to all interfaces.) |
-| `allowPrivateNetwork` | `false` (default) | Suppresses the `Access-Control-Allow-Private-Network` header, so a public web origin **cannot** reach the venue on localhost from the browser. |
+| `allowPrivateNetwork` | `false` | Suppresses the `Access-Control-Allow-Private-Network` header, so a public web origin **cannot** reach the venue on localhost from the browser. This is a real override: on a loopback bind the default is `true`. |
 | `auth.public.enabled` | `false` | Removes the anonymous/shared `public` identity. Every request must carry a valid bearer token; an unauthenticated request gets `401`. |
+| `users.autoCreate` | `true` | Admits the owner's `did:key` on first authenticated request — a fresh venue has never seen it, and [admission](./auth#admission-authentication-is-not-membership) would otherwise return `403`. Acceptable here precisely because only loopback token-holders can reach the venue at all; for a stricter posture, provision the owner DID explicitly at startup via `user:create` with venue authority instead. |
 
 With these in place, the only way to reach the venue is a process on the same
 machine presenting a bearer token the venue accepts — i.e. the owner app.
+(Rate limiting, incidentally, defaults **off** on a loopback bind.)
 
 :::note bindAddress vs hostname
 `bindAddress` is the socket the listener binds to (restrict it to loopback).
@@ -100,23 +103,26 @@ A complete embedded-venue config:
 
 ```json5
 {
-  "name": "GetMine Local Venue",
-  "port": 8080,
-  "bindAddress": "127.0.0.1",
-  "allowPrivateNetwork": false,
+  "venues": [ {
+    "name": "GetMine Local Venue",
+    "port": 8080,
+    "bindAddress": "127.0.0.1",
+    "allowPrivateNetwork": false,
 
-  "store": "/Users/alice/Library/Application Support/GetMine/venue.etch",
-  "seed": "…ed25519 hex seed for a stable venue identity…",
+    "store": "/Users/alice/Library/Application Support/GetMine/venue.etch",
+    "seed": "…ed25519 hex seed for a stable venue identity…",
 
-  "auth": {
-    "public": { "enabled": false }
-  },
+    "auth": {
+      "public": { "enabled": false }
+    },
+    "users": { "autoCreate": true },
 
-  "secrets": {
-    "did:key:z6MkOwnerAppKey...": {
-      "ANTHROPIC_API_KEY": "sk-ant-..."
+    "secrets": {
+      "did:key:z6MkOwnerAppKey...": {
+        "ANTHROPIC_API_KEY": "sk-ant-..."
+      }
     }
-  }
+  } ]
 }
 ```
 
@@ -125,8 +131,10 @@ This venue:
 - listens on loopback only, unreachable off-box;
 - rejects browser Private-Network reach-in;
 - requires a bearer token for every request — no anonymous access;
-- accepts the owner app's self-signed JWT (audienced to this venue's DID);
+- accepts the owner app's self-signed JWT (audienced to this venue's DID) and admits it on first use;
 - resolves the owner's secrets under their DID.
+
+An embedded venue holding personal data should also **encrypt its store**. Java embedders can go one better than a config key: supply the Etch key via a key function (a KMS, OS keychain, or user passphrase) and hand the venue an already-opened store, so no key material ever touches config or disk — see [Security](./security#encrypt-the-store).
 
 The app's responsibilities, in turn:
 

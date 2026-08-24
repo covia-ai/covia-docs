@@ -8,7 +8,7 @@ The Java SDK provides the reference implementation for Covia Grid clients, offer
 
 ## Installation
 
-The Java SDK is published to [Maven Central](https://central.sonatype.com/artifact/ai.covia/covia-core) as `ai.covia:covia-core` (requires Java 21+). The current release is `0.9.3`.
+The Java SDK is published to [Maven Central](https://central.sonatype.com/artifact/ai.covia/covia-core) as `ai.covia:covia-core` (requires Java 21+):
 
 ### Maven
 
@@ -26,7 +26,9 @@ The Java SDK is published to [Maven Central](https://central.sonatype.com/artifa
 implementation 'ai.covia:covia-core:0.9.3'
 ```
 
-To track unreleased changes instead, build from source and install into your local Maven repository (the `develop` pom is currently `0.9.4-SNAPSHOT`, and bumps each release):
+### Development snapshots
+
+To track unreleased work, build from source and install into your local Maven repository, then depend on the snapshot version from the repo's root `pom.xml` (currently `0.9.4-SNAPSHOT` on `develop`; Gradle users also need `repositories { mavenLocal() }`):
 
 ```bash
 git clone https://github.com/covia-ai/covia.git

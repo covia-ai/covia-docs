@@ -1,7 +1,7 @@
 ---
 title: Contribute to the Grid
 sidebar_label: Contribute
-sidebar_position: 6
+sidebar_position: 8
 ---
 
 # Build the Open Grid with Us

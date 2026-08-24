@@ -30,6 +30,16 @@ When public access is disabled and a request arrives without a valid `Authorizat
 
 Even with public access enabled, authenticated users receive a caller identity that the venue can use for access control, audit logging, and user-specific state.
 
+## Admission: Authentication Is Not Membership
+
+Anyone can mint a key pair, so proving control of a DID cannot by itself make someone a member of your venue — membership is a trust decision you make. Since 0.9.0 the two are explicitly separate: a previously unknown DID that authenticates successfully receives **`403` with an actionable registration message**, before any state is created for it.
+
+You admit users in one of three ways:
+
+- **`users.autoCreate: true`** — admit any authenticated DID automatically. Appropriate for open or loopback-only venues; leave it `false` (the default) for private and production venues.
+- **`users.bootstrap`** — provision named users and their public authenticator keys in config, before HTTP starts. First-use only: once a user has key history, later startups never touch it.
+- **`user:create` at runtime** — as the venue itself, or by a provisioner holding a venue-issued UCAN delegating exactly that ability. There is no separate admin API to secure; the capability check *is* the admission control. See the [Users adapter](../user-guide/adapters/user).
+
 ## Token Expiry
 
 Venue-issued JWTs (returned after OAuth login) have a configurable expiry:
@@ -142,7 +152,7 @@ API requests are authenticated via `Authorization: Bearer <token>` headers. The 
 
 ### Self-Issued EdDSA JWTs
 
-Clients with their own Ed25519 key pair can create self-issued JWTs. The `sub` claim must be a `did:key` matching the signing key in the `kid` header. This allows agents and automated clients to authenticate without OAuth. See [Embedded Venue](./embedded-venue) for the single-owner, loopback deployment shape built on this.
+Clients with their own Ed25519 key pair can create self-issued JWTs. The `sub` claim must be a `did:key` matching the signing key in the `kid` header. Named venue users can self-issue too: `sub` is their stable `did:web:<venue>:u:<name>` DID, signed with one of their registered authenticator keys (the `kid` carries the verification-method DID URL their DID document publishes). This lets automated clients authenticate without OAuth — but note that authentication alone does not [admit](#admission-authentication-is-not-membership) an unknown DID. See [Embedded Venue](./embedded-venue) for the single-owner, loopback deployment shape built on this.
 
 ### Venue-Signed JWTs
 
@@ -155,6 +165,8 @@ RS256 JWTs from configured OAuth providers, verified against the provider's JWKS
 ### UCAN Capability Tokens
 
 A bearer token may also be a **UCAN** — a signed capability token. When the venue recognises one, the token's issuer (`iss`) becomes the caller DID and the token's capabilities are carried into the request as proofs. This works on both the REST API and the MCP endpoint and is what enables fine-grained, delegable, cross-user access. Authentication (identity) and capabilities (authorisation) are separate concerns — see [Capabilities](../user-guide/capabilities) for the authorisation model, `ucan:issue`, and the `{with, can}` grant shape.
+
+Since 0.9.0, venues emit the versioned Convex UCAN profile (an explicit `ucv` claim and always-present `prf`); tokens minted by pre-0.9 venues or older SDKs no longer verify, so outstanding grants must be re-issued. Correctly signed legacy JWTs that merely omit the profile marker are still accepted, and the emitted profile is advertised in `/api/v1/status`.
 
 An unauthenticated request may also carry an **identity token** in its `ucans` proof array — a UCAN with an empty attenuation list, audienced to this venue, signed by the caller. The venue verifies the caller's own signature and treats the issuer as the caller. This is how relayed cross-venue requests keep the original caller's identity: the relaying venue forwards the token, this venue trusts the signature, not the relay. An `Authorization` header always takes precedence. See [COG-3 §6](../protocol/cogs/COG-003) for the exact rules.
 
@@ -170,7 +182,9 @@ Authenticated users are stored in the venue's lattice-backed user database. User
 | `provider` | The OAuth provider used for login |
 | `updated` | Timestamp of last update |
 
-User records can be queried via the `/api/v1/users` API endpoint.
+User records are managed through the venue-administrative `user:list` / `user:info` operations, and authenticator keys through `user:authentication-add` / `-revoke` / `-list` — see the [Users adapter](../user-guide/adapters/user). Named users' DID documents are published at `/u/<username>/did.json`.
+
+MCP has matching knobs: `mcp.auth.required` defaults to the inverse of `auth.public.enabled` (an explicit `false` cannot re-open MCP on a venue that requires authentication), and `mcp.auth.allowedDids` restricts MCP to a DID allowlist — see the [Configuration Reference](./configuration#protocols--features).
 
 ## Checking the Caller
 
@@ -192,25 +206,27 @@ A complete auth configuration for a production venue:
 
 ```json5
 {
-  "name": "Production Venue",
-  "hostname": "venue.example.com",
-  "port": 8080,
-  "baseUrl": "https://venue.example.com",
+  "venues": [ {
+    "name": "Production Venue",
+    "hostname": "venue.example.com",
+    "port": 8080,
+    "baseUrl": "https://venue.example.com",
 
-  "auth": {
-    "public": { "enabled": false },
-    "tokenExpiry": 3600,
-    "oauth": {
-      "google": {
-        "clientId": "123456789.apps.googleusercontent.com",
-        "clientSecret": "GOCSPX-..."
-      },
-      "github": {
-        "clientId": "Iv1.abc123",
-        "clientSecret": "abc123def456..."
+    "auth": {
+      "public": { "enabled": false },
+      "tokenExpiry": 3600,
+      "oauth": {
+        "google": {
+          "clientId": "123456789.apps.googleusercontent.com",
+          "clientSecret": "GOCSPX-..."
+        },
+        "github": {
+          "clientId": "Iv1.abc123",
+          "clientSecret": "abc123def456..."
+        }
       }
     }
-  }
+  } ]
 }
 ```
 
