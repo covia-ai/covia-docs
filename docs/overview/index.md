@@ -74,7 +74,7 @@ Covia's view is that the missing piece is **infrastructure, not another framewor
 
 Covia is **open core and open source**, built in the open. The runtime is EPL-2.0 (weak copyleft: changes to the core must be published, while proprietary systems may freely build on top), the SDKs are Apache-2.0, and the protocol is standardised under open governance. We are deliberately honest about maturity, because trust is the product:
 
-- The **engine is solid**: a clean adapter architecture (nearly 30 adapters), a multi-protocol surface, and over 1,000 automated tests.
+- The **engine is solid**: a clean adapter architecture (nearly 30 adapters), a multi-protocol surface, and over 2,000 automated tests.
 - **SDKs are published** for [TypeScript](https://www.npmjs.com/package/@covia/covia-sdk) (npm), [Python](https://pypi.org/project/covia/) (PyPI), and [Java](https://central.sonatype.com/artifact/ai.covia/covia-core) (Maven Central).
 - **Live venues** run today; the examples above hit one.
 - The platform is **pre-1.0 and moving fast**; APIs may change. Development happens in the open on [GitHub](https://github.com/covia-ai/covia).
