@@ -16,7 +16,7 @@ cd covia
 mvn clean install -DskipTests
 ```
 
-Then add the dependency, using the version from the cloned repo's root `pom.xml` (currently `0.2.1-SNAPSHOT` on `develop` — it bumps each release):
+Then add the dependency, using the version from the cloned repo's root `pom.xml` (currently `0.9.4-SNAPSHOT` on `develop` — it bumps each release):
 
 ### Maven
 
@@ -24,7 +24,7 @@ Then add the dependency, using the version from the cloned repo's root `pom.xml`
 <dependency>
     <groupId>ai.covia</groupId>
     <artifactId>covia-core</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.9.4-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -35,7 +35,7 @@ repositories {
     mavenLocal()
 }
 
-implementation 'ai.covia:covia-core:0.2.1-SNAPSHOT'
+implementation 'ai.covia:covia-core:0.9.4-SNAPSHOT'
 ```
 
 ## Quick Start
