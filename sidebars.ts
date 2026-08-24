@@ -23,6 +23,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'overview/grid',
+        'overview/architecture',
         'overview/venues',
         'overview/agents',
         'overview/context',
