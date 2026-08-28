@@ -74,6 +74,11 @@ const config: Config = {
     ],
   ],
 
+  // GA4 loading, the docs custom events, and the search-page instrumentation
+  // all live in this client module. See src/lib/analytics.ts for why the
+  // built-in @docusaurus/plugin-google-gtag is not used.
+  clientModules: ['./src/clientModules/analytics.ts'],
+
   // Redirects for retired URLs. The homepage redirect lives in
   // src/pages/index.tsx instead, so it also works in the dev server.
   plugins: [
@@ -120,6 +125,55 @@ const config: Config = {
           'protocol/*',
         ],
         includeUnmatchedLast: true,
+      },
+    ],
+    [
+      // Consent gate for GA4 (D070 §5.1). The banner is the only thing that
+      // can switch analytics on — src/lib/analytics.ts subscribes to it and
+      // injects gtag.js only once the `analytics` category is granted.
+      'docusaurus-plugin-cookie-consent',
+      {
+        title: 'Cookies on the Covia docs',
+        description:
+          'We use essential cookies to run this site, and — only if you ' +
+          'agree — analytics cookies to see which pages are read. Read the ' +
+          '[privacy policy](https://covia.ai/legal/privacy).',
+        // No `links` array: the description already links the privacy policy
+        // inline, and configuring both renders it twice.
+        preferencesHref: '/cookie-preferences',
+        acceptAllText: 'Accept all',
+        rejectText: 'Essential only',
+        toastMode: true,
+        orientation: 'horizontal',
+        // The per-category breakdown lives on /cookie-preferences instead of
+        // an expander in the banner — with only one optional category left
+        // there is nothing worth expanding.
+        showDetailsButton: false,
+        // Distinct from the mirrored `covia-consent` record that
+        // src/lib/analytics.ts writes in covia.ai's schema.
+        storageKey: 'covia-consent-docs',
+        categories: {
+          necessary: {
+            label: 'Essential',
+            description:
+              'Required for the site to work — page routing, your theme ' +
+              'choice, and this consent record itself. Always on.',
+          },
+          analytics: {
+            label: 'Analytics',
+            description:
+              'Google Analytics, so we can see which pages are read and what ' +
+              'is searched for. IP addresses are anonymised and search queries ' +
+              'are hashed before they are sent.',
+          },
+          // Off until something actually sets these. D070 §5.1 reserves a
+          // marketing category for future retargeting, but nothing on the
+          // docs site uses one — asking about a category we never set is
+          // noise, and re-adding it later re-prompts for consent anyway.
+          // covia.ai still offers three; the difference is deliberate.
+          marketing: {enabled: false, label: 'Marketing'},
+          functional: {enabled: false, label: 'Functional'},
+        },
       },
     ],
   ],
@@ -211,6 +265,14 @@ const config: Config = {
             {
               label: 'GitHub',
               href: 'https://github.com/covia-ai',
+            },
+            {
+              label: 'Privacy',
+              href: 'https://covia.ai/legal/privacy',
+            },
+            {
+              label: 'Cookie preferences',
+              to: '/cookie-preferences',
             },
           ],
         },
