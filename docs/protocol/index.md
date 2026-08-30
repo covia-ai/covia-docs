@@ -34,7 +34,7 @@ The Covia Open Grid protocol is the foundational specification that enables fede
 
 #### Agents and Humans
 - Stateful agent lifecycle and messaging ([COG-11](./cogs/COG-011), [COG-9](./cogs/COG-009))
-- A2A interoperability ([COG-14](./cogs/COG-014)) and portable agent skills ([COG-18](./cogs/COG-018))
+- A2A interoperability ([COG-14](./cogs/COG-014)), portable agent skills ([COG-18](./cogs/COG-018)) and target-side agent admission ([COG-20](./cogs/COG-020))
 - Human-in-the-loop requests, consent, and capability granting ([COG-16](./cogs/COG-016), [COG-19](./cogs/COG-019))
 
 ## Getting Started

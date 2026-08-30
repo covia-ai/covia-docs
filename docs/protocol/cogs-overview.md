@@ -40,6 +40,7 @@ COG numbers identify topics, not chronology: numbers are assigned when a topic e
 - **[COG-17](./cogs/COG-017)** - Capability Granting
 - **[COG-18](./cogs/COG-018)** - Agent Skills
 - **[COG-19](./cogs/COG-019)** - HITL Self-Sovereign Token Transport
+- **[COG-20](./cogs/COG-020)** - Agent Admission
 
 ## COG Development Process
 
