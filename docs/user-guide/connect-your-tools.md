@@ -26,8 +26,8 @@ The catalogue today, grouped as it appears in the app:
 | Docs & PM | Notion, Jira, Linear, Asana |
 | CRM & Support | HubSpot, Intercom |
 | Payments | Stripe |
-| Comms | Slack, Discord, Telegram, Twilio |
-| Data | Airtable, SendGrid |
+| Comms | Slack, Discord, Telegram, SendGrid, Twilio |
+| Data | Airtable |
 
 Behind that page are the two mechanisms below; either can be driven directly
 against the API.
