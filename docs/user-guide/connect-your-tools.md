@@ -7,6 +7,33 @@ title: Connect your tools
 
 Agents on a venue can use your third-party services (GitHub, Linear, Notion, HubSpot, Slack, and more) with **credentials you supply and keep on your own venue**. There is no Covia-hosted broker in the path: a token you paste is stored in your venue's encrypted secret store, referenced by name, injected at runtime, never shown back, never placed in a prompt, and redacted from job records. Revoking access is deleting the secret.
 
+## The quickest path: the Connections page
+
+In the dashboard, **Connections** (under Data) is a catalogue of ready-to-use
+services. Pick one, follow the two or three steps to create a token, and paste
+it: the page stores the token encrypted on your venue, runs a live
+**test-before-save** check (a bad token is rejected and never kept), and shows
+the service as connected. Paste a token straight into the search box and it
+recognises the service for you. Each connected service can then be granted to
+individual agents from the agent's own **Connections** section, so an agent
+only reaches what you allow.
+
+The catalogue today, grouped as it appears in the app:
+
+| Group | Services |
+| ----- | -------- |
+| Dev | GitHub, Sentry |
+| Docs & PM | Notion, Jira, Linear, Asana |
+| CRM & Support | HubSpot, Intercom |
+| Payments | Stripe |
+| Comms | Slack, Discord, Telegram, Twilio |
+| Data | Airtable, SendGrid |
+
+Behind that page are the two mechanisms below; either can be driven directly
+against the API.
+
+## Two mechanisms
+
 Two mechanisms cover most services today, and both work on a self-hosted venue exactly as on a hosted one.
 
 ## 1. Bridge a vendor's MCP server with a token
@@ -43,17 +70,48 @@ Remove a bridge with `mcp:server:remove` (`{name}`); refresh its tool list after
 
 ## 2. Connection skills over the HTTP operations
 
-For services without a token-friendly MCP server, the venue ships **connection skills**: instruction bundles that teach an agent a service's API on top of the built-in `http:get` / `http:post` operations. The credential is passed as `bearerSecret: "s/<NAME>"` and resolved server-side; the agent never sees it.
+For services without a token-friendly MCP server, the venue ships **connection
+skills**: instruction bundles that teach an agent a service's API on top of the
+built-in `http:get` / `http:post` operations. The credential is referenced by
+name and resolved server-side; the agent never sees it. Three shapes cover how
+a service expects its credential, so the skill picks whichever fits:
 
-| Skill | Secret to store | Credential type |
-| ----- | --------------- | --------------- |
-| `v/skills/connections/notion` | `NOTION_TOKEN` | Personal access token (Settings → Developer Mode) or an internal connection token |
-| `v/skills/connections/hubspot` | `HUBSPOT_TOKEN` | Private-app access token (Settings → Integrations → Private Apps) |
-| `v/skills/connections/slack` | `SLACK_BOT_TOKEN` (`xoxb-`) or `SLACK_USER_TOKEN` (`xoxp-`) | A Slack app you create and install in your workspace (api.slack.com/apps; a manifest makes this one step) |
+- **Bearer** — `bearerSecret: "s/<NAME>"` sends `Authorization: Bearer <token>`.
+- **Header** — `secretHeaders: {"<Header>": "s/<NAME>"}` sends the stored value
+  as any header, so Basic auth (`Basic <base64>`), an API-key header, or a
+  `Bot <token>` value all work; the stored secret is the complete header value.
+- **URL** — an `{s/<NAME>}` placeholder in the request URL, for a service that
+  carries its token in the path (Telegram's `/bot<token>/`). The venue resolves
+  it before the request and masks it back out of every job record.
 
-Store the secret, attach the skill to an agent (or let a `skilled` agent load it on demand), and ask: "summarise the Notion page for the Q3 plan" or "post the deploy summary to #releases". Each call is a job record; each skill explains the service's error semantics so the agent reports a missing scope instead of retrying blindly.
+Whichever shape a service uses, store the secret, attach the skill to an agent
+(or let a `skilled` agent load it on demand), and ask in plain language —
+"summarise the Notion page for the Q3 plan", "post the deploy summary to
+#releases", "open a Linear issue for this bug". Each call is a job record, and
+each skill explains the service's error semantics so the agent reports a
+missing scope instead of retrying blindly.
 
-Atlassian (Jira/Confluence) uses HTTP Basic authentication for its API tokens, which the HTTP operations cannot yet resolve from a secret; that is tracked as covia#397 and an Atlassian skill follows it.
+| Skill (`v/skills/connections/…`) | Secret to store | Credential and where to create it |
+| --- | --- | --- |
+| `github` | `GITHUB_TOKEN` | Fine-grained personal access token — GitHub → Settings → Developer settings → Fine-grained tokens |
+| `notion` | `NOTION_TOKEN` | Internal integration secret — notion.so/my-integrations (share the pages you want) |
+| `slack` | `SLACK_TOKEN` | Bot User OAuth token (`xoxb-`) — api.slack.com/apps → your app → Install |
+| `hubspot` | `HUBSPOT_TOKEN` | Private-app access token — Settings → Integrations → Private Apps |
+| `jira` | `ATLASSIAN_AUTH` | Basic auth, stored as `Basic <base64(email:token)>` — id.atlassian.com/manage-profile → API tokens |
+| `linear` | `LINEAR_API_KEY` | Personal API key (sent as the raw `Authorization` value) — Linear → Settings → API |
+| `stripe` | `STRIPE_KEY` | Restricted key, read-only where possible — Stripe Dashboard → Developers → API keys |
+| `airtable` | `AIRTABLE_TOKEN` | Personal access token — airtable.com/create/tokens |
+| `discord` | `DISCORD_BOT_TOKEN` | Bot token, stored as `Bot <token>` — discord.com/developers → your app → Bot |
+| `telegram` | `TELEGRAM_BOT_TOKEN` | Bot token (`<id>:<hash>`) — @BotFather → `/newbot` |
+| `asana` | `ASANA_TOKEN` | Personal access token — app.asana.com → My apps |
+| `intercom` | `INTERCOM_TOKEN` | Access token — Intercom → Developer Hub → your app |
+| `sentry` | `SENTRY_TOKEN` | Auth token — Sentry → Settings → Auth Tokens |
+| `sendgrid` | `SENDGRID_KEY` | API key — SendGrid → Settings → API Keys |
+| `twilio` | `TWILIO_AUTH` | Basic auth, stored as `Basic <base64(SID:token)>` — Twilio Console |
+
+Atlassian (Jira/Confluence) authenticates with HTTP Basic, and Twilio the same;
+both are handled by the header shape above (`secretHeaders`), so no special
+casing is needed.
 
 ## What about Google?
 
@@ -67,6 +125,17 @@ Google is the one service where the standard "Sign in with Google" shape does no
 
 Credentials live in your venue's per-user secret store (AES-256-GCM, decryptable only by that venue). Operations reference them by name; the runtime is the single decryption point and injects values at the adapter layer. Fields an operation marks as secret are redacted from job records. Every use is a job under your authority, and agents act only within the capabilities you granted them. Deleting the secret ends the access.
 
+## Covia inside Claude and ChatGPT
+
+The reverse direction ships too: the **Covia connector** lets your venue's
+operations and agents appear as tools inside Claude and ChatGPT, so an
+assistant can invoke your venue under your identity. It is a standalone OAuth
+2.1 and MCP service; add it as a connector in the assistant and authorise it
+against your venue.
+
 ## Coming next
 
-Device-code sign-in for services that support it (GitHub, Microsoft 365) with the code shown in your inbox; bring-your-own OAuth clients for data scopes; the venue as a first-class MCP client for vendors that support client ID metadata documents; and a Covia connector for Claude and ChatGPT so your venue's tools appear there.
+Device-code sign-in for services that support it (GitHub, Microsoft 365) with
+the code shown in your inbox; bring-your-own OAuth clients for data scopes; and
+the venue as a first-class MCP client for vendors that support client ID
+metadata documents.
