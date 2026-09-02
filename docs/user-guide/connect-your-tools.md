@@ -61,10 +61,14 @@ TypeScript: `await venue.secrets.set("GITHUB_TOKEN", token)` then `await venue.o
 | ------- | ------------ | -------------- | --------------- |
 | **GitHub** | `https://api.githubcopilot.com/mcp/` | `GITHUB_TOKEN` (fine-grained personal access token) | GitHub → Settings → Developer settings → Personal access tokens |
 | **Linear** | `https://mcp.linear.app/mcp` | `LINEAR_API_KEY` (personal API key) | Linear → Settings → API |
-| **Zapier** | `https://mcp.zapier.com/api/v1/connect` | `ZAPIER_MCP_TOKEN` (connection token) | mcp.zapier.com → New MCP Server → Connect. *Bridging pending a fix to endpoint handling (covia#398).* |
-| **Stripe** | `https://mcp.stripe.com` | `STRIPE_KEY` (restricted key, read-only where possible) | Stripe Dashboard → API keys. *Same pending fix.* |
+| **Zapier** | `https://mcp.zapier.com/api/v1/connect` | `ZAPIER_MCP_TOKEN` (connection token) | mcp.zapier.com → New MCP Server → Connect |
+| **Stripe** | `https://mcp.stripe.com/` | `STRIPE_KEY` (restricted key, read-only where possible) | Stripe Dashboard → API keys |
+
+The bridge normalises each URL to the server's streamable-HTTP endpoint: a bare host implies `/mcp` (so `https://mcp.linear.app` and `https://mcp.linear.app/mcp` are the same), any explicit path is kept as given, and a lone trailing slash means *this exact root* — which is why Stripe's root server is written `https://mcp.stripe.com/`.
 
 Zapier is worth a special mention: once bridged it reaches Google Workspace, Slack, Notion, and thousands of other apps through **your own** Zapier connections, which is the quickest honest route to Google data from a private venue today.
+
+**Bring your own automation platform.** Anything that speaks streamable HTTP can be bridged the same way, including a platform you already run. Expose an **n8n** workflow through its *MCP Server Trigger* node (choose the streamable-HTTP transport and a bearer token), or switch on **Make**'s hosted MCP server (streamable HTTP; its connection URL ends in `/stream`), then `mcp:server:add` that URL with the token as `s/<NAME>`. Because the endpoint is your own instance or account, there is no fixed vendor URL to list — you paste the one that platform gives you. Each then reaches every app you have already connected there, the same logic as Zapier, on infrastructure you control.
 
 Remove a bridge with `mcp:server:remove` (`{name}`); refresh its tool list after vendor changes with `mcp:server:refresh`. Scope `venue` (shared with everyone on the venue) needs the `mcp/manage` ability; the default `user` scope is private to you.
 
