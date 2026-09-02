@@ -8,8 +8,10 @@ The same **Covia connector** that powers [Covia in Claude](./covia-in-claude) al
 
 The connector lives at `connector.covia.ai` and works with any venue, including one you host yourself.
 
-:::note Status
+:::note[Status]
+
 The connector implements the open standards ChatGPT's connectors use (MCP over streamable HTTP, OAuth 2.1 with PKCE, and Client ID Metadata Documents). Adding it through **Developer Mode** or a workspace custom connector works today. A listing in the ChatGPT apps directory is a separate, in-progress step; until then, use the manual-connector route below.
+
 :::
 
 ## Where custom connectors live in ChatGPT
@@ -38,12 +40,16 @@ https://connector.covia.ai/mcp
 
    ![The capability grant on the consent page](/img/connect-covia/05-consent-capabilities.png)
 
-:::tip Use the same identity as your dashboard
+:::tip[Use the same identity as your dashboard]
+
 Your workspace, agents, and secrets belong to the identity (DID) of the device key you use. Import your dashboard key so ChatGPT shares them; a freshly generated key is a new, empty identity. After importing, confirm the *You are did:key:…* line ends with the same characters as your Profile page.
+
 :::
 
-:::note Paste the key, not the DID
+:::note[Paste the key, not the DID]
+
 The import field wants the 64-character **private key**, not your `did:key:…` DID. If you paste the DID, the consent page tells you so.
+
 :::
 
 ## What ChatGPT can do

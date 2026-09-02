@@ -80,8 +80,10 @@ The operator can rename the backing drive in venue config — useful when a depl
 
 The name must be a valid DLFS drive name — non-empty, with no `/`, `\`, or `:`.
 
-:::caution Encrypt sensitive vaults
+:::caution[Encrypt sensitive vaults]
+
 Vault data is only as protected as the venue's storage. If the venue has no encrypted storage policy configured, vault contents persist unencrypted — the venue logs a warning at startup. Configure `etch.cipher` and key management before storing sensitive data. See [Persistence](/docs/operator-guide/persistence).
+
 :::
 
 ## Giving Agents Vault Access

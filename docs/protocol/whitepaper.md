@@ -4,8 +4,10 @@ sidebar_position: 2
 
 # Covia.ai White Paper
 
-:::caution Draft
+:::caution[Draft]
+
 This is a draft of the Covia white paper, for discussion only — not to be considered final. Parts of it predate the current protocol specifications; where they disagree, the [COGs](./cogs-overview) are authoritative.
+
 :::
 
 ## Vision
@@ -278,8 +280,10 @@ The Covia roadmap is based around building interoperable components that impleme
 
 Many of these will be made available as open source reference implementations, that anyone can use freely or customise for their project. Companies in the ecosystem are free to offer commercially supported versions of these or create their own solutions as long as they remain consistent with the open standard protocol.
 
-:::note Status (August 2026)
+:::note[Status (August 2026)]
+
 This section predates the current implementation and is retained for context; much of it has shipped. The driver libraries exist as the [TypeScript](../user-guide/sdk/typescript) (npm `@covia/covia-sdk`), [Python](../user-guide/sdk/python) (PyPI `covia`), and [Java](../user-guide/sdk/java) SDKs. The reference agent is the open-source [venue runtime](../operator-guide/venue-start) (single JAR or container). The orchestration engine ships as the venue's [orchestrator adapter](../user-guide/adapters/orchestrator), executing multi-step graphs with cross-venue delegation. The standard documents are the [COG specifications](./cogs-overview). Enterprise adapters have shipped for AI frameworks ([LangChain4j](../user-guide/adapters/langchain-adapter)), [SQL databases](../user-guide/adapters/sql), [file systems](../user-guide/adapters/file), HTTP services, and [MCP bridging](../user-guide/mcp/calling-mcp-tools); NoSQL databases, GPU clusters, enterprise service buses, and enterprise application connectors remain on the roadmap.
+
 :::
 
 ### Universal Protocol Toolbox
