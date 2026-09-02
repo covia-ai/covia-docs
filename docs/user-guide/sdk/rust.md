@@ -4,8 +4,10 @@ sidebar_position: 5
 
 # Rust SDK
 
-:::info Planned
+:::info[Planned]
+
 The Rust SDK is on the roadmap but has not yet been implemented. No package is available.
+
 :::
 
 A Rust SDK for the Covia Grid is planned with the following design goals:

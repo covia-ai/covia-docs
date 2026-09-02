@@ -180,7 +180,9 @@ net use Z: https://your-venue.example.com/dlfs/documents /user:alice
 ```
 
 :::tip
+
 If Windows refuses `https://` URLs, ensure the **WebClient** service is running (`services.msc` → WebClient → Start, set to Automatic). Windows also enforces a default 50 MB WebDAV file-size limit — raise `FileSizeLimitInBytes` under `HKLM\SYSTEM\CurrentControlSet\Services\WebClient\Parameters` if you transfer larger files.
+
 :::
 
 #### macOS (Finder)

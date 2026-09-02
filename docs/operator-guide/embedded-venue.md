@@ -61,11 +61,13 @@ With these in place, the only way to reach the venue is a process on the same
 machine presenting a bearer token the venue accepts — i.e. the owner app.
 (Rate limiting, incidentally, defaults **off** on a loopback bind.)
 
-:::note bindAddress vs hostname
+:::note[bindAddress vs hostname]
+
 `bindAddress` is the socket the listener binds to (restrict it to loopback).
 It is distinct from `hostname`, the venue's *advertised* public host used to
 derive `baseUrl` and the DID. An embedded venue typically sets no public
 `hostname`, so its identity stays its `did:key`.
+
 :::
 
 ## Secrets belong to the owner, not to `public`
@@ -92,9 +94,11 @@ resolve under that identity at invocation time. Nothing lands under `public`, so
 there is no shared credential surface.
 
 :::caution
+
 Never commit production secrets to a checked-in config. Keep the embedded
 venue's config (with its bootstrap secrets) in a per-user, non-tracked location
 the app manages.
+
 :::
 
 ## Putting it together

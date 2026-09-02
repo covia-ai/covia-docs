@@ -396,8 +396,10 @@ async def main():
 asyncio.run(main())
 ```
 
-:::note Async property differences
+:::note[Async property differences]
+
 Some sync properties become async methods. For example, `venue.did` (sync) becomes `await venue.get_did()` (async).
+
 :::
 
 ### Concurrent Operations

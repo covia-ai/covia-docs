@@ -8,12 +8,16 @@ The **Covia connector** puts your venue inside Claude. Claude (web, Desktop, and
 
 The connector lives at `connector.covia.ai` and works with any venue, including one you host yourself.
 
-:::note Using ChatGPT instead?
+:::note[Using ChatGPT instead?]
+
 The same connector also works with ChatGPT.
+
 :::
 
-:::tip Prefer to follow along in the connector?
+:::tip[Prefer to follow along in the connector?]
+
 The connector hosts a step-by-step visual guide at **[connector.covia.ai/claude](https://connector.covia.ai/claude)** — the same steps below, each with a clean recreation of the exact screen you will see.
+
 :::
 
 ## Connect in about two minutes
@@ -40,12 +44,16 @@ The connector hosts a step-by-step visual guide at **[connector.covia.ai/claude]
 
    ![The capability grant on the consent page](/img/connect-covia/05-consent-capabilities.png)
 
-:::tip Use the same identity as your dashboard
+:::tip[Use the same identity as your dashboard]
+
 Your workspace, agents, and secrets belong to the identity (DID) of the device key you use. Importing your dashboard key means Claude shares them; generating a fresh key creates a new, empty identity. After importing, confirm the *You are did:key:…* line ends with the same characters as your Profile page.
+
 :::
 
-:::note Paste the key, not the DID
+:::note[Paste the key, not the DID]
+
 The import field wants the 64-character **private key**, not your `did:key:…` DID (which is your public identity). If you paste the DID, the consent page tells you so.
+
 :::
 
 The first time Claude uses each tool, it asks permission in the conversation — **Allow once** keeps you in the loop; **Always allow** suits trusted read-only tools.
