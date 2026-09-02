@@ -12,6 +12,10 @@ The connector lives at `connector.covia.ai` and works with any venue, including 
 The same connector also works with ChatGPT. See [Covia in ChatGPT](./covia-in-chatgpt).
 :::
 
+:::tip Prefer to follow along in the connector?
+The connector hosts a step-by-step visual guide at **[connector.covia.ai/claude](https://connector.covia.ai/claude)** — the same steps below, each with a clean recreation of the exact screen you will see.
+:::
+
 ## Connect in about two minutes
 
 1. In Claude, open **Settings → Customize → Connectors → Add → Custom connector** and enter:
