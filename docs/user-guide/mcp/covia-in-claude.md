@@ -9,7 +9,7 @@ The **Covia connector** puts your venue inside Claude. Claude (web, Desktop, and
 The connector lives at `connector.covia.ai` and works with any venue, including one you host yourself.
 
 :::note Using ChatGPT instead?
-The same connector also works with ChatGPT. See [Covia in ChatGPT](./covia-in-chatgpt).
+The same connector also works with ChatGPT.
 :::
 
 :::tip Prefer to follow along in the connector?
