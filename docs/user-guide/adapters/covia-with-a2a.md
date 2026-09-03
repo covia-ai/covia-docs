@@ -44,28 +44,42 @@ Inbound callers are identified by the venue's [auth middleware](../../operator-g
 
 `SendStreamingMessage` and `SubscribeToTask` open a Server-Sent Events stream (`text/event-stream`). Each event is a JSON-RPC envelope carrying a Task snapshot or a status-update; the stream sends a final update marked `final: true` when the Task reaches a terminal state, then closes.
 
-## Outbound: calling remote A2A agents
+## Outbound: calling remote A2A agents — bring your own agent
 
-The A2A adapter turns a remote A2A agent into grid operations. Address the remote agent by its base `url`; the adapter appends `/.well-known/agent-card.json` and `/a2a` as needed.
+The A2A adapter turns a remote A2A agent into grid operations. **Import the agent once** — that fetches its card and stores it as an asset, with its credential configured a single time — then task it by the binding the import creates.
 
 | Operation | Input | Returns |
 |-----------|-------|---------|
-| `a2a:getAgentCard` | `url` | The remote agent's card |
-| `a2a:send` | `url`, `message`, `taskId?` | The remote Task (final, or current on interrupt) |
-| `a2a:getTask` | `url`, `id` | The remote Task's current state |
-| `a2a:cancel` | `url`, `id` | The cancelled Task |
+| `a2a:import-agent` | `name`, `url` (or `coviaAgent`), `auth?` | Writes an immutable `type:a2a-agent` asset, bound at `w/a2a/agents/<name>` |
+| `a2a:agent-card` | `agent` | The imported card snapshot |
+| `a2a:send` | `agent`, `message`, `taskId?` | The remote Task (final, or current on interrupt) |
+| `a2a:get-task` | `agent`, `id` | The remote Task's current state |
+| `a2a:cancel` | `agent`, `id` | The cancelled Task |
+
+```json
+{
+  "operation": "a2a:import-agent",
+  "input": {
+    "name": "partner-bot",
+    "url": "https://agent.example.com",
+    "auth": { "scheme": "bearer", "secret": "s/PARTNER_KEY" }
+  }
+}
+```
+
+Then send to the binding — the message carries no credentials:
 
 ```json
 {
   "operation": "a2a:send",
   "input": {
-    "url": "https://agent.example.com",
+    "agent": "w/a2a/agents/partner-bot",
     "message": { "role": "user", "parts": [{ "type": "text", "text": "Summarise Q1 revenue" }] }
   }
 }
 ```
 
-Pass a `taskId` to continue an existing remote Task instead of starting a new one.
+Pass a `taskId` to continue an existing remote Task. Low-level `a2a/raw/*` operations take a `url` and credentials inline for one-off diagnostics; they are deliberately not agent tools. A step-by-step walkthrough — including Agentforce, Lyzr and Hermes — is in [Bring your own agent](../agents/bring-your-own-agent).
 
 ### Job-per-Task mirroring
 
@@ -73,10 +87,13 @@ Pass a `taskId` to continue an existing remote Task instead of starting a new on
 
 ### Authentication
 
-The venue's agent card does not yet advertise A2A `securitySchemes`; inbound auth is handled at the transport/middleware layer (see the [operator auth guide](../../operator-guide/auth)). The outbound adapter currently calls remote agents without attaching credentials — for authenticated remotes, place the venue behind an appropriately configured gateway.
+Outbound auth belongs to the **imported agent**, configured once and attached on every call — never supplied per request. `auth.secret` must be a **caller-owned `s/NAME` reference**; literal credentials are rejected. Use `auth: {scheme: "<card scheme>", secret: "s/NAME"}` for the API-key or HTTP-Bearer scheme the agent card declares, or `auth: {kind: "bearer", secret: "s/NAME"}` when a bearer is required even to fetch a private card. Only standard A2A HTTP auth is sent; Covia UCAN proofs are **not** forwarded outbound, so cross-organisation authorisation on an outbound call rests on the remote's own auth, not on Covia capabilities.
+
+Inbound, the venue's agent card does not yet advertise A2A `securitySchemes`; inbound auth is handled at the transport/middleware layer (see the [operator auth guide](../../operator-guide/auth)).
 
 ## Related
 
+- [Bring your own agent](../agents/bring-your-own-agent) — the task guide for importing an external agent
 - [A2A protocol specification](https://a2a-protocol.org/latest/specification/)
 - [MCP](./covia-with-mcp) — the other side of the interop story
 - [Agent Operations](../agents/operations) — `agent:chat` is the inbound `SendMessage` analogue
