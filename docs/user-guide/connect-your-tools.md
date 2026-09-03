@@ -22,8 +22,8 @@ The catalogue today, grouped as it appears in the app:
 
 | Group | Services |
 | ----- | -------- |
-| Dev | GitHub, Sentry |
-| Docs & PM | Notion, Jira, Linear, Asana |
+| Dev | GitHub, Sentry, GitLab, PagerDuty |
+| Docs & PM | Notion, Jira, Linear, Asana, ClickUp, Calendly, monday.com |
 | CRM & Support | HubSpot, Intercom |
 | Payments | Stripe |
 | Comms | Slack, Discord, Telegram, SendGrid, Twilio |
@@ -112,6 +112,11 @@ missing scope instead of retrying blindly.
 | `sentry` | `SENTRY_TOKEN` | Auth token — Sentry → Settings → Auth Tokens |
 | `sendgrid` | `SENDGRID_KEY` | API key — SendGrid → Settings → API Keys |
 | `twilio` | `TWILIO_AUTH` | Basic auth, stored as `Basic <base64(SID:token)>` — Twilio Console |
+| `gitlab` | `GITLAB_TOKEN` | Personal access token (`api` or `read_api` scope) — GitLab → Preferences → Access Tokens |
+| `clickup` | `CLICKUP_TOKEN` | Personal API token (sent as the raw `Authorization` value) — ClickUp → Settings → Apps → API Token |
+| `calendly` | `CALENDLY_TOKEN` | Personal access token — Calendly → Integrations → API & Webhooks |
+| `monday` | `MONDAY_TOKEN` | Personal API token (GraphQL, raw `Authorization` value) — monday.com → Developers → My access tokens |
+| `pagerduty` | `PAGERDUTY_TOKEN` | API key, stored as the complete `Token token=<key>` header — PagerDuty → Integrations → API Access Keys |
 
 Atlassian (Jira/Confluence) authenticates with HTTP Basic, and Twilio the same;
 both are handled by the header shape above (`secretHeaders`), so no special
