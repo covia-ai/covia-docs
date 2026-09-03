@@ -11,7 +11,7 @@ sidebar_position: 4
 The capability has three doors, and all three run under the same governance:
 
 - **Hosted agents**: create an agent on the venue from a template or your own configuration; the venue holds its state, sessions, and timeline.
-- **BYOA (Bring Your Own Agent)**: connect an agent you already run elsewhere. External agents reach the venue over [A2A](../user-guide/adapters/covia-with-a2a) or [MCP](../user-guide/mcp/), and remote A2A agents can be imported and addressed as ordinary venue assets, so a LangGraph, CrewAI, or framework-native agent participates in governed workflows without being rewritten.
+- **BYOA (Bring Your Own Agent)**: connect an agent you already run elsewhere. External agents reach the venue over [A2A](../user-guide/adapters/covia-with-a2a) or [MCP](../user-guide/mcp/), and remote A2A agents can be imported and addressed as ordinary venue assets, so a LangGraph, CrewAI, or framework-native agent participates in governed workflows without being rewritten. See [Bring your own agent](../user-guide/agents/bring-your-own-agent) for the walkthrough.
 - **BYOM (Bring Your Own Model)**: model access is a pluggable executor binding, with [bindings](../user-guide/agents/llm-backends) for OpenAI, Anthropic, Gemini, DeepSeek, xAI, and local models via Ollama. Swap the model without changing the agent or its callers.
 
 This page tours the agentic suite; the [user guide](../user-guide/agents/) covers each piece in depth.
