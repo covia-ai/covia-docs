@@ -260,3 +260,5 @@ The body, its context entries, and its tools all go from the next turn onward. E
 - [Creating Agents](../agents/creating-agents) — configuration and templates
 - [Capabilities](../capabilities) — the authority model skills never bypass
 - [Running Covia Agents](./running-agents) — agents from first principles
+
+Already have SKILL.md files? [Migrate an agent's skills](../agents/migrate-skills) imports them and creates a native agent in one call.
