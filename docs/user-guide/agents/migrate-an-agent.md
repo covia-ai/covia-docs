@@ -79,6 +79,26 @@ Optional fields let you pick the transition (`operation`), the model
 (`llmOperation` for bring-your-own-model, or `model`), a different `skillset`,
 and any further `config` that `agent:create` accepts.
 
+Choose an unused agent name. Imports are sequential: a failure can leave
+previously imported skills even though no agent is created. Imported skill
+instructions do not grant permissions; tools still require valid operation
+bindings and the caller's capabilities.
+
+## Verify migration without an LLM
+
+On a development venue with test operations enabled, set
+`llmOperation: "v/test/ops/llm"` in the creation input. The deterministic stub
+echoes a turn through the native agent loop without API keys or provider calls.
+It checks wiring, not whether a model follows the imported instructions.
+
+Send a turn with `v/ops/agent/chat`, using the created `agentId` and a `message`.
+Covia's `AgentFromSkillsTest` imports two skills, checks their discovery and runs
+a chat turn using this stub. Run it from the Covia checkout:
+
+```shell
+mvn test -pl venue -am -Dtest=AgentFromSkillsTest -Dsurefire.failIfNoSpecifiedTests=false
+```
+
 ## What you get
 
 Because the result is an ordinary native agent, it gets everything a native

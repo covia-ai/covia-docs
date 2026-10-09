@@ -122,3 +122,5 @@ agent_request agentId: "Alice"  input: { task: "Summarise the vendor records" } 
 
 - [COG-11: Agent Lifecycle](/docs/protocol/cogs/COG-011) — Protocol specification for agents
 - [COG-12: Orchestrations](/docs/protocol/cogs/COG-012) — Multi-agent orchestration
+
+Import existing know-how with [Migrate an agent](./migrate-an-agent).

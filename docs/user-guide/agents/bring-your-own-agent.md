@@ -102,6 +102,7 @@ as an operation.
 
 ## Related
 
+- [Migrate an agent](./migrate-an-agent) — bring its system prompt and skills onto Covia's native loop
 - [A2A adapter](../adapters/covia-with-a2a) — the full inbound and outbound reference
 - [Connect your tools](../connect-your-tools) — bringing a framework's *tools* in over MCP
 - [Agents overview](../../overview/agents) — the three doors: hosted, bring-your-own-agent, bring-your-own-model
