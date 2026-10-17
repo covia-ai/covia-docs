@@ -1,12 +1,12 @@
 ---
-title: Crypto
-sidebar_label: Crypto
+title: Cryptographic
+sidebar_label: Cryptographic
 description: Local Ed25519, ECIES, BIP39, SLIP-10, hashing and JWT operations. Private material resolves only from the secret store; the model never sees a key.
 ---
 
-# Crypto Adapter
+# Cryptographic Adapter
 
-Signing a message, verifying a signature, encrypting a payload, deriving a key from a mnemonic — these are things an agent must do constantly, but they're also exactly where secrets leak if the design is lax. The `crypto` adapter provides local cryptographic primitives (Ed25519, BIP39, SLIP-10, ECIES, JWT, hashing) with one structural guarantee: **private material resolves only from the secret store, and generated private material is written back without passing through a job result**. The model never sees a seed, a mnemonic, or an unencrypted private key.
+Signing a message, verifying a signature, encrypting a payload, deriving a key from a mnemonic: these are things an agent must do constantly, but they're also exactly where secrets leak if the design is lax. The `crypto` adapter provides local cryptographic primitives (Ed25519, BIP39, SLIP-10, ECIES, JWT, hashing) with one structural guarantee: **private material resolves only from the secret store, and generated private material is written back without passing through a job result**. The model never sees a seed, a mnemonic, or an unencrypted private key.
 
 ## Operations
 
@@ -40,9 +40,9 @@ Returns `{accountKey: "0x…", did: "did:key:z6Mk…", signature: "0x…"}`. The
 
 ## Secret references, not raw material
 
-Every operation that consumes private material (`seed`, `mnemonic`, `recipient` for decrypt, `passphrase`) takes a **secret reference** of the form `s/NAME` or `<did>/s/NAME` — never a raw string. The adapter resolves the reference to the stored secret only inside its own execution scope; the raw bytes never appear in the request context, the job record, or anything the model can read.
+Every operation that consumes private material (`seed`, `mnemonic`, `recipient` for decrypt, `passphrase`) takes a **secret reference** of the form `s/NAME` or `<did>/s/NAME`, never a raw string. The adapter resolves the reference to the stored secret only inside its own execution scope; the raw bytes never appear in the request context, the job record, or anything the model can read.
 
-Generated private material (`generate-key`, `generate-mnemonic`) writes directly to the named secret and returns only the public parts: AccountKey, DID, and `stored: true`. There is no code path that returns a freshly-generated seed to the caller — that would defeat the whole model.
+Generated private material (`generate-key`, `generate-mnemonic`) writes directly to the named secret and returns only the public parts: AccountKey, DID, and `stored: true`. There is no code path that returns a freshly-generated seed to the caller. That would defeat the whole model.
 
 ## Encoding
 
@@ -58,6 +58,6 @@ Input bytes are capped at 1 MiB per call. Hash algorithms are limited to `sha256
 
 ## Related
 
-- [Secret Adapter](./secret) — the encrypted secret store that holds the material this adapter resolves
-- [UCAN Adapter](./ucan) — capability-based access to secrets and operations
-- [Auth Adapter](./auth) — venue-level authentication (login OAuth, bearer tokens)
+- [Secret Adapter](./secret): the encrypted secret store that holds the material this adapter resolves
+- [UCAN Adapter](./ucan): capability-based access to secrets and operations
+- [Auth Adapter](./auth): venue-level authentication (login OAuth, bearer tokens)

@@ -1,12 +1,12 @@
 ---
-title: Covia
-sidebar_label: Covia
-description: The generic lattice interface. Read, write, list, slice and inspect any path in the authenticated caller's namespace with capability checks at the point of action.
+title: Covia Venue
+sidebar_label: Covia Venue
+description: The generic lattice interface for the venue. Read, write, list, slice and inspect any path in the authenticated caller's namespace with capability checks at the point of action.
 ---
 
-# Covia Adapter
+# Covia Venue Adapter
 
-Every agent eventually needs to read and write arbitrary data in its namespace — scratch workspace, agent state, cached results, cross-user references. The `covia` adapter is the generic lattice interface for exactly that: nine operations that navigate the authenticated caller's namespace by JSON-friendly paths like `w/vendor-records/acme` or `g/my-agent/state`, with capability checks at the point of action and no need to understand the underlying CVM key types.
+Every agent eventually needs to read and write arbitrary data in its namespace: scratch workspace, agent state, cached results, cross-user references. The `covia` adapter is the generic lattice interface for exactly that. Nine operations navigate the authenticated caller's namespace by JSON-friendly paths like `w/vendor-records/acme` or `g/my-agent/state`, with capability checks at the point of action and no need to understand the underlying CVM key types.
 
 ## Operations
 
@@ -31,7 +31,7 @@ Every agent eventually needs to read and write arbitrary data in its namespace �
 }
 ```
 
-Returns `{exists: true, value: {...}}` — or `{exists: false, value: null}` if nothing is stored there. A stored `null` counts as present; use `exists` to disambiguate.
+Returns `{exists: true, value: {...}}`, or `{exists: false, value: null}` if nothing is stored there. A stored `null` counts as present; use `exists` to disambiguate.
 
 ## Paths, not keys
 
@@ -53,7 +53,7 @@ A cross-user path works the same way: `did:key:z6Mk…/w/shared/report` reads fr
 
 ## Read vs. inspect vs. slice
 
-For data of unknown size, prefer `covia:inspect` — it returns a budget-controlled summary rather than failing when the value exceeds `maxSize`. For paginated access to a large collection, use `covia:slice`. `covia:read` is the direct path when you know the data fits.
+For data of unknown size, prefer `covia:inspect`: it returns a budget-controlled summary rather than failing when the value exceeds `maxSize`. For paginated access to a large collection, use `covia:slice`. `covia:read` is the direct path when you know the data fits.
 
 ## Access Control
 
@@ -61,7 +61,7 @@ Reads require `crud/read` on the resolved path; writes require `crud/write` on a
 
 ## Related
 
-- [UCAN Adapter](./ucan) — capability model that gates every read and write
-- [Asset Adapter](./asset) — content-addressed storage in the `a/` namespace
-- [Secret Adapter](./secret) — encrypted values in the `s/` namespace
-- [Agents on the Grid](../agents/) — how agents use these primitives at runtime
+- [UCAN Adapter](./ucan): capability model that gates every read and write
+- [Asset Adapter](./asset): content-addressed storage in the `a/` namespace
+- [Secret Adapter](./secret): encrypted values in the `s/` namespace
+- [Agents on the Grid](../agents/): how agents use these primitives at runtime
