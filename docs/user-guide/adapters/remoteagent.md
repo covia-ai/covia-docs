@@ -8,6 +8,8 @@ description: Dispatch a task to a Covia agent on this or another venue. Mirrors 
 
 A Covia agent is useful because it has durable state, tools, memory, and a working context. The `remoteagent` adapter lets another agent call it as a worker. `remoteagent:request` runs a task on a Covia agent that lives either on this venue or on a different one, mirrors the destination task as a local [Job](../../operator-guide/) so the caller can observe progress, continue an interrupted conversation, and cancel if needed, and returns the agent's output when it completes. The caller's identity, capability tokens, and session context all travel with the request.
 
+Agent IDs in the examples below use the placeholder convention `g/my-<role>` (`my-agent`, `my-support-bot`, etc.) to signal "an agent you created". Substitute your own agent IDs.
+
 ## Operations
 
 | Operation | Purpose |
@@ -18,9 +20,9 @@ A Covia agent is useful because it has durable state, tools, memory, and a worki
 {
   "operation": "v/ops/remoteagent/request",
   "input": {
-    "agentId": "g/invoice-reader",
+    "agentId": "g/my-agent",
     "input": {
-      "task": "Extract line items from w/invoices/acme-q1.pdf",
+      "task": "Extract line items from w/my-inputs/invoice.pdf",
       "format": "structured"
     }
   }
@@ -35,10 +37,10 @@ The `agentId` field accepts four forms:
 
 | Form | Meaning |
 |------|---------|
-| `invoice-reader` | A bare name resolves to the caller's own agent at `g/invoice-reader` |
-| `g/invoice-reader` | Explicit path to the caller's agent |
-| `/g/invoice-reader` | Equivalent explicit path |
-| `did:web:venue-2.covia.ai/g/invoice-reader` | An agent on a different venue, addressed by its owner's DID |
+| `my-agent` | A bare name resolves to the caller's own agent at `g/my-agent` |
+| `g/my-agent` | Explicit path to the caller's agent |
+| `/g/my-agent` | Equivalent explicit path |
+| `did:web:venue-2.covia.ai/g/my-agent` | An agent on a different venue, addressed by its owner's DID |
 
 The last form is how one venue invokes an agent on another. The remote venue resolves the DID, authenticates the caller through standard Covia federation, and runs the task under the caller's capability grants on the destination side.
 
@@ -50,7 +52,7 @@ Pass `sessionId` to continue an existing conversation with the agent:
 {
   "operation": "v/ops/remoteagent/request",
   "input": {
-    "agentId": "g/support-bot",
+    "agentId": "g/my-support-bot",
     "sessionId": "0x7a3f...",
     "input": {
       "message": "What was the resolution on the previous ticket?"
@@ -68,14 +70,14 @@ For large or structured results, pass `outputPath`:
 ```json
 {
   "input": {
-    "agentId": "did:web:venue-1.covia.ai/g/transcriber",
+    "agentId": "did:web:venue-1.covia.ai/g/my-transcriber",
     "input": { "task": "Transcribe a/0x3f.../audio.wav" },
-    "outputPath": "w/pipeline/run42/transcript"
+    "outputPath": "w/my-pipeline/transcript"
   }
 }
 ```
 
-On successful completion, the framework writes the worker's full result to `w/pipeline/run42/transcript` under the requester's captured authority and returns a small `{status, outputPath, bytes}` receipt instead of the payload. The payload itself never passes through the caller's job output, which keeps model context clean when the result is bulky. Failed or cancelled tasks write nothing. Remote `did:web` paths resolve through federation on the destination side.
+On successful completion, the framework writes the worker's full result to `w/my-pipeline/transcript` under the requester's captured authority and returns a small `{status, outputPath, bytes}` receipt instead of the payload. The payload itself never passes through the caller's job output, which keeps model context clean when the result is bulky. Failed or cancelled tasks write nothing. Remote `did:web` paths resolve through federation on the destination side.
 
 ## Response shape
 
@@ -84,8 +86,8 @@ Pass `responseSchema` to tell the worker the shape you expect:
 ```json
 {
   "input": {
-    "agentId": "g/analyst",
-    "input": { "task": "Summarise w/calls/2026-q1" },
+    "agentId": "g/my-analyst",
+    "input": { "task": "Summarise w/my-notes/calls" },
     "responseSchema": {
       "type": "object",
       "properties": {

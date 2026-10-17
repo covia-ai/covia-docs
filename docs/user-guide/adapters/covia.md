@@ -6,7 +6,7 @@ description: The generic lattice interface for the venue. Read, write, list, sli
 
 # Covia Venue Adapter
 
-Every agent eventually needs to read and write arbitrary data in its namespace: scratch workspace, agent state, cached results, cross-user references. The `covia` adapter is the generic lattice interface for exactly that. Nine operations navigate the authenticated caller's namespace by JSON-friendly paths like `w/vendor-records/acme` or `g/my-agent/state`, with capability checks at the point of action and no need to understand the underlying CVM key types.
+Every agent eventually needs to read and write arbitrary data in its namespace: scratch workspace, agent state, cached results, cross-user references. The `covia` adapter is the generic lattice interface for exactly that. Nine operations navigate the authenticated caller's namespace by JSON-friendly paths like `w/my-notes` or `g/my-agent/state`, with capability checks at the point of action and no need to understand the underlying CVM key types.
 
 ## Operations
 
@@ -26,7 +26,7 @@ Every agent eventually needs to read and write arbitrary data in its namespace: 
 {
   "operation": "v/ops/covia/read",
   "input": {
-    "path": "w/invoice-notes/2026-q1"
+    "path": "w/my-notes/2026-q1"
   }
 }
 ```
