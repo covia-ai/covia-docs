@@ -26,8 +26,8 @@ Storing requires an authenticated caller holding the `secret/write` ability on `
 
 Operations that need a credential accept a **secret reference** instead of a plaintext value, resolved from the *caller's* store at invocation time:
 
-- The [HTTP adapter](./http-adapter)'s `bearerSecret` — the venue sends `Authorization: Bearer <resolved value>` without the token appearing in input or job records.
-- The [LangChain backends](./langchain-adapter) resolve provider keys (`s/OPENAI_API_KEY`, `s/ANTHROPIC_API_KEY`, …) the same way — a missing key fails fast, naming the reference it looked for.
+- The [HTTP adapter](./http)'s `bearerSecret` — the venue sends `Authorization: Bearer <resolved value>` without the token appearing in input or job records.
+- The [LangChain backends](./langchain) resolve provider keys (`s/OPENAI_API_KEY`, `s/ANTHROPIC_API_KEY`, …) the same way — a missing key fails fast, naming the reference it looked for.
 - [Bridged MCP servers](../mcp/calling-mcp-tools#authentication-for-bridged-servers) resolve their `auth` secret per caller.
 
 Because resolution is per-DID, two users invoking the same operation use their own keys — a venue never shares one credential across callers.
@@ -47,7 +47,7 @@ The store is also exposed directly over [REST](../api/#secrets) — `GET /api/v1
 
 ## Related Documentation
 
-- [HTTP Adapter](./http-adapter) - `bearerSecret` for authenticated HTTP calls
-- [LangChain Adapter](./langchain-adapter) - provider API keys
+- [HTTP Adapter](./http) - `bearerSecret` for authenticated HTTP calls
+- [LangChain Adapter](./langchain) - provider API keys
 - [Capabilities](../capabilities) - the authorisation model behind `secret/write`
 - [REST API § Secrets](../api/#secrets) - the HTTP surface

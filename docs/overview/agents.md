@@ -64,7 +64,7 @@ The capability surface is pluggable at every level. Operators extend a venue wit
 
 ### Federation
 
-Agents do not stop at the venue boundary. The [Grid adapter](../user-guide/adapters/grid-adapter) invokes operations on remote venues exactly as if they were local, and the [orchestrator](../user-guide/adapters/orchestrator) runs multi-step workflows that span them, while each party's data stays under its own governance and only results cross the boundary. Multi-agent systems can therefore span organisations: your agent, a partner's venue, a third party's model, one auditable workflow.
+Agents do not stop at the venue boundary. The [Grid adapter](../user-guide/adapters/grid) invokes operations on remote venues exactly as if they were local, and the [orchestrator](../user-guide/adapters/orchestrator) runs multi-step workflows that span them, while each party's data stays under its own governance and only results cross the boundary. Multi-agent systems can therefore span organisations: your agent, a partner's venue, a third party's model, one auditable workflow.
 
 → [The Grid](./grid) · [Federate two venues](../user-guide/tutorials/federation) · [COG-12: Orchestrations](../protocol/cogs/COG-012)
 

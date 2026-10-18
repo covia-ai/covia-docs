@@ -71,4 +71,4 @@ Agent scheduling is built on this adapter. A [session](../agents/sessions) or ta
 
 - [Sessions](../agents/sessions) — how agent wakes use the scheduler
 - [Capabilities](../capabilities) — the authority captured and replayed at fire time
-- [Grid Adapter](./grid-adapter) — invoking operations across venues
+- [Grid Adapter](./grid) — invoking operations across venues

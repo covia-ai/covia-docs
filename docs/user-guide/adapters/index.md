@@ -12,7 +12,7 @@ Adapters are how a venue gets its capabilities. Each adapter contributes a famil
 
 | Adapter | Operations | What it does |
 |---------|-----------|--------------|
-| [LangChain](./langchain-adapter) | `langchain:*` | Call LLMs — OpenAI, Anthropic, Ollama, xAI, and OpenAI-compatible endpoints |
+| [LangChain](./langchain) | `langchain:*` | Call LLMs — OpenAI, Anthropic, Ollama, xAI, and OpenAI-compatible endpoints |
 | [Skills](./skills) | `v/ops/skills` | Skill discovery and retrieval; every venue ships a skill library |
 | [User Memory](./memory) | `v/ops/memory` | Durable per-user memory that agents recall every turn and edit by number |
 | [Human-in-the-Loop](./hitl) | `hitl:*` | Park a job for human approval, choices, or capability grants |
@@ -23,18 +23,18 @@ Agent execution (`agent:*`, `llmagent:*`, `goaltree:*`) is documented under [Age
 
 | Adapter | Operations | What it does |
 |---------|-----------|--------------|
-| [Grid](./grid-adapter) | `grid:*` | Invoke operations on local or remote venues (federation) |
+| [Grid](./grid) | `grid:*` | Invoke operations on local or remote venues (federation) |
 | [Orchestrator](./orchestrator) | *(adapter, not ops)* | Multi-step DAG workflows, defined as operation assets and run via `grid:run` |
 | [MCP](./covia-with-mcp) | `mcp:*` | Call external MCP servers; bridge their tools into the catalog |
 | [A2A](./covia-with-a2a) | `a2a:*` | Call remote A2A agents; serve A2A inbound |
-| [HTTP](./http-adapter) | `http:*` | SSRF-protected outbound HTTP requests |
+| [HTTP](./http) | `http:*` | SSRF-protected outbound HTTP requests |
 | [Convex](./convex) | `convex:*` | Query and transact against the Convex lattice network |
 
 ## State and data
 
 | Adapter | Operations | What it does |
 |---------|-----------|--------------|
-| [Covia (Venue)](./venue-adapter) | `covia:*` | CRUD over the venue's lattice state |
+| [Covia (Venue)](./covia) | `covia:*` | CRUD over the venue's lattice state |
 | [Assets](./asset) | `asset:*` | Immutable, content-addressed asset store — store, read, list, pin |
 | [Secrets](./secret) | `secret:*` | Per-user encrypted secret store; `s/NAME` references |
 | [File](./file) | `file:*` | Root-jailed local filesystem access |

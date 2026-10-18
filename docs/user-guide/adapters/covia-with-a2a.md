@@ -97,4 +97,4 @@ Inbound, the venue's agent card does not yet advertise A2A `securitySchemes`; in
 - [A2A protocol specification](https://a2a-protocol.org/latest/specification/)
 - [MCP](./covia-with-mcp) — the other side of the interop story
 - [Agent Operations](../agents/operations) — `agent:chat` is the inbound `SendMessage` analogue
-- [Grid Adapter](./grid-adapter) — federating operations across venues
+- [Grid Adapter](./grid) — federating operations across venues

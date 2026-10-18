@@ -93,6 +93,18 @@ const config: Config = {
           { from: ['/docs/category/sdk'], to: '/docs/user-guide/sdk/' },
           { from: ['/docs/category/agents'], to: '/docs/user-guide/agents/' },
           { from: ['/docs/category/adapters'], to: '/docs/user-guide/adapters/' },
+
+          // Adapter page renames (2026-10-18): the four `-adapter` suffix
+          // files were renamed to match the operation prefix exactly so
+          // venue-side canonical links `venue-X.covia.ai/adapters/<name>`
+          // map cleanly to `docs.covia.ai/user-guide/adapters/<name>`.
+          // The old URLs continue to resolve via these redirects.
+          { from: ['/docs/user-guide/adapters/grid-adapter'], to: '/docs/user-guide/adapters/grid' },
+          { from: ['/docs/user-guide/adapters/http-adapter'], to: '/docs/user-guide/adapters/http' },
+          { from: ['/docs/user-guide/adapters/langchain-adapter'], to: '/docs/user-guide/adapters/langchain' },
+          // The venue-adapter page was merged into covia.md (same adapter,
+          // 9 operations documented, placeholder convention normalised).
+          { from: ['/docs/user-guide/adapters/venue-adapter'], to: '/docs/user-guide/adapters/covia' },
         ],
       },
     ],
