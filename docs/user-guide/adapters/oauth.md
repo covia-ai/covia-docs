@@ -70,7 +70,7 @@ Only the caller can start, see, or revoke their own connections. Stored grants l
 
 ## Related
 
-- [HTTP Adapter](./http-adapter): resolves `bearerSecret: "oauth/<provider>"` to a live access token
+- [HTTP Adapter](./http): resolves `bearerSecret: "oauth/<provider>"` to a live access token
 - [Secret Adapter](./secret): the encrypted store that holds the grant
 - [Auth Adapter](./auth): the separate venue-login OAuth flow (`/auth/{provider}`)
 - [UCAN Adapter](./ucan): capability model that gates access to each grant

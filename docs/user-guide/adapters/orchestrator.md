@@ -186,7 +186,7 @@ Route individual steps to remote venues:
 
 ## Related
 
-- [Grid Adapter](./grid-adapter) — individual operation invocation
+- [Grid Adapter](./grid) — individual operation invocation
 - [JSON Adapter](./json) — data manipulation primitives for result composition
 - [Agents](/docs/user-guide/agents/) — agent-based step execution
 - [COG-012: Orchestrations](/docs/protocol/cogs/COG-012) — Protocol specification

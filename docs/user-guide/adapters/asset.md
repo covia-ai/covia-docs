@@ -43,6 +43,6 @@ All operations require an authenticated caller. Assets are per-user exactly like
 
 ## Related
 
-- [Covia (Venue) Adapter](./venue-adapter) — mutable lattice state, by contrast
+- [Covia (Venue) Adapter](./covia) — mutable lattice state, by contrast
 - [Skills](./skills) — skills as published assets
 - [COG-5: Assets](../../protocol/cogs/COG-005) — the specification

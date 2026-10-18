@@ -1,5 +1,5 @@
 ---
-id: grid-adapter
+id: grid
 title: Grid Adapter
 sidebar_label: Grid
 ---

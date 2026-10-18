@@ -1,5 +1,5 @@
 ---
-id: langchain-adapter
+id: langchain
 title: LangChain Adapter
 sidebar_label: LangChain
 ---

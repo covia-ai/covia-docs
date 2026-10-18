@@ -6,7 +6,7 @@ description: Discovery for 20+ pre-registered service connections (Slack, GitHub
 
 # Connections Adapter
 
-Every agent eventually needs to talk to a third-party service: send a Slack message, open a GitHub issue, append a row to Notion, trigger a Twilio SMS. The `connections` adapter is the discovery layer for those integrations. Two read-only operations (`list`, `status`) report what providers this venue knows about, which of their tools are currently live, and whether the authenticated caller has the credentials to use them. Transport stays with [HTTP](./http-adapter), grants stay with [OAuth](./oauth), credentials stay in the caller's `s/` namespace. This adapter never resolves, decrypts, or returns a secret value.
+Every agent eventually needs to talk to a third-party service: send a Slack message, open a GitHub issue, append a row to Notion, trigger a Twilio SMS. The `connections` adapter is the discovery layer for those integrations. Two read-only operations (`list`, `status`) report what providers this venue knows about, which of their tools are currently live, and whether the authenticated caller has the credentials to use them. Transport stays with [HTTP](./http), grants stay with [OAuth](./oauth), credentials stay in the caller's `s/` namespace. This adapter never resolves, decrypts, or returns a secret value.
 
 ## Operations
 
@@ -69,7 +69,7 @@ This adapter deliberately holds no state of its own. `connections:list` composes
 
 ## Related
 
-- [HTTP Adapter](./http-adapter): the transport every connection ultimately uses
+- [HTTP Adapter](./http): the transport every connection ultimately uses
 - [OAuth Adapter](./oauth): user-granted OAuth 2.0 connections (one `auth.alternatives` option)
 - [Secret Adapter](./secret): the encrypted store where static credentials live
 - [Skills Adapter](./skills): each connection provider is backed by a skill asset

@@ -7,7 +7,7 @@ sidebar_label: User Memory
 
 Nobody should have to repeat their preferences to every agent, every session. The memory adapter gives every user — and every agent acting for them — a durable, editable memory that agents carry into each turn, with a deliberately tiny surface: one operation, `v/ops/memory`, dispatched by a `command` field (`recall`, `remember`, `update`, `forget`). One tool definition instead of four keeps the cost in an agent's tool palette minimal.
 
-Memory lives as a plain vector at a workspace path (default `w/memory`) in the calling user's namespace — queryable, governed lattice state like everything else, not a private database. Storage delegates to [`covia:read`/`covia:write`](./venue-adapter), so per-user scoping and capability enforcement are inherited rather than reimplemented.
+Memory lives as a plain vector at a workspace path (default `w/memory`) in the calling user's namespace — queryable, governed lattice state like everything else, not a private database. Storage delegates to [`covia:read`/`covia:write`](./covia), so per-user scoping and capability enforcement are inherited rather than reimplemented.
 
 ## Operations
 
@@ -65,4 +65,4 @@ Authentication is required — memory is always some user's memory. Items are st
 
 - [Context in Covia](/docs/overview/context) — the context layer this feeds
 - [Tools and Context](../agents/tools-and-context) — `config.context` injection
-- [Covia (Venue) Adapter](./venue-adapter) — the underlying workspace CRUD
+- [Covia (Venue) Adapter](./covia) — the underlying workspace CRUD

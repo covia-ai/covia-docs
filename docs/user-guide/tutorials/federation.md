@@ -37,7 +37,7 @@ curl -s http://localhost:8081/api/v1/status   # "Venue B", did:key:z6Mks...
 
 ## 2. Your first federated call
 
-The [Grid adapter](../adapters/grid-adapter)'s `grid:run` executes an operation and waits for the result. Add a `venue` and the execution happens **there**. From Venue A, run an operation on Venue B:
+The [Grid adapter](../adapters/grid)'s `grid:run` executes an operation and waits for the result. Add a `venue` and the execution happens **there**. From Venue A, run an operation on Venue B:
 
 ```json
 POST http://localhost:8080/api/v1/invoke
@@ -154,6 +154,6 @@ returns a job id immediately; collect it later with:
 
 ## Related
 
-- [Grid Adapter](../adapters/grid-adapter) — the full `grid:*` reference
+- [Grid Adapter](../adapters/grid) — the full `grid:*` reference
 - [The Grid](../../overview/grid) — the conceptual model
 - [Operator: Authentication](../../operator-guide/auth) — governing who may call your venue

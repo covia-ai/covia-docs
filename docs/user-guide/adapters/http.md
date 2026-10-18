@@ -1,5 +1,5 @@
 ---
-id: http-adapter
+id: http
 title: HTTP Adapter
 sidebar_label: HTTP
 ---
@@ -96,5 +96,5 @@ The adapter includes SSRF (Server-Side Request Forgery) protection:
 
 ## Related
 
-- [Grid Adapter](./grid-adapter) — for invoking operations on other Covia venues (use Grid, not HTTP)
+- [Grid Adapter](./grid) — for invoking operations on other Covia venues (use Grid, not HTTP)
 - [REST API](/docs/user-guide/api) — the venue's own HTTP API
