@@ -105,3 +105,34 @@ Each adapter owns a subtree at `v/adapters/<name>/`, published when it becomes a
 | `v/adapters/<name>/templates/` | Its agent templates |
 
 This is why discovery answers are always true of the venue you are actually talking to: a disabled adapter's operations, skills and templates disappear with it, and `v/adapters/<name>/skills` is itself a ready-made skillset for everything one adapter offers.
+
+## Adapter lattice views (experimental)
+
+:::note Availability
+These routes are implemented on `codex/convex-lattice-snapshot`; they are not
+available in released Covia 0.9.11.
+:::
+
+`x/<adapter>/...` exposes the active adapter's view for your user. It is a
+virtual route, separate from private adapter storage. Views are read-only by
+default; an adapter can permit writes into selected paths through the ordinary
+`covia` accessors. Another user's DID-qualified view needs the usual delegation.
+The venue user receives its own view and has no blanket cross-user bypass.
+
+The test adapter provides a working example:
+
+| Path | Contents | Access |
+|------|----------|--------|
+| `x/test/context` | Caller, owner, venue and agent/session/job scope | Read-only |
+| `x/test/samples` | Nested records, number vector, Unicode text, nulls and empty containers | Read-only |
+| `x/test/scratch` | Persistent scratch for the addressed user | Read/write/delete |
+
+Use `v/ops/covia/read` with `{"path":"x/test/context"}` to inspect the current
+scope. Append test events with `v/ops/covia/append` and
+`{"path":"x/test/scratch/events","value":{"message":"hello"}}`.
+The test adapter documents its routes at `v/info/adapters/test/lattice`.
+Bare `x` does not list adapters. Disabled or unloaded adapters expose no route.
+
+Scratch survives reload and persistent venue restarts; user deletion removes
+it. It is disposable test data and is not included in user exports. See
+[COG-4](../../protocol/cogs/COG-004) for the state and authority contract.
