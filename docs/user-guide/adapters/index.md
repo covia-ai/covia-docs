@@ -123,7 +123,7 @@ The test adapter provides a working example:
 
 | Path | Contents | Access |
 |------|----------|--------|
-| `x/test/context` | Caller, owner, venue and agent/session/job scope | Read-only |
+| `x/test/context` | Caller, addressed user, venue and execution scope with its explicit owner | Read-only |
 | `x/test/samples` | Nested records, number vector, Unicode text, nulls and empty containers | Read-only |
 | `x/test/scratch` | Persistent scratch for the addressed user | Read/write/delete |
 
