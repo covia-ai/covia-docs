@@ -298,8 +298,10 @@ Tokens are generated fresh per request with a configurable lifetime (default: 30
 Jobs progress through a state machine:
 
 ```
-PENDING → STARTED → COMPLETE | FAILED | CANCELLED | REJECTED | TIMEOUT
+PENDING → STARTED → COMPLETE | FAILED | CANCELLED | REJECTED
 ```
+
+`JobStatus.TIMEOUT` exists in the SDK enum but is reserved: the venue never emits it. There is no framework timeout; a job may run until it completes, fails, or is cancelled, so apply time bounds client-side (for example the `timeout` option to `job.wait()`).
 
 Jobs may also enter interactive states: `PAUSED`, `INPUT_REQUIRED`, `AUTH_REQUIRED`.
 

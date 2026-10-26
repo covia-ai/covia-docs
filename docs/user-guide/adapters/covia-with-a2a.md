@@ -44,55 +44,42 @@ Inbound callers are identified by the venue's [auth middleware](../../operator-g
 
 `SendStreamingMessage` and `SubscribeToTask` open a Server-Sent Events stream (`text/event-stream`). Each event is a JSON-RPC envelope carrying a Task snapshot or a status-update; the stream sends a final update marked `final: true` when the Task reaches a terminal state, then closes.
 
-## Outbound: calling remote A2A agents
+## Outbound: calling remote A2A agents — bring your own agent
 
-The A2A adapter turns a remote A2A agent into grid operations. You **import the agent once**, and then address it by reference — not by URL on every call. That is what lets authentication be configured once and never travel in a call's input.
-
-### Import an agent
-
-```json
-{
-  "operation": "v/ops/a2a/import-agent",
-  "input": {
-    "name": "research-bot",
-    "url": "https://agent.example.com",
-    "auth": { "kind": "bearer", "secret": "s/RESEARCH_BOT_TOKEN" }
-  }
-}
-```
-
-This fetches the agent's card and stores it as an **immutable agent Asset**, with a mutable binding at `w/a2a/agents/<name>` (`name` matches `[a-z0-9-]{1,64}`). A Covia agent on another venue is imported the same way, with `coviaAgent` (`g/<agentId>` or `<ownerDID>/g/<agentId>`) plus `venue` instead of `url`.
-
-`auth` is a **stored** binding, never a literal credential: `{scheme: "<Agent Card scheme name>", secret: "s/NAME"}` for a scheme the card declares, or `{kind: "bearer", secret: "s/NAME"}` for plain Bearer.
-
-### Call it
+The A2A adapter turns a remote A2A agent into grid operations. **Import the agent once** — that fetches its card and stores it as an asset, with its credential configured a single time — then task it by the binding the import creates.
 
 | Operation | Input | Returns |
 |-----------|-------|---------|
-| `a2a:agent-card` | `agent` | The immutable Agent Card snapshot from the imported asset |
+| `a2a:import-agent` | `name`, `url` (or `coviaAgent`), `auth?` | Writes an immutable `type:a2a-agent` asset, bound at `w/a2a/agents/<name>` |
+| `a2a:agent-card` | `agent` | The imported card snapshot |
 | `a2a:send` | `agent`, `message`, `taskId?` | The remote Task (final, or current on interrupt) |
 | `a2a:get-task` | `agent`, `id` | The remote Task's current state |
 | `a2a:cancel` | `agent`, `id` | The cancelled Task |
 
-`agent` is the imported reference — normally `w/a2a/agents/<name>`, or its immutable `a/<hash>` id when you want to pin the exact card you imported.
+```json
+{
+  "operation": "a2a:import-agent",
+  "input": {
+    "name": "partner-bot",
+    "url": "https://agent.example.com",
+    "auth": { "scheme": "bearer", "secret": "s/PARTNER_KEY" }
+  }
+}
+```
+
+Then send to the binding — the message carries no credentials:
 
 ```json
 {
-  "operation": "v/ops/a2a/send",
+  "operation": "a2a:send",
   "input": {
-    "agent": "w/a2a/agents/research-bot",
+    "agent": "w/a2a/agents/partner-bot",
     "message": { "role": "user", "parts": [{ "type": "text", "text": "Summarise Q1 revenue" }] }
   }
 }
 ```
 
-Pass a `taskId` to continue an existing remote Task instead of starting a new one.
-
-### Calling a URL directly
-
-`a2a:raw/agent-card`, `a2a:raw/send`, `a2a:raw/get-task` and `a2a:raw/cancel` take a `url` and per-call `bearerToken` or `bearerSecret` instead of an imported reference.
-
-These are a **diagnostic escape hatch** — useful for probing an endpoint before importing it, and not the normal path. A per-call credential is one that has to be passed around, which is exactly what importing avoids.
+Pass a `taskId` to continue an existing remote Task. Low-level `a2a/raw/*` operations take a `url` and credentials inline for one-off diagnostics; they are deliberately not agent tools. A step-by-step walkthrough — including Agentforce, Lyzr and Hermes — is in [Bring your own agent](../agents/bring-your-own-agent).
 
 ### Job-per-Task mirroring
 
@@ -100,12 +87,13 @@ These are a **diagnostic escape hatch** — useful for probing an endpoint befor
 
 ### Authentication
 
-**Inbound:** the venue's agent card does not yet advertise A2A `securitySchemes`; authentication is handled at the transport/middleware layer (see the [operator auth guide](../../operator-guide/auth)).
+Outbound auth belongs to the **imported agent**, configured once and attached on every call — never supplied per request. `auth.secret` must be a **caller-owned `s/NAME` reference**; literal credentials are rejected. Use `auth: {scheme: "<card scheme>", secret: "s/NAME"}` for the API-key or HTTP-Bearer scheme the agent card declares, or `auth: {kind: "bearer", secret: "s/NAME"}` when a bearer is required even to fetch a private card. Only standard A2A HTTP auth is sent; Covia UCAN proofs are **not** forwarded outbound, so cross-organisation authorisation on an outbound call rests on the remote's own auth, not on Covia capabilities.
 
-**Outbound:** credentials are bound at import time — `auth` on `a2a:import-agent`, always as an `s/NAME` [secret](./secret) reference — and applied to every call made through that agent reference. A credential is therefore configured once, stored encrypted, and never appears in a job's input. The `raw/*` operations take a per-call `bearerToken` or `bearerSecret`, which is one reason to prefer importing.
+Inbound, the venue's agent card does not yet advertise A2A `securitySchemes`; inbound auth is handled at the transport/middleware layer (see the [operator auth guide](../../operator-guide/auth)).
 
 ## Related
 
+- [Bring your own agent](../agents/bring-your-own-agent) — the task guide for importing an external agent
 - [A2A protocol specification](https://a2a-protocol.org/latest/specification/)
 - [MCP](./covia-with-mcp) — the other side of the interop story
 - [Agent Operations](../agents/operations) — `agent:chat` is the inbound `SendMessage` analogue

@@ -198,10 +198,12 @@ class OAuth2Auth(Auth):
 Jobs represent the execution of an operation. They progress through a lifecycle:
 
 ```
-PENDING → STARTED → COMPLETE | FAILED | CANCELLED | REJECTED | TIMEOUT
+PENDING → STARTED → COMPLETE | FAILED | CANCELLED | REJECTED
 ```
 
 Jobs may also enter interactive states: `PAUSED`, `INPUT_REQUIRED`, `AUTH_REQUIRED`.
+
+There is no framework timeout: the venue never emits a `TIMEOUT` status, and a job may run until it completes, fails, or is cancelled. Apply timeouts client-side (for example the `timeout` argument to `job.wait()`).
 
 ### Tracking Jobs
 
@@ -398,8 +400,10 @@ async def main():
 asyncio.run(main())
 ```
 
-:::note Async property differences
+:::note[Async property differences]
+
 Some sync properties become async methods. For example, `venue.did` (sync) becomes `await venue.get_did()` (async).
+
 :::
 
 ### Concurrent Operations

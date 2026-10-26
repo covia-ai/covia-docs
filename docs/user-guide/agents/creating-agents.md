@@ -346,4 +346,4 @@ Each agent has the minimum tools and capabilities needed for its role — follow
 - [LLM Backends](./llm-backends) — configuring OpenAI, Anthropic, Ollama, xAI
 - [Capabilities](../capabilities) — the UCAN capability model behind the `caps` field
 
-For an existing system prompt and SKILL.md files, use [Migrate an agent's skills](./migrate-skills) to create the agent in one call.
+For an existing system prompt and SKILL.md files, use [Migrate an agent](./migrate-an-agent) to create the agent in one call.

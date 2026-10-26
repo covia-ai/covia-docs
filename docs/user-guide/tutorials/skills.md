@@ -143,8 +143,10 @@ Check the result, and then check the agent — `g/Nomad` records the skill in it
 { "operation": "v/ops/covia/read", "input": { "path": "w/projects" }, "wait": true }
 ```
 
-:::note Loading is not permission
+:::note[Loading is not permission]
+
 A skill can offer any operation; it can never grant the right to call one. If Nomad's [capabilities](../capabilities) don't cover `w/projects`, loading `workspace` changes nothing — the write is still denied, with the same structural error. Skills carry know-how; [capabilities](../../protocol/cogs/COG-013) carry authority.
+
 :::
 
 ## 4. Write your own
@@ -184,8 +186,10 @@ Verify it before anyone loads it:
 
 That returns exactly what a loading agent will receive. Nomad's index picks it up on its **next turn** — sources are re-resolved every turn, so there's nothing to restart, redeploy, or invalidate. Edit the body and the next turn of every agent carrying it sees the new text.
 
-:::tip Write bodies for an LLM mid-task
+:::tip[Write bodies for an LLM mid-task]
+
 Tight and imperative. Schemas as they're used. Gotchas inline, where they bite. Aim for 1–2 KB: a loaded body costs context budget on **every turn** it stays loaded, so put long reference material in a workspace document the body points at instead.
+
 :::
 
 Ask Nomad for a report and watch it load `status-reports` before writing anything:
@@ -261,4 +265,4 @@ The body, its context entries, and its tools all go from the next turn onward. E
 - [Capabilities](../capabilities) — the authority model skills never bypass
 - [Running Covia Agents](./running-agents) — agents from first principles
 
-Already have SKILL.md files? [Migrate an agent's skills](../agents/migrate-skills) imports them and creates a native agent in one call.
+Already have SKILL.md files? [Migrate an agent](../agents/migrate-an-agent) imports them and creates a native agent in one call.

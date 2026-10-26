@@ -29,6 +29,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      docusaurus-plugin-cookie-consent:
+        specifier: ^5.0.0
+        version: 5.0.0(@docusaurus/core@3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(postcss@8.5.26))(@mdx-js/react@3.1.1(@types/react@19.2.18)(react@19.2.0))(@rspack/core@1.7.12)(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.6.3))(@docusaurus/types@3.10.2(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       docusaurus-plugin-llms:
         specifier: ^0.4.0
         version: 0.4.0(@docusaurus/core@3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(postcss@8.5.26))(@mdx-js/react@3.1.1(@types/react@19.2.18)(react@19.2.0))(@rspack/core@1.7.12)(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.6.3))
@@ -2771,6 +2774,14 @@ packages:
   dns-packet@5.6.1:
     resolution: {integrity: sha512-l4gcSouhcgIKRvyy99RNVOgxXiicE+2jZoNmaNmZ6JXiGajBOJAesk1OBlJuM5k2c+eudGdLxDqXuPCKIj6kpw==}
     engines: {node: '>=6'}
+
+  docusaurus-plugin-cookie-consent@5.0.0:
+    resolution: {integrity: sha512-73l/O1uOccvdZqqz1UY871zWS7BWG7l/LNGPKVKDFYj+gJTn/zZZ3xqI0g26UNcBUEOSXbmHiDTcNmH2vvt9NQ==}
+    peerDependencies:
+      '@docusaurus/core': ^3.0.0
+      '@docusaurus/types': ^3.0.0
+      react: ^18.2.0 || ^19.0.0
+      react-dom: ^18.2.0 || ^19.0.0
 
   docusaurus-plugin-llms@0.4.0:
     resolution: {integrity: sha512-jYlj2HJ5+gu7oJZuJ83Hk8KlB65YlZZ/7UpHXiL7Qr+qpNBkVocmt2Molc6F3HNr5RqcfhWD/98CvgyNztg/ow==}
@@ -9526,6 +9537,13 @@ snapshots:
   dns-packet@5.6.1:
     dependencies:
       '@leichtgewicht/ip-codec': 2.0.5
+
+  docusaurus-plugin-cookie-consent@5.0.0(@docusaurus/core@3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(postcss@8.5.26))(@mdx-js/react@3.1.1(@types/react@19.2.18)(react@19.2.0))(@rspack/core@1.7.12)(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.6.3))(@docusaurus/types@3.10.2(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+    dependencies:
+      '@docusaurus/core': 3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(postcss@8.5.26))(@mdx-js/react@3.1.1(@types/react@19.2.18)(react@19.2.0))(@rspack/core@1.7.12)(@swc/core@1.15.47)(debug@4.4.3)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.6.3)
+      '@docusaurus/types': 3.10.2(@swc/core@1.15.47)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.26))(html-minifier-terser@7.2.0)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
 
   docusaurus-plugin-llms@0.4.0(@docusaurus/core@3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(postcss@8.5.26))(@mdx-js/react@3.1.1(@types/react@19.2.18)(react@19.2.0))(@rspack/core@1.7.12)(@swc/core@1.15.47)(postcss@8.5.26)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.6.3)):
     dependencies:

@@ -19,7 +19,7 @@ There are public example venues you can use right now:
 
 These docs track the development build, so the examples below use **venue-3** — they may occasionally be ahead of what the stable venues offer. Each venue's DID and stats are reported by `GET /api/v1/status`.
 
-Prefer a UI? The [Covia App](https://app.covia.ai) lets you connect to venues and run operations interactively.
+Prefer a UI? The [Covia App](https://app.covia.ai) lets you connect to venues, run operations, and operate agents interactively; the [Covia App guide](./app/) walks through it.
 
 ## 1. Call a live venue (no install)
 
