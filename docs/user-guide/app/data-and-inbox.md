@@ -14,7 +14,7 @@ Three signed-in surfaces manage what you and your agents share: your lattice wor
 | Namespace | Contents | Editable in the app |
 | --------- | -------- | ------------------- |
 | `w/` | Your durable workspace: notes, pins, skills, memory | Yes, one level deep and below |
-| `j/` | Job records | Read-only (immutable audit trail) |
+| `j/` | Job records, each the job's current state | Read-only (the venue updates them as jobs run) |
 | `g/` | Your agents' state, sessions, timelines | Read-only |
 | `a/` | Your content-addressed assets | Read-only |
 | `o/` | Your named operation pins | Read-only |
