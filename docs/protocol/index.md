@@ -29,7 +29,7 @@ The Covia Open Grid protocol is the foundational specification that enables fede
 
 #### Execution
 - Self-describing, invocable operations ([COG-7](./cogs/COG-007))
-- Auditable jobs with an immutable state chain ([COG-8](./cogs/COG-008))
+- Asynchronous, observable jobs with a defined lifecycle ([COG-8](./cogs/COG-008))
 - Multi-step orchestrations across venues ([COG-12](./cogs/COG-012))
 
 #### Agents and Humans
