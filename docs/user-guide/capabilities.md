@@ -97,7 +97,6 @@ A resource owner with their own `did:key` keypair can equally sign grants over t
 | `adapter/manage` | Adapter and module lifecycle — guarded on `<venue DID>/adapters`, and **venue-owned**: an ordinary authenticated caller cannot hold it over their own namespace |
 | `user/create`, `user/read` | Administrative [user](./adapters/user) registration and lookup |
 | `user/authentication-manage` | Managing a user's authenticator keys |
-| `venue/relay` | Relaying a request on another venue's behalf ([federation](./tutorials/federation)) |
 | `grant/…` | Issuing grants over a resource — the right to *delegate*, which access alone never implies |
 
 Optional [venue modules](./adapters/jvm#venue-modules) add their own, scoped to the thing they govern rather than to the venue:
