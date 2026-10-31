@@ -29,7 +29,7 @@ The **Covia Open Grid** protocol is the foundational specification that enables 
 
 #### Execution
 - Self-describing, invocable operations ([COG-7](./cogs/COG-007))
-- Asynchronous, observable jobs with a defined lifecycle ([COG-8](./cogs/COG-008))
+- Asynchronous, observable jobs with a defined lifecycle ([COG-8](./cogs/COG-008)), reached over a REST API whose statuses report the request, not the job ([COG-21](./cogs/COG-021))
 - Multi-step orchestrations across venues ([COG-12](./cogs/COG-012))
 
 #### Agents and Humans

@@ -41,6 +41,7 @@ COG numbers identify topics, not chronology: numbers are assigned when a topic e
 - **[COG-18](./cogs/COG-018)** - Agent Skills
 - **[COG-19](./cogs/COG-019)** - HITL Self-Sovereign Token Transport
 - **[COG-20](./cogs/COG-020)** - Agent Admission
+- **[COG-21](./cogs/COG-021)** - REST API
 
 ## COG Development Process
 
