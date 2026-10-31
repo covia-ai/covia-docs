@@ -31,7 +31,7 @@ Each user can create and manage multiple named drives. A drive is a named file s
 { "operation": "v/ops/dlfs/delete-drive", "input": { "name": "archive" } }
 ```
 
-Drive creation is idempotent — creating the same drive twice succeeds without error. The first write to a drive also auto-creates it if needed.
+Drive creation is idempotent — creating the same drive twice succeeds without error. A drive must be created before use: every other operation on a drive that does not exist, writes included, fails and leaves it absent. Creating a drive needs `crud/write` on `dlfs`.
 
 ## File Operations
 

@@ -105,7 +105,7 @@ Capabilities restrict what paths and operations an agent can access. They follow
 ]
 ```
 
-The `with` field is a path prefix; `can` specifies the permission level (`crud/read`, `crud/write`, `crud`, etc.). Capabilities are disclosed to the agent in its system prompt so it knows what it can and cannot do. If a tool call is denied, the error message lists the agent's available capabilities.
+The `with` field names a path and everything under it, matching whole segments; `can` specifies the permission level (`crud/read`, `crud/write`, `crud`, etc.). Capabilities are disclosed to the agent in its system prompt so it knows what it can and cannot do. If a tool call is denied, the error message lists the agent's available capabilities.
 
 ### Context
 

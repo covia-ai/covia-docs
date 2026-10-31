@@ -292,7 +292,7 @@ This helps the LLM adjust its approach rather than retrying the same denied acti
 | `crud/write` | Write operations only |
 | `crud` | Full CRUD (read, write, delete, append) |
 
-The `with` field is a path prefix — `"w/vendor-records/"` grants access to everything under that path.
+The `with` field names a path and everything under it, matching whole segments — `"w/vendor-records/"` grants access to everything under that path, but not to `w/vendor-records-old`.
 
 ## Lattice Namespaces
 

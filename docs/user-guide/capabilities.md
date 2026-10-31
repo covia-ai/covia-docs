@@ -20,7 +20,7 @@ A capability is a `{with, can}` pair:
 { "with": "o/shared/", "can": "crud/read" }
 ```
 
-A grant **covers** a request when its resource is a prefix of the target and its ability includes the required one. Reads require `crud/read`, writes/appends/mkdir require `crud/write`, deletes require `crud/delete`.
+A grant **covers** a request when its resource is the target or a path above it, matching whole segments (`w/notes` covers `w/notes/q3` but not `w/notes2`), and its ability includes the required one. Reads require `crud/read`, writes/appends/mkdir require `crud/write`, deletes require `crud/delete`. Creating an entry also requires `crud/write` on what holds it: the map that holds a new key, the directory that holds a new file, or `dlfs` for a new drive. So `{ "with": "w/reports/", "can": "crud/write" }` writes inside `w/reports` once it exists, but cannot create `w/reports` itself.
 
 ## Two ways capabilities are applied
 

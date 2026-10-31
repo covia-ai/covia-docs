@@ -33,7 +33,7 @@ The grid is built from a small set of abstractions. Each is hosted and executed 
 | **Job** | The execution record of an invocation: long-lived (no framework timeout), streamed over SSE, frozen to an immutable record on completion. The unit of accountability and cost. |
 | **Agent** | A persistent actor hosted by a venue, with durable state, a message inbox, an auditable timeline, and a pluggable transition function (LLM, rules, or code). |
 
-Inside a venue, a layered runtime (HTTP server → engine → adapters → lattice storage) dispatches operations to nearly thirty [adapters](../user-guide/adapters/): LLM inference, agents, multi-step orchestration, MCP bridging, cross-venue federation, HTTP, file systems, secrets, and capability issuance. Adapters are the extension mechanism: new execution backends are added without touching the core, and the engine resolves all references to concrete values before dispatch, which is also where authority checks attach.
+Inside a venue, a layered runtime (HTTP server → engine → adapters → lattice storage) dispatches operations to nearly thirty [adapters](../user-guide/adapters/): LLM inference, agents, multi-step orchestration, MCP bridging, cross-venue federation, HTTP, file systems, secrets, and capability issuance. Adapters are the extension mechanism: new execution backends are added without touching the core, and the engine resolves all references to concrete values before dispatch. Authority is checked where each operation acts, against the resource it resolves, before any effect.
 
 ## The lattice substrate
 
