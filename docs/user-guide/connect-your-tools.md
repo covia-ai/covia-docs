@@ -22,12 +22,12 @@ The catalogue today, grouped as it appears in the app:
 
 | Group | Services |
 | ----- | -------- |
-| Dev | GitHub, Sentry, GitLab, PagerDuty |
-| Docs & PM | Notion, Jira, Linear, Asana, ClickUp, Calendly, monday.com |
-| CRM & Support | HubSpot, Intercom |
+| Dev | GitHub, Sentry, GitLab, PagerDuty, Datadog |
+| Docs & PM | Notion, Jira, Linear, Asana, ClickUp, Calendly, monday.com, Confluence, Trello |
+| CRM & Support | HubSpot, Intercom, Zendesk |
 | Payments | Stripe |
 | Comms | Slack, Discord, Telegram, SendGrid, Twilio |
-| Data | Airtable |
+| Data | Airtable, Shopify |
 
 Behind that page are the two mechanisms below; either can be driven directly
 against the API.
@@ -117,6 +117,11 @@ missing scope instead of retrying blindly.
 | `calendly` | `CALENDLY_TOKEN` | Personal access token — Calendly → Integrations → API & Webhooks |
 | `monday` | `MONDAY_TOKEN` | Personal API token (GraphQL, raw `Authorization` value) — monday.com → Developers → My access tokens |
 | `pagerduty` | `PAGERDUTY_TOKEN` | API key, stored as the complete `Token token=<key>` header — PagerDuty → Integrations → API Access Keys |
+| `zendesk` | `ZENDESK_SITE` + `ZENDESK_AUTH` | Subdomain, plus Basic auth (base64 of `email/token:api_token`) — Zendesk Admin Center → APIs |
+| `confluence` | `CONFLUENCE_SITE` + `CONFLUENCE_AUTH` | Site, plus Basic auth (base64 of `email:token`) — id.atlassian.com → API tokens |
+| `shopify` | `SHOPIFY_STORE` + `SHOPIFY_TOKEN` | Store subdomain, plus an Admin API access token (`shpat_`) — Shopify admin → Develop apps |
+| `trello` | `TRELLO_KEY` + `TRELLO_TOKEN` | API key and token — trello.com/power-ups/admin |
+| `datadog` | `DATADOG_API_KEY` + `DATADOG_APP_KEY` | API key and Application key — Datadog → Organization Settings |
 
 Atlassian (Jira/Confluence) authenticates with HTTP Basic, and Twilio the same;
 both are handled by the header shape above (`secretHeaders`), so no special
