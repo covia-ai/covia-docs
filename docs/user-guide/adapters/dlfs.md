@@ -12,7 +12,7 @@ On most platforms your files ultimately belong to the platform. DLFS exists so t
 
 - **Signed per user** — every write is signed with a key the venue keeps for that user
 - **Lattice-backed** — drives use CRDT merge semantics for conflict-free cross-venue synchronisation
-- **Isolated** — DLFS occupies a separate lattice region from venue state; the venue operator cannot forge modifications
+- **Isolated** — DLFS occupies a separate lattice region from venue state
 
 ## Drives
 
