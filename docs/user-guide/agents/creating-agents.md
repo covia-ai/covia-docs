@@ -76,7 +76,7 @@ The `config` field controls agent behaviour. All fields are optional — default
 | `llmOperation` | string | `v/ops/langchain/openai` | Level 3 LLM operation. See [LLM Backends](./llm-backends). |
 | `tools` | array | — | Operations the agent can call. Strings or `{operation, name, description}` maps. |
 | `defaultTools` | boolean | `true` | Include the platform's default tools (workspace CRUD, agent management, assets, schemas). Set `false` for explicit control. |
-| `caps` | array | — | Capability restrictions. Each entry: `{with: "path/", can: "crud/read"}`. |
+| `caps` | array | none: the agent can do anything its owner can | Limits on what the agent may do. You can only give limits you hold yourself. Each entry: `{with: "path/", can: "crud/read"}`. |
 | `context` | array | — | Lattice paths to load into context every turn. |
 | `skillsets` | array | — | Directories of skills (`w/skills`, `v/skills/root`). The usual declaration. |
 | `skills` | array | — | Individual skills — one path or `a/<hash>` each, for a curated index. |

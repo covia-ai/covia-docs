@@ -39,13 +39,13 @@ Inside a venue, a layered runtime (HTTP server → engine → adapters → latti
 
 The most consequential design decision is what sits at the bottom. Distributed systems conventionally choose between a central coordinator and global consensus in the blockchain style. The coordinator is efficient but a single point of trust and failure; global consensus is trustless but expensive and totally ordered, which most workloads do not require.
 
-Covia's substrate is a [lattice](https://docs.convex.world/docs/overview/lattice): a data structure whose merge operation is commutative, associative, and idempotent. Replicas merged in any order converge to the same state (the CRDT property), so venue state replicates peer-to-peer, tolerates partition and reconnection, and cannot diverge. There is no coordinator and no global ledger as a single point of failure.
+Covia's substrate is a [lattice](https://docs.convex.world/docs/overview/lattice): a data structure whose merge operation is commutative, associative, and idempotent. Replicas merged in any order converge to the same state (the CRDT property). Shared data always merges the same way. Each venue has one writer at a time; copying a whole venue is for backup. Peer-to-peer copying is optional. There is no coordinator and no global ledger as a single point of failure.
 
 All values are content-addressed (CAD3 canonical encoding, SHA3-256), so grid state forms Merkle trees verifiable by any peer. The system pairs mutable names with immutable snapshots: operations are authored and iterated under stable paths. Each job record keeps the operation that was called, the input, the result or error, who called it and when. To record the exact version of an operation, call it by its hash. The consequence worth noting: provenance and reproducibility are properties of the data structure, not an audit subsystem that must be maintained per feature.
 
 The architecture separates planes:
 
-- **Data plane**: workloads, agent state, and bulk replication via [DLFS](../user-guide/adapters/dlfs) (a lattice-based decentralised file system) flow entirely over peer-to-peer replication, at conventional infrastructure cost.
+- **Data plane**: workloads, agent state, and bulk replication via [DLFS](../user-guide/adapters/dlfs) (a lattice-based decentralised file system) can be copied peer-to-peer, at conventional infrastructure cost.
 - **Trust plane**: identity anchoring, settlement, and tokenisation of AI services can optionally anchor to a public consensus network built on the same lattice mathematics. Globally verifiable consensus is paid for only where it is actually needed.
 
 ## Federated execution and provenance
@@ -59,7 +59,7 @@ Because a workflow is itself an operation, composition is recursive: a multi-ste
 Identity is DID-based and method-agnostic (`did:key` for self-certifying identities, `did:web` for server-backed ones). Authorisation is capability-based using [UCAN tokens](../user-guide/capabilities): signed grants naming a specific resource (`with`) and action (`can`), attenuable and delegable. Capabilities scope down to individual paths: invoke one named operation, decrypt one specific secret, message one specific agent. A delegating agent can pass on a strictly narrower power, so delegation chains mirror organisational authority. Every action is checked before it runs. Anonymous callers can only read. Actions that change something are recorded; reads are not, unless you turn that on.
 
 - **Secrets**: agents reference credentials by path only; the runtime is the single decryption point and injects plaintext at the adapter layer. The LLM-driven reasoning loop never observes credentials.
-- **Dual audit**: the job record answers what happened to a given request (the basis for billing, SLAs, and dispute resolution); the agent timeline answers what a given agent did and why. Both are append-only and replayable.
+- **Dual audit**: the job record answers what happened to a given request (the basis for billing, SLAs, and dispute resolution); the agent timeline answers what a given agent did and why. A job record does not change once the job ends. An agent's timeline only grows, until the agent is deleted.
 - **Humans in the loop**: a running job can pause for a human answer, approval, or an explicit capability grant ([COG-16](../protocol/cogs/COG-016)), inside the same audit trail, including self-sovereign grants the human signs with their own key ([COG-19](../protocol/cogs/COG-019)).
 
 Venue-signed UCAN issuance, per-request proof presentation, cross-user access verification, and adversarial tests (forged signatures, expired tokens, wrong audience or ability) are implemented; completing enforcement across all namespaces is scheduled work on the open roadmap.

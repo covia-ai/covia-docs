@@ -64,6 +64,7 @@ OAuth providers are configured under `auth.oauth`:
 
 ```json5
 "auth": {
+  "loginRedirectUris": ["https://app.example.com/callback"],
   "oauth": {
     "google": {
       "clientId": "YOUR_GOOGLE_CLIENT_ID",
@@ -71,7 +72,8 @@ OAuth providers are configured under `auth.oauth`:
     },
     "microsoft": {
       "clientId": "YOUR_MS_CLIENT_ID",
-      "clientSecret": "YOUR_MS_CLIENT_SECRET"
+      "clientSecret": "YOUR_MS_CLIENT_SECRET",
+      "tenantId": "YOUR_TENANT_ID"
     },
     "github": {
       "clientId": "YOUR_GITHUB_CLIENT_ID",
@@ -122,7 +124,8 @@ After a successful OAuth login, the venue:
 2. Extracts the user's identity (email, name, subject)
 3. Creates or updates the user record in the venue's user database
 4. Issues a venue-signed JWT containing the user's DID
-5. Returns the JWT to the client
+5. Sends a one-time code back to your app
+6. Your app swaps the code for a token at `POST /auth/exchange`
 
 ### Provider Details
 
@@ -130,21 +133,21 @@ After a successful OAuth login, the venue:
 
 - Uses OpenID Connect with JWKS-based ID token verification
 - Scopes: `openid`, `email`, `profile`
-- User identity derived from email address
+- User identity comes from the provider account, not email
 
 #### Microsoft
 
 - Uses Microsoft Identity Platform (Microsoft Entra ID, formerly Azure AD)
 - Scopes: `openid`, `email`, `profile`
-- Supports multi-tenant configurations
-- User identity derived from email address
+- You must set `tenantId`. Sign-in from any Microsoft tenant is not supported.
+- User identity comes from the provider account, not email
 
 #### GitHub
 
 - Uses GitHub OAuth (not OpenID Connect)
 - Scopes: `user:email`, `read:user`
 - User information fetched from GitHub's API after token exchange
-- User identity derived from email address
+- User identity comes from the provider account, not email
 
 ## Bearer Token Authentication
 
@@ -172,7 +175,7 @@ An unauthenticated request may also carry an **identity token** in its `ucans` p
 
 ## User Database
 
-Authenticated users are stored in the venue's lattice-backed user database. User records are keyed by a sanitised user ID derived from the email address (e.g. `alice_gmail_com`) and contain:
+Authenticated users are stored in the venue's lattice-backed user database. Users are identified by their account with the sign-in provider, not by email. Email can change and is never used to match accounts. Older accounts keep their existing IDs. Each user record contains:
 
 | Field | Description |
 |-------|-------------|

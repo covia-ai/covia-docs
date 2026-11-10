@@ -30,16 +30,16 @@ Operations that need a credential accept a **secret reference** instead of a pla
 - The [LangChain backends](./langchain-adapter) resolve provider keys (`s/OPENAI_API_KEY`, `s/ANTHROPIC_API_KEY`, …) the same way — a missing key fails fast, naming the reference it looked for.
 - [Bridged MCP servers](../mcp/calling-mcp-tools#authentication-for-bridged-servers) resolve their `auth` secret per caller.
 
-Because resolution is per-DID, two users invoking the same operation use their own keys — a venue never shares one credential across callers.
+Because resolution is per-DID, two users invoking the same operation use their own keys — each user's secrets are their own; an operator can share a key on purpose.
 
 ## Operations Reference
 
 | Operation | Catalog path | Input | Description |
 |-----------|--------------|-------|-------------|
 | `secret:set` | `v/ops/secret/set` | `name`, `value` | Store an encrypted secret in the caller's store |
-| `secret:extract` | `v/ops/secret/extract` | `name` | Read a secret's plaintext back. **Currently denied for all callers** pending capability-gated extraction — pass an `s/<name>` reference instead |
-
-The refusal of `extract` is deliberate: day-to-day use never needs plaintext back out, and keeping extraction closed until UCAN-gated grants land means a compromised agent cannot exfiltrate its owner's keys.
+| `secret:extract` | `v/ops/secret/extract` | `name` | Read a secret's plaintext back. Only the owner can read a secret back, in a direct call that is not recorded. |
+| `secret:list` | `v/ops/secret/list` | `prefix`, `offset`, `limit` (optional) | List the names in your secret store, without values |
+| `secret:delete` | `v/ops/secret/delete` | `name` | Delete one secret. This does not cancel the credential with its provider |
 
 ## REST and SDK access
 

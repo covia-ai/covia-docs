@@ -5,7 +5,7 @@ sidebar_position: 4
 
 # Security
 
-Your venue holds things worth protecting: users' workspaces and files, agents and their memory, API keys, and an audit trail people will rely on. Covia's security posture is built on two principles — **secure defaults** (anonymous callers get a read-only ceiling, unknown identities get nothing, agents cannot mint authority) and **fail-closed configuration** (a security misconfiguration stops the venue at startup; it never silently downgrades to an unprotected state).
+Your venue holds things worth protecting: users' workspaces and files, agents and their memory, API keys, and an audit trail people will rely on. Covia's security posture is built on two principles — **secure access defaults** (anonymous callers can only read, unknown users get nothing, agents cannot give themselves more access) and **fail-closed configuration** (a security misconfiguration stops the venue at startup; it never silently downgrades to an unprotected state). Other defaults suit development; use the production checklist before you open a venue to others.
 
 This page tours the controls in the order an attacker would meet them, and ends with a production checklist. Config snippets show venue-entry keys — in a real config file they sit inside an entry of the top-level `venues` array (see [Configuration](./configuration#the-config-file-is-a-server-document)).
 
@@ -85,6 +85,11 @@ Everything that adds code or capability to a venue is operator-gated:
 - [ ] `auth.public.caps` reviewed; `users.autoCreate` off; admission via bootstrap or delegated `user:create`
 - [ ] Secrets supplied as bootstrap config or `s/NAME` references — never in operation inputs, never committed
 - [ ] Modules pinned with `sha256`; Python scripts treated as trusted code
+- [ ] Give every agent `caps`
+- [ ] Turn on encryption (`etch`)
+- [ ] Turn on security and access logs (`logging.audit`, `logging.access`) and decide how long to keep them
+- [ ] Set a maximum token lifetime (`auth.maxTokenLifetime`)
+- [ ] If a proxy sits in front, set `trustedProxies`
 - [ ] Startup log reviewed: the venue warns on exactly the gaps above (unencrypted vault data, plaintext key files, content stored outside the cipher)
 
 Found a vulnerability? Report it privately via [GitHub private vulnerability reporting](https://github.com/covia-ai/covia/security) or security@covia.ai — and remember the trust model: the security of a federation depends on the policies its operators configure.

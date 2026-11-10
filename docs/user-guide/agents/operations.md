@@ -209,7 +209,7 @@ The forked agent starts SLEEPING with fresh tasks and sessions, inheriting the s
 
 ### agent:suspend
 
-Manually pause an agent. Prevents future runs; any in-flight run completes first.
+Manually pause an agent. Stops the agent until you resume it. Any run in progress is cancelled. Records who stopped it and why.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|

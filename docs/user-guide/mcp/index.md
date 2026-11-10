@@ -26,7 +26,7 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) is an open 
 
 ### For Enterprise
 
-- **Audit Trail**: All tool invocations go through the Grid, providing a complete audit log
+- **Audit Trail**: All tool invocations go through the Grid, recording every tool call that changes something (to record reads too, turn on `recordReadOnlyOperations`)
 - **Governance**: Apply consistent policies across all AI tool usage
 - **Orchestration**: Combine MCP tools with other Grid operations in workflows
 
