@@ -140,7 +140,7 @@ grid:jobResult job-3 → result-C
 
 ### Cross-Venue Federation
 
-Execute an operation on a remote venue — caller identity is automatically propagated for audit and access control:
+Execute an operation on a remote venue. Calls to another venue are anonymous by default. To act as yourself, set `authenticateAs: "caller"` (see [Federation](../../protocol/cogs/COG-015)):
 
 ```json
 {

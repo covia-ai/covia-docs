@@ -11,7 +11,7 @@ This page tours the controls in the order an attacker would meet them, and ends 
 
 ## Encrypt the store
 
-A venue's Etch store contains everything: lattice state, agent records, DLFS drives, secrets. If a disk, VM image, or backup walks away, encryption at rest is what makes that a non-event. Venues run on **encrypted Etch v3 stores**:
+A venue's Etch store contains everything: lattice state, agent records, DLFS drives, secrets. If a disk, VM image, or backup walks away, encryption at rest is what makes that a non-event. Venues can store their data encrypted. Encryption is off until you turn it on:
 
 ```json
 {
