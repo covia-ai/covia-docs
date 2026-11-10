@@ -31,13 +31,13 @@ The Covia.ai protocol defines a standard for orchestrating federated execution g
 - **Venues** — Execution environments with scoped trust and policy
 - **Agents** — Runtime-exposed capabilities: APIs, models, scripts, or services
 - **Operations** — Executable nodes in an orchestration graph
-- **Policies** — Rules enforced at runtime: identity, access, fallback, rollback
+- **Policies** — Rules checked at runtime: who you are, what you may do, and how data is handled
 - **Traces** — Verifiable records of what ran, where, and under what conditions
 
 Each Covia graph is:
 - Executed in parts, across federated venues
 - Governed by runtime policy per operation
-- Logged and signed for audit and traceability
+- Recorded for audit
 - Composable into reusable modules for orchestration at scale
 
 By combining execution and governance in a unified runtime, Covia.ai offers a **developer-friendly protocol for operating AI workflows safely in production** — even when they span multiple organisations or regulatory regimes.
@@ -53,20 +53,23 @@ At the core of Covia’s architecture is the **Execution Graph Runtime**, suppor
 | Component | Purpose |
 | -- | -- | 
 | SDK/CLI | Developer tooling to define, simulate, test, and deploy orchestration graphs |
-| Execution Graph Runtime | Resolves graph nodes, manages retries, memory, rollback, and concurrency |
-| Policy Engine | Enforces runtime access, identity scope, fallback, and data handling constraints |
+| Execution Graph Runtime | Runs each step and keeps its state. A step never runs twice; if a crash stops a step, the record shows it |
+| Policy Engine | Checks access and identity before each step, and applies data-handling rules |
 | Venue Adapters | Interfaces for executing across clouds, SaaS tools, or partner agents | 
-| Audit + Trace Layer | Emits signed logs, verifiable execution traces, and runtime observability | 
+| Audit + Trace Layer | Keeps a record of every job, with optional security logs. Metrics are on the roadmap | 
 
 ### Federated by Design
 
 Each **Venue** (e.g. a workspace, AWS account, on-prem node, or vendor endpoint) operates with its own policy context and identity boundary. Nodes within a graph may execute across venues, with:
-- Isolated runtime sandboxes
-- Signed, policy-bound transitions
-- Encrypted memory scoped to actor identity
 - Unified trace collection and verification
 
 This allows Covia.ai to operate not just within an **organisation, but across organisational lines**, while maintaining runtime trust and governance.
+
+#### Goals
+
+- Isolated runtime sandboxes
+- Signed, policy-bound transitions
+- Encrypted memory scoped to actor identity
 
 ## Key Concepts
 

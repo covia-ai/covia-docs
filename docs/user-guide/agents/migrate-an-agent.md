@@ -104,7 +104,7 @@ mvn test -pl venue -am -Dtest=AgentFromSkillsTest -Dsurefire.failIfNoSpecifiedTe
 Because the result is an ordinary native agent, it gets everything a native
 agent gets:
 
-- **Governed** so every task is a job with a verifiable receipt on your venue.
+- **Governed** so every task is a job with a job record on your venue.
 - **Discoverable and composable** as an ordinary asset other agents and
   workflows can reach.
 - **Interoperable** over A2A and MCP with no rewrite.

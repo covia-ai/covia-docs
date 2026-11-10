@@ -34,7 +34,7 @@ No SDK for your language? Every venue speaks the same [REST API](../user-guide/a
 
 ## Compatibility
 
-SDKs version independently of the platform. Pre-1.0 the REST surface is additive: older SDKs generally keep working against newer venues, while newly added operations and fields need a current SDK release.
+SDKs version independently of the platform. Until version 1.0, the REST API can change. Check the CHANGELOG. Older SDKs generally keep working against newer venues, while newly added operations and fields need a current SDK release.
 
 ## Where to go next
 

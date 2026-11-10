@@ -22,7 +22,7 @@ Sometimes agents need shared state that no single party controls — balances, r
 }
 ```
 
-Returns the Convex result as `{result, value}` — here `{"result": "6", "value": 6}`. `peer` is optional (the shipped operation defaults to the public `peer.convex.live` peer); `address` is optional for queries.
+Returns the Convex result as `{result, value}` — here `{"result": "6", "value": 6}`. `peer` is optional (it uses the peer the operator sets (`adapters.convex.peer`), by default `peer.convex.live`); `address` is optional for queries.
 
 ### convex:transact — Write
 

@@ -94,7 +94,7 @@ Anything else is a REST call:
 
 ## What an agent sees
 
-As with Telegram, an agent receives `{text, via}`:
+As with Telegram, an agent behind a bot receives the message text and who sent it, if the sender is known; unknown senders are anonymous:
 
 ```json
 {

@@ -6,7 +6,7 @@ sidebar_label: Scheduler
 
 # Scheduler Adapter
 
-The Scheduler adapter runs an operation **later** — at an absolute time or after a delay. It's how a venue defers work: a reminder, a delayed clean-up, or an agent that should wake at a set time. (There is no built-in recurrence — a repeating job re-schedules itself as its last action.) Scheduled invocations run with the **authority of whoever scheduled them**, captured at schedule time and replayed unchanged when they fire.
+The Scheduler adapter runs an operation **later** — at an absolute time or after a delay. It's how a venue defers work: a reminder, a delayed clean-up, or an agent that should wake at a set time. Tasks can repeat (`repeat`). Runs are not recorded unless you turn on `track`. Scheduled invocations run with the **authority of whoever scheduled them**. When a scheduled task runs, it uses the access its owner has at that moment.
 
 ## Operations
 
@@ -53,11 +53,9 @@ Keep the `handle` — you use it to cancel or trigger the event.
 { "operation": "v/ops/scheduler/cancel",  "input": { "handle": "0x4f3a..." } }   // → { cancelled: true|false }
 ```
 
-## Captured authority — no escalation
+## Authority when a task runs
 
-When you schedule an event, the venue records your caller DID together with the UCAN **proofs and capabilities** present on the request. When the event fires, it runs under *exactly* that captured authority — not the venue's ambient authority and not a refreshed set of permissions.
-
-This means a scheduled invocation can never do more than you could do at the moment you scheduled it. If your capabilities wouldn't allow the operation now, the deferred run won't be allowed either. Scheduling requires an authenticated caller.
+When a scheduled task runs, it uses the access its owner has at that moment. If you reduce an agent's access, or delete it, its scheduled work is reduced or dropped too. Scheduling requires an authenticated caller.
 
 ## Durability
 

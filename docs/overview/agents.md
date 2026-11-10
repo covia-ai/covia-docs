@@ -52,7 +52,7 @@ Every venue is an **MCP server** and an **A2A agent** out of the box: no gateway
 
 ### Adapters
 
-Adapters are how a venue gets its capabilities: each contributes a family of operations: LLM calls, outbound HTTP, files, secrets, scheduling, lattice state, federation, and more. Out of the box a venue ships with nearly thirty, and they compose: an agent can call an LLM, fetch a URL, and schedule its own wake-up through one uniform interface.
+Adapters are how a venue gets its capabilities: each contributes a family of operations: LLM calls, outbound HTTP, files, secrets, scheduling, lattice state, federation, and more. Out of the box a venue ships with 35 built-in adapters and 10 optional modules, and they compose: an agent can call an LLM, fetch a URL, and schedule its own wake-up through one uniform interface.
 
 → [Adapters overview](../user-guide/adapters/)
 
@@ -68,9 +68,9 @@ Agents do not stop at the venue boundary. The [Grid adapter](../user-guide/adapt
 
 → [The Grid](./grid) · [Federate two venues](../user-guide/tutorials/federation) · [COG-12: Orchestrations](../protocol/cogs/COG-012)
 
-## Governed by default
+## Governance
 
-None of the above is bolted on to an ungoverned core. Agents run under [capability](../user-guide/capabilities) grants (signed, attenuable, enforced on every call), with their permissions disclosed in the system prompt and explained in every denial. Each run is a job with an immutable record, and a workflow can pause for human review or a capability grant ([COG-16](../protocol/cogs/COG-016)) inside the same audit trail. The suite is comprehensive precisely because the governance is uniform: one model of identity, authority, and audit underneath every tool an agent touches.
+None of the above is bolted on to an ungoverned core. You can limit each agent with [capability](../user-guide/capabilities) grants, and every call is checked. An agent without limits can do anything its owner can. Agents see their permissions in the system prompt, and every denial explains why. Each run is a job with an immutable record, and a workflow can pause for human review or a capability grant ([COG-16](../protocol/cogs/COG-016)) inside the same audit trail. The suite is comprehensive precisely because the governance is uniform: one model of identity, authority, and audit underneath every tool an agent touches.
 
 ## Start here
 

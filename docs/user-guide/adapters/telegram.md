@@ -120,7 +120,7 @@ The methods that drive the update stream — `getUpdates`, `setWebhook`, `delete
 
 ## What an agent sees
 
-An agent behind a Telegram bot receives `{text, via}`, where `via` is put there by the venue rather than typed by anyone:
+An agent behind a bot receives the message text and who sent it, if the sender is known; unknown senders are anonymous. The `via` field is put there by the venue rather than typed by anyone:
 
 ```json
 {

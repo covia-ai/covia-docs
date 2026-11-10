@@ -48,7 +48,7 @@ The SDKs were written for their own ecosystems, so the same operation has a diff
 
 **Job status is one vocabulary across all three**, defined by the venue and mirrored by each SDK:
 
-`PENDING` → `STARTED` → `COMPLETE` | `FAILED` | `CANCELLED` | `REJECTED` | `TIMEOUT`
+`PENDING` → `STARTED` → `COMPLETE` | `FAILED` | `CANCELLED` | `REJECTED` | `TIMEOUT` (reserved, not used)
 
 plus the interactive states `PAUSED`, `INPUT_REQUIRED` and `AUTH_REQUIRED`. TypeScript names the enum `RunStatus` and exports `JobStatus` as an alias for parity with Python.
 

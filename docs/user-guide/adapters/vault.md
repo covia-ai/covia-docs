@@ -6,7 +6,7 @@ sidebar_position: 9
 
 # Vault Adapter
 
-The vault is a **protected, venue-hosted file system for each user** — a private space for documents and files that agents can be given controlled access to. Every user's vault is their own: operations always target the caller's personal drive, access is governed by [capabilities](../capabilities) like every other operation, and every read and write is traced to the identity that made it and signed with the user's DLFS key.
+The vault is a **protected, venue-hosted file system for each user** — a private space for documents and files that agents can be given controlled access to. Every user's vault is their own: operations always target the caller's personal drive, access is governed by [capabilities](../capabilities) like every other operation, and every read and write is traced to the identity that made it and signed with a key the venue keeps for that user.
 
 Under the hood it is a thin wrapper over [DLFS](./dlfs) bound to a single well-known drive (`vault` by default, operator-configurable below). The first write creates the drive, and the user's signing key is generated for them — no setup step. Until then, reads report that the drive does not exist.
 
@@ -119,7 +119,7 @@ Add vault operations to an agent's tool list:
 4. Agent calls vault:write path="analysis/q1-summary.json" → stores result
 ```
 
-All operations are traced to the agent's identity and signed by the user's DLFS key.
+All operations are traced to the agent's identity and signed with a key the venue keeps for that user. The signature shows who made each change. It does not stop the venue operator changing the vault.
 
 ## Related
 

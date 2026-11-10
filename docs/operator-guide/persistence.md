@@ -10,9 +10,8 @@ Covia venues persist all state — assets, jobs, agents, secrets, workspace data
 ## Experimental lattice component implementation
 
 :::note Availability
-This section describes `codex/convex-lattice-snapshot`, currently using Convex
-`0.8.18-f5d0345f6-SNAPSHOT`. The fork/sweep description below documents the
-earlier runtime; it does not describe this branch's local commit mechanism.
+This section describes version 0.10.0 and later. The fork/sweep description below documents the
+earlier runtime; it does not describe 0.10.0's local commit mechanism.
 :::
 
 Venue components share one authoritative atomic application state. Convex
@@ -99,7 +98,7 @@ On restart, all state is automatically restored:
 
 1. Etch store restores the lattice root cursor from the last persisted value
 2. Engine creates a fresh fork for subsequent writes
-3. Job manager scans for PENDING/STARTED jobs and restores their records (jobs that were mid-execution are marked as recoverable; they do not automatically re-execute)
+3. Job manager scans for PENDING/STARTED jobs and restores their records (jobs that were waiting or running when the venue stopped are marked failed, with a reason. Paused jobs carry on.)
 4. Agents with pending work wake automatically via the scheduler
 5. DLFS drives are recovered from the independent `:dlfs` lattice region
 

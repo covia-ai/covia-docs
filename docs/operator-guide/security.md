@@ -5,13 +5,13 @@ sidebar_position: 4
 
 # Security
 
-Your venue holds things worth protecting: users' workspaces and files, agents and their memory, API keys, and an audit trail people will rely on. Covia's security posture is built on two principles — **secure defaults** (anonymous callers get a read-only ceiling, unknown identities get nothing, agents cannot mint authority) and **fail-closed configuration** (a security misconfiguration stops the venue at startup; it never silently downgrades to an unprotected state).
+Your venue holds things worth protecting: users' workspaces and files, agents and their memory, API keys, and an audit trail people will rely on. Covia's security posture is built on two principles — **secure access defaults** (anonymous callers can only read, unknown users get nothing, agents cannot give themselves more access) and **fail-closed configuration** (a security misconfiguration stops the venue at startup; it never silently downgrades to an unprotected state). Other defaults suit development; use the production checklist before you open a venue to others.
 
 This page tours the controls in the order an attacker would meet them, and ends with a production checklist. Config snippets show venue-entry keys — in a real config file they sit inside an entry of the top-level `venues` array (see [Configuration](./configuration#the-config-file-is-a-server-document)).
 
 ## Encrypt the store
 
-A venue's Etch store contains everything: lattice state, agent records, DLFS drives, secrets. If a disk, VM image, or backup walks away, encryption at rest is what makes that a non-event. Venues run on **encrypted Etch v3 stores**:
+A venue's Etch store contains everything: lattice state, agent records, DLFS drives, secrets. If a disk, VM image, or backup walks away, encryption at rest is what makes that a non-event. Venues can store their data encrypted. Encryption is off until you turn it on:
 
 ```json
 {
@@ -55,7 +55,7 @@ The defaults suit development: bind on all interfaces, permissive CORS. A venue 
 - **TLS** — the venue deliberately does not terminate TLS; run it behind a reverse proxy (the repo's `deploy/` directory ships a working Caddy setup with automatic HTTPS) and set `baseUrl` explicitly.
 - **`corsOrigins`** — narrow `"*"` to your real origins. The `"loopback"` sentinel matches literal localhost forms without ever resolving DNS, which blocks DNS-rebinding tricks; denied origins get a clean 403.
 - **Rate limiting** — per-caller token buckets, on by default for any non-loopback bind: `{"rateLimit": {"rps": 100, "burst": 300, "maxConcurrentJobsPerUser": 100}}`. Buckets are keyed per user DID (all anonymous traffic shares one bucket), over-limit requests get `429` with `Retry-After`, and a concurrent-jobs cap stops one caller from monopolising the job engine.
-- **SSRF protection** — outbound HTTP, bridged MCP servers, and A2A URLs all pass the same guard: loopback, site-local, and link-local addresses are blocked, HTTP(S) only.
+- **SSRF protection** — outbound HTTP, bridged MCP servers, and A2A URLs all pass the same guard: Agents cannot call private or local network addresses unless you allow them (`adapters.http.allowedHosts`). The same check covers every outbound call. HTTP(S) only.
 
 ## Decide who gets in
 
@@ -85,6 +85,11 @@ Everything that adds code or capability to a venue is operator-gated:
 - [ ] `auth.public.caps` reviewed; `users.autoCreate` off; admission via bootstrap or delegated `user:create`
 - [ ] Secrets supplied as bootstrap config or `s/NAME` references — never in operation inputs, never committed
 - [ ] Modules pinned with `sha256`; Python scripts treated as trusted code
+- [ ] Give every agent `caps`
+- [ ] Turn on encryption (`etch`)
+- [ ] Turn on security and access logs (`logging.audit`, `logging.access`) and decide how long to keep them
+- [ ] Set a maximum token lifetime (`auth.maxTokenLifetime`)
+- [ ] If a proxy sits in front, set `trustedProxies`
 - [ ] Startup log reviewed: the venue warns on exactly the gaps above (unencrypted vault data, plaintext key files, content stored outside the cipher)
 
 Found a vulnerability? Report it privately via [GitHub private vulnerability reporting](https://github.com/covia-ai/covia/security) or security@covia.ai — and remember the trust model: the security of a federation depends on the policies its operators configure.

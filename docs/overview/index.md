@@ -12,9 +12,9 @@ sidebar_position: 1
 
 ## What is Covia?
 
-Covia is an open-core, open-source runtime for **federated AI orchestration** and **federated AI execution**. The two terms name the two halves of the problem. Orchestration is the coordination half: multi-step workflows that sequence agents, models, and data across venues, with dependencies, error handling, and result aggregation. Execution is the delivery half: each step runs inside the venue that governs its data and credentials, under capability checks made before it acts, and leaves an immutable job record when it completes. Orchestration without governed execution produces workflows nobody can audit; execution without orchestration produces capabilities nobody can compose. Covia provides both in one runtime.
+Covia is an open-core, open-source runtime for **federated AI orchestration** and **federated AI execution**. The two terms name the two halves of the problem. Orchestration is the coordination half: multi-step workflows that sequence agents, models, and data across venues, with dependencies, error handling, and result aggregation. Execution is the delivery half: each step runs inside the venue that governs its data and credentials, under capability checks made before it acts, and leaves a permanent job record when it changes something. Orchestration without governed execution produces workflows nobody can audit; execution without orchestration produces capabilities nobody can compose. Covia provides both in one runtime.
 
-The grid consists of **venues**: nodes that host *operations* (executable, self-describing capabilities), manage context and state for *agents*, and keep an immutable, auditable record of every job. Venues federate: a workflow on one venue can invoke an operation on a partner's venue, in another cloud or jurisdiction, while the data stays where it is governed and only results cross the boundary. The agent capability of every venue is **[Covia Agents](./agents)**: hosted, governed agents plus **BYOA** (bring your own agent, over A2A or MCP) and **BYOM** (bring your own model, through pluggable LLM bindings).
+The grid consists of **venues**: nodes that host *operations* (executable, self-describing capabilities), manage context and state for *agents*, and keep a permanent record of every job that changes something. Venues federate: a workflow on one venue can invoke an operation on a partner's venue, in another cloud or jurisdiction, while the data stays where it is governed and only results cross the boundary. The agent capability of every venue is **[Covia Agents](./agents)**: hosted, governed agents plus **BYOA** (bring your own agent, over A2A or MCP) and **BYOM** (bring your own model, through pluggable LLM bindings).
 
 It is built on the [Convex](https://docs.convex.world/docs/overview/lattice) lattice platform for decentralised, cryptographically verifiable state, and it speaks the protocols the AI ecosystem already uses: **REST**, **MCP**, **A2A**, and **DID**. If you think of HTTP as the protocol that made documents interoperable, Covia is the layer that makes **AI capability** interoperable, verifiable, and governable across trust boundaries.
 
@@ -56,9 +56,9 @@ Covia's view is that the missing piece is **infrastructure, not another framewor
 |---|---|
 | **Sovereign by construction** | Each [venue](./venues) is operated independently with its own identity (DID), [authentication](../operator-guide/auth), and policy. Federation never requires surrendering control of data or infrastructure. |
 | **Self-describing operations** | Every capability carries discoverable metadata, for developers *and* agents. One integration surface for humans and machines. |
-| **Audit-grade execution** | Every invocation is a [job](../user-guide/api/) with an immutable, queryable record. Compliance is a property of the runtime, not an afterthought. |
+| **Audit-grade execution** | Every call that changes something becomes a [job](../user-guide/api/), and its record does not change once the job ends. |
 | **Verifiable state** | Assets are content-addressed; venue state lives on a [CRDT lattice](https://docs.convex.world/docs/overview/lattice) that merges deterministically: no central coordinator, no consensus bottleneck. |
-| **Capability security** | Authorisation follows the [UCAN model](../user-guide/capabilities): signed, attenuable grants enforced on every call. Agents run under least privilege by default. |
+| **Capability security** | Authorisation follows the [UCAN model](../user-guide/capabilities): signed, attenuable grants enforced on every call. You can limit each agent to exactly what it needs by setting its `caps`. An agent without caps can do anything its owner can. |
 | **Protocol-native** | A venue is an [MCP server](../user-guide/mcp/) and an [A2A agent](../user-guide/adapters/covia-with-a2a) out of the box. Covia meets the ecosystem where it already is, rather than asking it to move. |
 
 ## What you can build
@@ -66,15 +66,15 @@ Covia's view is that the missing piece is **infrastructure, not another framewor
 - **Cross-organisational AI workflows**: [orchestrate](../user-guide/adapters/orchestrator) multi-step pipelines that span venues, where each party's data stays under its own governance and only results travel.
 - **Governed agent teams**: persistent, tool-using [agents](../user-guide/agents/) with scoped capabilities and a complete audit trail, like the [AP invoice pipeline](../user-guide/agents/creating-agents#ap-demo-example) where three agents scan, enrich, and approve under least privilege.
 - **One capability, every protocol**: publish an operation once and it is callable via REST, as an MCP tool from any AI assistant, and as an A2A task from any agent framework.
-- **Sovereign data services**: user-signed, portable file systems ([DLFS](../user-guide/adapters/dlfs)) and per-user encrypted secrets, hosted on infrastructure you control.
+- **Sovereign data services**: per-user file systems ([DLFS](../user-guide/adapters/dlfs)) and per-user encrypted secrets, hosted on infrastructure you control.
 - **Teachable agents**: package know-how as portable, self-describing [skills](../user-guide/tutorials/skills) ([COG-18](../protocol/cogs/COG-018)) that agents discover and load at run time.
 - **Human-in-the-loop control**: pause a workflow for human review, approval, or a capability grant ([COG-16](../protocol/cogs/COG-016)), inside the same audited job record.
 
 ## Where the project is
 
-Covia is **open core and open source**, built in the open. The runtime is EPL-2.0 (weak copyleft: changes to the core must be published, while proprietary systems may freely build on top), the SDKs are Apache-2.0, and the protocol is standardised under open governance. We are deliberately honest about maturity, because trust is the product:
+Covia is **open core and open source**, built in the open. The runtime is EPL-2.0 (weak copyleft: changes to the core must be published, while proprietary systems may freely build on top), the SDKs are Apache-2.0, and the protocol is being written in the open, as draft COGs. We are deliberately honest about maturity, because trust is the product:
 
-- The **engine is solid**: a clean adapter architecture (nearly 30 adapters), a multi-protocol surface, and over 2,000 automated tests.
+- The **engine is solid**: a clean adapter architecture (35 built-in adapters and 10 optional modules), a multi-protocol surface, and over 3,500 automated tests.
 - **SDKs are published** for [TypeScript](https://www.npmjs.com/package/@covia/covia-sdk) (npm), [Python](https://pypi.org/project/covia/) (PyPI), and [Java](https://central.sonatype.com/artifact/ai.covia/covia-core) (Maven Central).
 - **Live venues** run today; the examples above hit one.
 - The platform is **pre-1.0 and moving fast**; APIs may change. Development happens in the open on [GitHub](https://github.com/covia-ai/covia).

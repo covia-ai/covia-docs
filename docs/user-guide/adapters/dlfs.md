@@ -6,13 +6,12 @@ sidebar_position: 8
 
 # DLFS (Decentralised Lattice File System)
 
-On most platforms your files ultimately belong to the platform. DLFS exists so they belong to **you**: self-sovereign, decentralised file storage where each user gets their own named drives, every write is signed with the user's own Ed25519 key, and the whole drive — stored in an independent lattice region — is portable across venues. Move venue, keep your files, keep the proof they're yours.
+On most platforms your files ultimately belong to the platform. DLFS exists so they belong to **you**: self-sovereign, decentralised file storage where each user gets their own named drives, every write is signed with a key the venue creates and keeps for that user, and the whole drive is stored in an independent lattice region.
 
 ## Key Properties
 
-- **User-signed** — every write is signed by the user's own key, not the venue's
+- **Signed per user** — every write is signed with a key the venue keeps for that user
 - **Lattice-backed** — drives use CRDT merge semantics for conflict-free cross-venue synchronisation
-- **Portable** — users can migrate drives to another venue by exporting their key
 - **Isolated** — DLFS occupies a separate lattice region from venue state; the venue operator cannot forge modifications
 
 ## Drives
@@ -118,7 +117,7 @@ Cannot delete non-empty directories — delete contents first.
 | Operation | Input | Description |
 |-----------|-------|-------------|
 | `dlfs:listDrives` | — | List all drives for the caller |
-| `dlfs:createDrive` | `name` | Create a named drive (idempotent) |
+| `dlfs:createDrive` | `drive` (or `name`) | Create a named drive (idempotent) |
 | `dlfs:deleteDrive` | `name` | Delete a drive and all contents |
 | `dlfs:list` | `drive`, `path?` | List directory entries |
 | `dlfs:read` | `drive`, `path` | Read file content |
@@ -225,18 +224,13 @@ When a user first accesses DLFS, the adapter generates a unique Ed25519 keypair.
 
 ### Access Control
 
-- Each user can only access their own drives
-- The venue operator cannot modify a user's drives (modifications require the user's signature)
+- Each user can only access their own drives, unless the owner gives access
+- The signature shows which user made each change. It does not stop the venue operator changing a drive.
 - Anonymous requests are rejected — all DLFS operations require authentication
 
-### Cross-Venue Portability
+### Moving drives to another venue
 
-Because drives are signed by the user's key rather than the venue's:
-1. Export the DLFS key seed
-2. Import it on another venue
-3. Access your drives unchanged
-
-Because ownership is cryptographic rather than administrative, a venue cannot lock users in.
+Drives cannot be moved to another venue yet. `user:export` and `user:import` move a user's workspace, agents, jobs, assets and secrets, but not their drives or file contents. Moving drives is planned.
 
 ## Merge Semantics
 

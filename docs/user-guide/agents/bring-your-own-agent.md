@@ -90,7 +90,7 @@ as an operation.
 
 ## What you get
 
-- **Governed** — every interaction is a job with a verifiable receipt on your
+- **Governed** — every interaction is a job with a job record on your
   venue; the imported agent acts under your own capabilities toward the remote.
 - **Discoverable and composable** — it is an ordinary asset; other agents and
   workflows can reach it.
