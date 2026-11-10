@@ -52,7 +52,7 @@ Every venue is an **MCP server** and an **A2A agent** out of the box: no gateway
 
 ### Adapters
 
-Adapters are how a venue gets its capabilities: each contributes a family of operations: LLM calls, outbound HTTP, files, secrets, scheduling, lattice state, federation, and more. Out of the box a venue ships with nearly thirty, and they compose: an agent can call an LLM, fetch a URL, and schedule its own wake-up through one uniform interface.
+Adapters are how a venue gets its capabilities: each contributes a family of operations: LLM calls, outbound HTTP, files, secrets, scheduling, lattice state, federation, and more. Out of the box a venue ships with 35 built-in adapters and 10 optional modules, and they compose: an agent can call an LLM, fetch a URL, and schedule its own wake-up through one uniform interface.
 
 → [Adapters overview](../user-guide/adapters/)
 

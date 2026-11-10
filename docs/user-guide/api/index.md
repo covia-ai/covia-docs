@@ -28,7 +28,7 @@ Authenticated requests carry a JWT in the standard header:
 Authorization: Bearer <jwt>
 ```
 
-A venue accepts three bearer forms: a **self-issued EdDSA JWT** (signed with the caller's own Ed25519 key, identifying a `did:key` or a named venue user), a **venue-signed JWT** (issued after OAuth login), or an **external provider JWT** (verified against the provider's JWKS). See the [operator authentication guide](../../operator-guide/auth) for how venues configure these.
+A venue accepts four kinds of token: a **self-issued EdDSA JWT** (signed with the caller's own Ed25519 key, identifying a `did:key` or a named venue user), a **venue-signed JWT** (issued after OAuth login), an **external provider JWT** (verified against the provider's JWKS), or a **UCAN capability token** (a signed grant; see [Capabilities](../capabilities)). See the [operator authentication guide](../../operator-guide/auth) for how venues configure these.
 
 ### Presenting UCAN capability proofs
 
@@ -334,7 +334,7 @@ Cancels a running job.
 
 #### `PUT /api/v1/jobs/{id}/pause`
 
-Pauses a running job. Only valid when the job is in a non-terminal, non-paused state (`PENDING`, `STARTED`, `INPUT_REQUIRED`, `AUTH_REQUIRED`).
+Pauses a running job. Only valid for a running job that supports pausing; otherwise 409.
 
 **Response:** `200 OK` with updated job status, `404 Not Found`, or `409 Conflict` if the job is already finished or paused.
 
@@ -599,7 +599,7 @@ Returns the DID document for the venue, following W3C DID specification.
 
 The document `id` is the venue's persistent `did:key`; the same key is also listed under `assertionMethod`, `capabilityDelegation` and `capabilityInvocation`. The venue remains reachable by `did:web:<host>` references; this endpoint is what resolves them to the API `serviceEndpoint`.
 
-#### `GET /.well-known/mcp.json`
+#### `GET /.well-known/mcp`
 
 MCP server discovery endpoint.
 
@@ -725,7 +725,10 @@ Errors return appropriate HTTP status codes with a JSON body:
 | `403` | Forbidden (insufficient capabilities) |
 | `404` | Resource not found |
 | `409` | Conflict (invalid state transition, e.g. pausing a finished job) |
+| `429` | Too many requests (wait for `Retry-After`) |
 | `500` | Server error |
+| `502` | An upstream service failed |
+| `503` | Service unavailable |
 
 ## Related Documentation
 

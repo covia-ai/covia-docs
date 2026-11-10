@@ -118,7 +118,7 @@ Cannot delete non-empty directories — delete contents first.
 | Operation | Input | Description |
 |-----------|-------|-------------|
 | `dlfs:listDrives` | — | List all drives for the caller |
-| `dlfs:createDrive` | `name` | Create a named drive (idempotent) |
+| `dlfs:createDrive` | `drive` (or `name`) | Create a named drive (idempotent) |
 | `dlfs:deleteDrive` | `name` | Delete a drive and all contents |
 | `dlfs:list` | `drive`, `path?` | List directory entries |
 | `dlfs:read` | `drive`, `path` | Read file content |
@@ -225,7 +225,7 @@ When a user first accesses DLFS, the adapter generates a unique Ed25519 keypair.
 
 ### Access Control
 
-- Each user can only access their own drives
+- Each user can only access their own drives, unless the owner gives access
 - The signature shows which user made each change. It does not stop the venue operator changing a drive.
 - Anonymous requests are rejected — all DLFS operations require authentication
 

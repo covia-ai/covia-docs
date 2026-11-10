@@ -55,7 +55,7 @@ The defaults suit development: bind on all interfaces, permissive CORS. A venue 
 - **TLS** — the venue deliberately does not terminate TLS; run it behind a reverse proxy (the repo's `deploy/` directory ships a working Caddy setup with automatic HTTPS) and set `baseUrl` explicitly.
 - **`corsOrigins`** — narrow `"*"` to your real origins. The `"loopback"` sentinel matches literal localhost forms without ever resolving DNS, which blocks DNS-rebinding tricks; denied origins get a clean 403.
 - **Rate limiting** — per-caller token buckets, on by default for any non-loopback bind: `{"rateLimit": {"rps": 100, "burst": 300, "maxConcurrentJobsPerUser": 100}}`. Buckets are keyed per user DID (all anonymous traffic shares one bucket), over-limit requests get `429` with `Retry-After`, and a concurrent-jobs cap stops one caller from monopolising the job engine.
-- **SSRF protection** — outbound HTTP, bridged MCP servers, and A2A URLs all pass the same guard: loopback, site-local, and link-local addresses are blocked, HTTP(S) only.
+- **SSRF protection** — outbound HTTP, bridged MCP servers, and A2A URLs all pass the same guard: Agents cannot call private or local network addresses unless you allow them (`adapters.http.allowedHosts`). The same check covers every outbound call. HTTP(S) only.
 
 ## Decide who gets in
 

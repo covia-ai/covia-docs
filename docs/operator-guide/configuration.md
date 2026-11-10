@@ -99,7 +99,7 @@ See [Authentication](./auth) for OAuth setup, token types, and admission.
 | `modules` | — | External adapter jars loaded at boot: a path string or `{path, sha256, config}`. `sha256` pins jar content; boot loading is fail-fast. See [venue modules](../user-guide/adapters/jvm#venue-modules). |
 | `dynamicModules` | off | Policy for loading modules on a **running** venue via `v/ops/venue/module/load`: `{enabled, dir, anyPath}`. With `enabled`, the module must be a jar name inside the staging directory `dir` (no absolute paths, no `..`) unless `anyPath` widens it. Off by default — leave it off unless you intend operators to load code at runtime. |
 | `recordReadOnlyOperations` | `false` | Record even declared-read-only `/api/v1/run` operations as durable jobs. |
-| `enablePrivateJobs` | *(deprecated)* | No longer enables `private: true` on `/invoke` — invoke always creates a durable job. Read-only result-oriented execution goes through `/api/v1/run`. |
+| `enablePrivateJobs` | `false` | Lets `/api/v1/run` skip the job record when asked (`private: true`). `/invoke` always keeps a record. |
 | `defaultTransitionOp` | `v/ops/llmagent/chat` | Default agent transition operation when an agent config omits `operation`. |
 | `defaultLlmOperation` | `v/ops/langchain/openai` | Default level-3 LLM operation for agents. |
 | `maxToolIterations` | `30` | Venue-wide cap on agent tool-loop iterations per turn; agents can override per config. |
