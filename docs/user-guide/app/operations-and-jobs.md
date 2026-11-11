@@ -34,4 +34,4 @@ While a job is live you can **cancel**, **pause**, and **resume** it (where the 
 
 **Grid → Jobs** is your `j/` namespace: every job you have created on the venue, sortable and filterable by status and date, with success-rate and duration tiles. The list reads through `GET /api/v1/values/slice?path=j`, and refreshes automatically while any listed job is still active.
 
-A job record is immutable once terminal, and its `prev` chain preserves every state it passed through: the list is also your audit trail. See [COG-8: Jobs](../../protocol/cogs/COG-008) for the record's guarantees.
+A job record holds the job's current state. Each update replaces it, so the job page and the list show where a job is now, not every state it passed through. Once a job finishes, its status and its output or error no longer change. See [COG-8: Jobs](../../protocol/cogs/COG-008) for the record's guarantees.

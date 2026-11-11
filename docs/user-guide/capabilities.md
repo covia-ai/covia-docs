@@ -20,7 +20,7 @@ A capability is a `{with, can}` pair:
 { "with": "o/shared/", "can": "crud/read" }
 ```
 
-A grant **covers** a request when its resource is a prefix of the target and its ability includes the required one. Reads require `crud/read`, writes/appends/mkdir require `crud/write`, deletes require `crud/delete`.
+A grant **covers** a request when its resource is the target or a path above it, matching whole segments (`w/notes` covers `w/notes/q3` but not `w/notes2`), and its ability includes the required one. Reads require `crud/read`, writes/appends/mkdir require `crud/write`, deletes require `crud/delete`. Creating an entry also requires `crud/write` on what holds it: the map that holds a new key, the directory that holds a new file, or `dlfs` for a new drive. So `{ "with": "w/reports/", "can": "crud/write" }` writes inside `w/reports` once it exists, but cannot create `w/reports` itself.
 
 ## Two ways capabilities are applied
 
@@ -78,6 +78,38 @@ The `ucan:issue` operation mints a venue-signed UCAN delegating capabilities to 
 The result is a JWT the audience presents as a bearer token. Because UCANs attenuate, the audience can in turn delegate a *narrower* subset onward, but never more than it holds.
 
 A resource owner with their own `did:key` keypair can equally sign grants over their own namespace **directly** — no venue involvement. Such self-sovereign grants verify on any venue that holds the data.
+
+## Ability reference
+
+`crud/read`, `crud/write`, `crud/delete` (with the umbrella `crud`) and `invoke` are the generic abilities. On top of those, Covia defines domain families for the surfaces that need more than CRUD:
+
+| Ability | Guards |
+|---------|--------|
+| `asset/read` | Reading asset metadata and content by hash |
+| `asset/store` | Storing and pinning assets |
+| `secret/write` | Writing a secret (`s/<name>`) |
+| `agent/create` | Creating agents |
+| `agent/request` | Sending a tracked task to an agent |
+| `agent/message` | Sending a one-way message to an agent |
+| `agent/write` | Updating, suspending, resuming, deleting an agent |
+| `hitl/request` | Raising a [human-in-the-loop](./adapters/hitl) request |
+| `mcp/manage` | Managing bridged [MCP](./mcp/) servers — guarded on `v/mcp` |
+| `adapter/manage` | Adapter and module lifecycle — guarded on `<venue DID>/adapters`, and **venue-owned**: an ordinary authenticated caller cannot hold it over their own namespace |
+| `user/create`, `user/read` | Administrative [user](./adapters/user) registration and lookup |
+| `user/authentication-manage` | Managing a user's authenticator keys |
+| `grant/…` | Issuing grants over a resource — the right to *delegate*, which access alone never implies |
+
+Optional [venue modules](./adapters/jvm#venue-modules) add their own, scoped to the thing they govern rather than to the venue:
+
+| Ability | Resource | Module |
+|---------|----------|--------|
+| `sql/…` | A registered database | [SQL](./adapters/sql) |
+| `telegram/send`, `telegram/call`, `telegram/manage` | `<owner>/telegram/<bot>` | [Telegram](./adapters/telegram) |
+| `discord/send`, `discord/call`, `discord/manage` | `<owner>/discord/<bot>` | [Discord](./adapters/discord) |
+| `claudecode/run` | `<owner>/claudecode/<project>` | [Claude Code](./adapters/claudecode) |
+| `claudecode/manage` | `<venueDID>/claudecode/projects` | [Claude Code](./adapters/claudecode) |
+
+Abilities are **hierarchical paths**, so a grant of `agent` covers `agent/create` and its siblings, and `*` covers everything. Because an adapter's abilities disappear with the adapter, a grant naming one is inert on a venue where that module isn't loaded.
 
 ## Capability-gated adapters
 

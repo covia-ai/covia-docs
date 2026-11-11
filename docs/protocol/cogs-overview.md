@@ -34,12 +34,14 @@ COG numbers identify topics, not chronology: numbers are assigned when a topic e
 - **[COG-11](./cogs/COG-011)** - Agent Lifecycle *(exploratory draft — superseded in practice by session-based agents; see [Sessions](../user-guide/agents/sessions))*
 - **[COG-12](./cogs/COG-012)** - Orchestrations
 - **[COG-13](./cogs/COG-013)** - Agent Capabilities
-- **[COG-14](./cogs/COG-014)** - A2A Agent Interoperability *(not yet implemented)*
+- **[COG-14](./cogs/COG-014)** - A2A Agent Interoperability
 - **[COG-15](./cogs/COG-015)** - Cross-Venue Federation
 - **[COG-16](./cogs/COG-016)** - Human-in-the-Loop Requests
 - **[COG-17](./cogs/COG-017)** - Capability Granting
 - **[COG-18](./cogs/COG-018)** - Agent Skills
 - **[COG-19](./cogs/COG-019)** - HITL Self-Sovereign Token Transport
+- **[COG-20](./cogs/COG-020)** - Agent Admission
+- **[COG-21](./cogs/COG-021)** - REST API
 
 ## COG Development Process
 

@@ -7,7 +7,40 @@ sidebar_position: 5
 
 Covia venues persist all state — assets, jobs, agents, secrets, workspace data, and DLFS drives — to an on-disk Etch store backed by lattice technology. This page explains how persistence works, what operators need to configure, and what to expect during shutdown and recovery. See the [Configuration Reference](./configuration) for the `store`, `seed`, and `storage` keys.
 
-## How It Works
+## Experimental lattice component implementation
+
+:::note Availability
+This section describes version 0.10.0 and later. The fork/sweep description below documents the
+earlier runtime; it does not describe 0.10.0's local commit mechanism.
+:::
+
+Venue components share one authoritative atomic application state. Convex
+`LatticeHost` publishes and persists committed snapshots; publishing an older
+snapshot never merges it back over newer local changes. Local commit,
+publication and durable flush are distinct steps. External outputs follow a
+successful transaction, and actions requiring durable state request a flush.
+
+Whole-venue LWW is for backup, replication and failover. It cannot reconcile
+arbitrary independently running forks or their external effects. Fence the
+previous writer before failover; signing snapshots does not provide fencing.
+
+The signed venue value stores integer `:version` beside `:did` and `:timestamp`.
+It describes the persisted format, independently of the software release.
+Startup rejects invalid or newer unsupported versions before executing work.
+Missing version means legacy `0`; the current migration advances to `1` and
+moves the small pending-user-cleanup index atomically. Current stores are not
+rewritten just for a version check. Adapter records migrate individually on
+first access from venue-user `w/adapters/<name>` to private `:adapters/<name>`;
+conflicting copies fail without changing either. No bulk user/adapter scan is
+introduced. Prevent older binaries from reopening an upgraded store.
+
+Adapter state belongs to whole-venue backup. User exports currently contain
+the user record, not arbitrary associations in private adapter state; do not
+treat a user export as a complete venue backup. `x/<adapter>/...` is only an
+explicit user-facing view and adds no storage migration. See
+[COG-4](../protocol/cogs/COG-004) for the experimental contract.
+
+## Earlier Runtime: Fork and Sweep
 
 Venue state is persisted by a background sweep:
 
@@ -65,7 +98,7 @@ On restart, all state is automatically restored:
 
 1. Etch store restores the lattice root cursor from the last persisted value
 2. Engine creates a fresh fork for subsequent writes
-3. Job manager scans for PENDING/STARTED jobs and restores their records (jobs that were mid-execution are marked as recoverable; they do not automatically re-execute)
+3. Job manager scans for PENDING/STARTED jobs and restores their records (jobs that were waiting or running when the venue stopped are marked failed, with a reason. Paused jobs carry on.)
 4. Agents with pending work wake automatically via the scheduler
 5. DLFS drives are recovered from the independent `:dlfs` lattice region
 

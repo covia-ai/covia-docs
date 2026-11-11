@@ -32,9 +32,9 @@ A **skill** is a named bundle of instructions, context, and tools that an agent 
 
 ### Context
 
-Each turn, the context builder reassembles the agent's input from scratch: system prompt, tools, pinned context entries, loaded paths, pending results, and the session conversation. Agents manage their own working set with `context_load` and `context_unload`, every entry carries a byte budget with budget-aware rendering, and the Goal Tree adapter compacts automatically under pressure, so context is an engineered, inspectable resource rather than an ever-growing transcript.
+Before **every inference**, one assembler rebuilds the agent's input from scratch — identity, tools, pinned context, the skills index, loaded elements, pending results, the conversation, and the current input — in a fixed sequence ordered by how often each part changes, so the cacheable prefix is large by construction rather than by careful prompt-writing. Agents curate their own working set with `context_load` and `context_unload`; the budget is the model's own declared context size, and pressure is surfaced to the agent rather than resolved by silent eviction. Because assembly is a pure function, `agent:context` shows you the exact prompt an agent would receive — context is an engineered, inspectable resource, not an ever-growing transcript.
 
-→ [The context layer](./context) · [Context assembly](../user-guide/agents/tools-and-context#context-assembly-pipeline) · [Context budgets](../user-guide/agents/tools-and-context#context-budgets)
+→ [The context layer](./context) · [Context assembly](../user-guide/agents/tools-and-context#context-assembly) · [Context budgets](../user-guide/agents/tools-and-context#context-budgets)
 
 ### Memory
 
@@ -52,7 +52,7 @@ Every venue is an **MCP server** and an **A2A agent** out of the box: no gateway
 
 ### Adapters
 
-Adapters are how a venue gets its capabilities: each contributes a family of operations: LLM calls, outbound HTTP, files, secrets, scheduling, lattice state, federation, and more. Out of the box a venue ships with nearly thirty, and they compose: an agent can call an LLM, fetch a URL, and schedule its own wake-up through one uniform interface.
+Adapters are how a venue gets its capabilities: each contributes a family of operations: LLM calls, outbound HTTP, files, secrets, scheduling, lattice state, federation, and more. Out of the box a venue ships with 35 built-in adapters and 10 optional modules, and they compose: an agent can call an LLM, fetch a URL, and schedule its own wake-up through one uniform interface.
 
 → [Adapters overview](../user-guide/adapters/)
 
@@ -68,9 +68,9 @@ Agents do not stop at the venue boundary. The [Grid adapter](../user-guide/adapt
 
 → [The Grid](./grid) · [Federate two venues](../user-guide/tutorials/federation) · [COG-12: Orchestrations](../protocol/cogs/COG-012)
 
-## Governed by default
+## Governance
 
-None of the above is bolted on to an ungoverned core. Agents run under [capability](../user-guide/capabilities) grants (signed, attenuable, enforced on every call), with their permissions disclosed in the system prompt and explained in every denial. Each run is a job with an immutable record, and a workflow can pause for human review or a capability grant ([COG-16](../protocol/cogs/COG-016)) inside the same audit trail. The suite is comprehensive precisely because the governance is uniform: one model of identity, authority, and audit underneath every tool an agent touches.
+None of the above is bolted on to an ungoverned core. You can limit each agent with [capability](../user-guide/capabilities) grants, and every call is checked. An agent without limits can do anything its owner can. Agents see their permissions in the system prompt, and every denial explains why. Each run is a job with an immutable record, and a workflow can pause for human review or a capability grant ([COG-16](../protocol/cogs/COG-016)) inside the same audit trail. The suite is comprehensive precisely because the governance is uniform: one model of identity, authority, and audit underneath every tool an agent touches.
 
 ## Start here
 

@@ -5,7 +5,7 @@ title: Connect your tools
 
 # Connect your tools
 
-Agents on a venue can use your third-party services (GitHub, Linear, Notion, HubSpot, Slack, and more) with **credentials you supply and keep on your own venue**. There is no Covia-hosted broker in the path: a token you paste is stored in your venue's encrypted secret store, referenced by name, injected at runtime, never shown back, never placed in a prompt, and redacted from job records. Revoking access is deleting the secret.
+Agents on a venue can use your third-party services (GitHub, Linear, Notion, HubSpot, Slack, and more) with **credentials you supply and keep on your own venue**. There is no Covia-hosted broker in the path: a token you paste is stored in your venue's encrypted secret store, referenced by name, injected at runtime, never placed in a prompt, and never shown in lists or job records. Only you can read one back. Revoking access is deleting the secret.
 
 ## The quickest path: the Connections page
 

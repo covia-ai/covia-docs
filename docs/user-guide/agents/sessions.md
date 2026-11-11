@@ -16,7 +16,8 @@ Each session lives in the agent record at `g/<agentId>/sessions/<sessionId>`, wh
 | `frames` | The conversation. For a plain LLM Agent this is a single root frame; for a [Goal Tree](./goal-tree) agent it's a stack of frames. The root conversation is at `frames/0/conversation`. |
 | `pending` | The session's intake queue — messages delivered but not yet consumed by a run. |
 | `c` | Session-scoped scratch workspace (addressed as `c/...` from within a transition). |
-| `meta` | `{ parties, created, turns }` — the caller DIDs on the session, when it was created, and a turn counter. |
+| `meta` | `{ parties, created, turns, tokens }` — the caller DIDs on the session, when it was created, a turn counter, and the session’s rolled-up token usage (including `cacheRead` / `cacheWrite` where the provider reports [prompt caching](./llm-backends#prompt-caching)). |
+| `loads` | The session tier of the [context scope chain](./tools-and-context#the-scope-chain) — what `context_load` and `skill_load` write while this session is innermost. |
 
 ## Getting a session id
 
@@ -87,6 +88,15 @@ Sessions are plain lattice data — read them directly with the `covia` adapter:
 ```
 
 `agent:context` is the higher-level equivalent — it shows the exact LLM input the agent would assemble for a session. See [Agent Operations](./operations#agent-context).
+
+## Managing sessions
+
+| Operation | Purpose |
+|-----------|---------|
+| [`agent:rename-session`](./operations#agent-rename-session) | Set or clear a session's free-form title — easier to pick out of a list than a raw id |
+| [`agent:delete-session`](./operations#agent-delete-session) | Delete the session record: history, pending messages, metadata |
+
+Deleting a session is how you hold a **private conversation and remove it afterwards**. It does not touch Job records — callers hold their own Job ids and delete those separately — and any in-flight chat on the session is failed. Operators can switch the operation off with `adapters.agent.sessionDelete: false` where conversations are meant to be part of the record.
 
 ## Related
 

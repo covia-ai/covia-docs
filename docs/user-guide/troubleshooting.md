@@ -17,6 +17,8 @@ Symptoms, causes, and fixes for the issues people actually hit. Each error messa
 
 **Fix:** use the catalog path — `v/ops/covia/read`, `v/ops/http/get`. List everything the venue offers with `GET /api/v1/operations`. Multi-word operations are kebab-case: `v/ops/grid/job-result`, `v/ops/agent/cancel-task`, `v/ops/mcp/tools-list`. The other valid forms are a workspace pin (`o/<name>`), an asset id (`a/<hash>`), and a DID URL. See the [API reference](./api/).
 
+**If it names `v/ops/skills`:** that operation was split in 0.9.4. Use [`v/ops/skills/list`](./adapters/skills) (one skillset) or `v/ops/skills/read` (one skill, by path or asset ref). The old `{"command": "list"}` form no longer resolves.
+
 ## My job failed — how do I see why?
 
 A failed job carries its error in the job record:
@@ -39,7 +41,7 @@ Ways to inspect:
 **Fix:** store the key the operation names:
 
 ```json
-{ "operation": "v/ops/secret/set", "input": { "key": "OPENAI_API_KEY", "value": "sk-..." }, "wait": true }
+{ "operation": "v/ops/secret/set", "input": { "name": "OPENAI_API_KEY", "value": "sk-..." }, "wait": true }
 ```
 
 Secrets are per-user and resolved at invocation time; they never appear in job records. Each [backend](./agents/llm-backends) declares its own secret name (`ANTHROPIC_API_KEY`, `XAI_API_KEY`, …). Local [Ollama](./agents/llm-backends#available-backends) needs no key.
@@ -54,7 +56,26 @@ When a transition fails (bad credentials, missing tool, capability denial), the 
 
 ## "'paths' must be a string or array of strings"
 
-`v/ops/covia/inspect` takes **`paths`** (a string or an array), not `path` — unlike `covia:read`/`covia:write`, which take `path`. Easy to mix up.
+`v/ops/covia/inspect` takes `path` for the usual single-path case, or **`paths`** — a string or an array — to preview several paths in one call, sharing the budget between them. This error means `paths` was given something that is neither.
+
+## My agent isn't seeing what I think it is
+
+Don't guess at the prompt — ask for it. [`agent:context`](./agents/operations#agent-context) assembles the exact input the agent would send to its model for a call you describe, through the same assembler a live inference uses:
+
+```json
+{ "operation": "v/ops/agent/context",
+  "input": { "agentId": "Alice", "message": "which vendors are overdue?" },
+  "wait": true }
+```
+
+Read the result for the thing that surprises you:
+
+- **A tool is missing** — check the tail for the unavailable-tools notice. A configured tool that didn't resolve this cycle is named there, and resolution is live, so fixing the path makes it available next cycle with no recreate.
+- **A skill isn't in the index** — the skill's *kind* is probably mis-declared. `config.skillsets` takes directories, `config.skills` takes individual skills, and they don't interchange. Pointing `skillsets` at `v/skills` (a directory of *skillsets*) instead of `v/skills/root` yields a silently empty index; `agent:create` warns about exactly this.
+- **Context is too big** — `budget` reports `{bytes, used, remaining}`. The bound is the model's own declared `budget.bytes`, not a venue constant, so a small budget usually means the model asset declares one.
+- **A loaded entry says `unavailable`** — its source stopped resolving. That's shown rather than hidden precisely so it can be fixed.
+
+To check what the agent would *do* with a given reply, [`agent:step`](./agents/operations#agent-step) runs one harness iteration on it without calling the model. The tool calls really run, so their side effects are real — but the agent's session, timeline and tasks are untouched.
 
 ## My data disappeared after a restart
 
