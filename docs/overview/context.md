@@ -22,7 +22,7 @@ Read and write access are governed by [UCAN capabilities](../user-guide/capabili
 
 ## Engineered for LLMs
 
-For hosted agents the layer goes further: context is assembled fresh every turn under explicit budgets, agents load and unload exactly what a task needs, and [skills](./skills) bundle context with instructions and tools for expertise on demand. See [Agents](./agents) for the full suite.
+For hosted agents the layer goes further. One assembler rebuilds the prompt before every inference, in a fixed sequence ordered by how often each part changes — so the cacheable prefix is large by construction, and the working set the agent curates with `context_load` / `context_unload` sits where it costs least. Because assembly is a pure function, you can ask a venue for the exact prompt an agent would receive and get the real thing, not a reconstruction. [Skills](./skills) bundle context with instructions and tools for expertise on demand. See [Agents](./agents) for the full suite.
 
 ## Go deeper
 

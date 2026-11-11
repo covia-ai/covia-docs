@@ -72,7 +72,7 @@ result = venue.run("v/ops/schema/infer", {"value": {"name": "Ada", "age": 36}})
 print(result)  # {'schema': {'type': 'object', ...}}
 ```
 
-A Java SDK (`ai.covia:covia-core`, currently built from source) is also available — see the [SDK reference](sdk/) for the full surface in every language.
+A Java SDK is on Maven Central as `ai.covia:covia-core` — see the [SDK reference](sdk/) for the full surface in every language, and the [parity table](sdk/#cross-sdk-parity) for how the three differ in shape.
 
 ## 3. Run your own venue
 

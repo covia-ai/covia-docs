@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Covia in Claude
 
-The **Covia connector** puts your venue inside Claude. Claude (web, Desktop, and Claude Code) can run your operations, work with your agents, read your workspace, and answer your approvals, with every action landing as a job record on your venue, under a capability grant you sign yourself.
+The **Covia connector** puts your venue inside Claude. Claude (web, Desktop, and Claude Code) can run your operations, work with your agents, read your workspace, and answer your approvals, with every action that changes something landing as a job record on your venue, under a capability grant you sign yourself.
 
 The connector lives at `connector.covia.ai` and works with any venue, including one you host yourself.
 
@@ -70,7 +70,7 @@ Ask Claude naturally; the connector's tools map to your venue:
 - **Approvals**: see pending human-in-the-loop requests and answer them. Claude always confirms with you before answering approvals or capability asks.
 - **Help**: Claude can consult the built-in `covia_help` tool for setup and troubleshooting guidance.
 
-For example, ask *"Create an agent called bob on my Covia venue, then list my agents to confirm."* The reply names the agent's address under your own DID, with a job-receipt link that opens the signed record on your venue — and the agent appears in your dashboard.
+For example, ask *"Create an agent called bob on my Covia venue, then list my agents to confirm."* The reply names the agent's address under your own DID, with a job-receipt link that opens the job record on your venue — and the agent appears in your dashboard.
 
 ![Claude creating an agent, with a job receipt](/img/connect-covia/07-bob-created.png)
 

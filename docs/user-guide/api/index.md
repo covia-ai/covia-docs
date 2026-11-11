@@ -28,7 +28,7 @@ Authenticated requests carry a JWT in the standard header:
 Authorization: Bearer <jwt>
 ```
 
-A venue accepts three bearer forms: a **self-issued EdDSA JWT** (signed with the caller's own Ed25519 key, identifying a `did:key` or a named venue user), a **venue-signed JWT** (issued after OAuth login), or an **external provider JWT** (verified against the provider's JWKS). See the [operator authentication guide](../../operator-guide/auth) for how venues configure these.
+A venue accepts four kinds of token: a **self-issued EdDSA JWT** (signed with the caller's own Ed25519 key, identifying a `did:key` or a named venue user), a **venue-signed JWT** (issued after OAuth login), an **external provider JWT** (verified against the provider's JWKS), or a **UCAN capability token** (a signed grant; see [Capabilities](../capabilities)). See the [operator authentication guide](../../operator-guide/auth) for how venues configure these.
 
 ### Presenting UCAN capability proofs
 
@@ -80,19 +80,21 @@ The `did` is the venue's persistent `did:key` identity, also published in its [D
 
 ### Assets
 
-Across the API and in operation inputs (e.g. `asset:get`, the `file:write` `asset` field, grid operation references), an asset can be referenced by **bare hex hash**, by `a/<hash>`, or by `/a/<hash>`; these are equivalent. The `a/` form matches the per-user namespace convention used elsewhere (`w/`, `o/`).
+Asset **references** resolve generally across the API and in operation inputs. A reference may be a bare hex hash, `a/<hash>`, `/a/<hash>`, a venue-namespace path (`v/`, `w/`, `o/`), or a DID URL — all of these address the same asset, and venue listings return owner-qualified references that round-trip without changing namespace.
+
+Two canonical endpoints carry the two halves of an asset: `assets/<ref>` is its **metadata**, `content/<ref>` is its **bytes**.
 
 #### `GET /api/v1/assets`
 
-Lists the **venue-level asset catalog** (content-addressed ids). Pass `scope=own` (alias `mine`) to list the **authenticated caller's own assets** instead: the per-user `a/` namespace populated by `asset:store` and `asset:pin`, read job-free (covia 0.9.2). The venue's operation catalog is discovered via `GET /api/v1/operations`, not here.
+Lists the **venue-level asset catalog**, as fully-qualified asset references. Pass `scope=own` (alias `mine`) to list the **authenticated caller's own assets** instead: the per-user `a/` namespace populated by `asset:store` and `asset:pin`, read job-free. The venue's operation catalog is discovered via `GET /api/v1/operations` — or on the lattice, by listing `v/ops` with `covia:list` and previewing with `covia:inspect` — not here.
 
 **Query Parameters:**
 
 | Parameter | Type | Description |
 | --------- | ---- | ----------- |
+| `scope` | string | `own` (or `mine`) lists the **authenticated caller's own** `a/` assets — those populated by `asset:store` / `asset:pin` — instead of the venue catalog. Requires authentication; persists no Job. |
 | `offset` | integer | Starting index (0-based). Default: 0 |
-| `limit` | integer | Maximum results (max 1000). Default: all |
-| `scope` | string | `own` or `mine`: list the caller's own `a/` assets instead of the venue catalog |
+| `limit` | integer | Maximum results (max 1000). Default: the first page |
 
 **Response:**
 ```json
@@ -145,15 +147,9 @@ Retrieves metadata for a specific asset.
 
 Returns the asset metadata JSON as originally registered.
 
-#### `GET /api/v1/assets/{id}/content`
+#### `GET /api/v1/content/<ref>`
 
-Retrieves the content of an artifact asset.
-
-**Path Parameters:**
-
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `id` | string | Asset ID (hex string) |
+Retrieves an asset's **content bytes** by any asset reference — hash, `a/`, `v/`, `w/`, `o/`, a leading-slash form, or a DID URL.
 
 **Query Parameters:**
 
@@ -163,7 +159,11 @@ Retrieves the content of an artifact asset.
 
 **Response:** `200 OK`
 
-Returns the binary content with appropriate `Content-Type` header based on the asset metadata.
+Returns the binary content with a `Content-Type` taken from the asset metadata.
+
+#### `GET /api/v1/assets/{id}/content`
+
+The single-segment hash form, kept for compatibility. `GET /api/v1/content/<ref>` is the canonical route and accepts every reference form.
 
 #### `PUT /api/v1/assets/{id}/content`
 
@@ -240,19 +240,23 @@ curl -X POST '.../api/v1/invoke?wait=30000' -d '{"operation":"...","input":{...}
 
 #### `POST /api/v1/run`
 
-Runs an operation and returns its **result**, with no job handle in the response. Use this when you only want the output; use `/invoke` when you need to track, stream, pause, or cancel the execution.
-
-**Request Body:** identical to `/invoke`: `operation` (resolvable reference), optional `input`, optional `ucans` proof array.
+Runs an operation and returns **its result**, rather than a job handle. The request body is the same as `/invoke`; the HTTP request stays open until the operation completes.
 
 ```bash
-curl -X POST .../api/v1/run \
+curl -X POST "$VENUE/api/v1/run" \
   -H "Content-Type: application/json" \
   -d '{"operation": "v/ops/schema/infer", "input": {"value": {"name": "Ada"}}}'
 ```
 
-**Response:** `200 OK` with the operation output as the body, `400` for a malformed request, `403` if the operation is not authorised.
+Execution still uses the normal Job lifecycle internally — this is a different *response shape*, not a different execution path. What differs is what gets **recorded**: mutating or unclassified operations are recorded as durable jobs exactly as through `/invoke`, while an operation declaring `readOnly: true` may run as a transient job that persists no record. An operation with `internal: false`, or the venue policy `recordReadOnlyOperations`, forces recording anyway.
 
-Execution still uses the normal job lifecycle internally: mutating or unclassified operations are recorded as durable jobs, while an operation marked `readOnly: true` may run as a transient job that is never persisted. The HTTP request remains open until the operation completes, so bound long-running work with `/invoke` and polling instead.
+Use `/run` when you want a value and the audit record would be noise; use `/invoke` when you want a handle to poll, stream, pause, or cancel.
+
+| Status | Meaning |
+| ------ | ------- |
+| `200` | Operation output |
+| `400` | Malformed request or operation |
+| `403` | Operation not authorised |
 
 ---
 
@@ -330,7 +334,7 @@ Cancels a running job.
 
 #### `PUT /api/v1/jobs/{id}/pause`
 
-Pauses a running job. Only valid when the job is in a non-terminal, non-paused state (`PENDING`, `STARTED`, `INPUT_REQUIRED`, `AUTH_REQUIRED`).
+Pauses a running job. Only valid for a running job that supports pausing; otherwise 409.
 
 **Response:** `200 OK` with updated job status, `404 Not Found`, or `409 Conflict` if the job is already finished or paused.
 
@@ -368,7 +372,7 @@ Every route takes a `path` query parameter addressing the lattice:
 | `c/` | Session-scoped scratch | Requires `agent` and `session` parameters |
 | `v/` | Venue globals: `v/ops`, `v/info`, `v/agents` | Public read |
 
-The scoping parameters accompany the virtual namespaces: `agent` is a bare agent id under the caller (or a full agent DID), `task` is the `agent:request` job id, and `session` is the session id. These routes read the caller's own namespaces; delegated reads of another user's paths currently use the `covia:read`/`covia:list` operations with `ucans` proofs.
+The scoping parameters accompany the virtual namespaces: `agent` is a bare agent id under the caller (or a full agent DID), `task` is the `agent:request` job id, and `session` is the session id. These routes read the caller's own namespaces; delegated reads of another user's paths currently use the `covia:read`/`covia:list` operations with `ucans` proofs. Reads resolve against the venue's **local** lattice state only: they never fetch from a remote venue.
 
 #### `GET /api/v1/values/read`
 
@@ -391,6 +395,8 @@ Reads the literal value at a path.
 | `{"exists": true, "value": null}` | Path holds a stored null |
 | `{"exists": false, "value": null}` | Path is absent |
 | `{"exists": true, "value": null, "truncated": true, "size": <bytes>}` | Value exceeds `maxSize`; use `slice`, `list`, or a larger guard |
+
+A present value carries an `ETag` over its hash, so a repeat read with `If-None-Match` answers `304 Not Modified`. Absent and truncated reads carry no `ETag`.
 
 #### `GET /api/v1/values/list`
 
@@ -490,9 +496,13 @@ Gets details for a specific operation by name.
 
 #### `GET /api/v1/schedules`
 
-Lists the authenticated caller's pending scheduled events, time-ordered, without creating a job (covia 0.9.2). Includes events queued by the caller's agents. Requires authentication (`401` otherwise).
+Lists the authenticated caller's pending scheduled events, time-ordered, without creating a job (covia 0.9.2). Includes events queued by the caller's agents. Requires authentication (`401` otherwise). The `scheduler:list` operation remains available.
 
-**Response:** an array of `{handle, op, time}` entries, where `handle` identifies the schedule for `scheduler:cancel`/`scheduler:trigger`, `op` is the target operation reference, and `time` is the next run in epoch milliseconds.
+**Response:** `200 OK` with an `events` array of `{handle, op, time}` entries, where `handle` identifies the schedule for `scheduler:cancel`/`scheduler:trigger`, `op` is the target operation reference, and `time` is the next run in epoch milliseconds.
+
+```json
+{ "events": [ { "handle": "0x4f3a...", "op": "v/ops/agent/trigger", "time": 1749650400000 } ] }
+```
 
 ---
 
@@ -589,7 +599,7 @@ Returns the DID document for the venue, following W3C DID specification.
 
 The document `id` is the venue's persistent `did:key`; the same key is also listed under `assertionMethod`, `capabilityDelegation` and `capabilityInvocation`. The venue remains reachable by `did:web:<host>` references; this endpoint is what resolves them to the API `serviceEndpoint`.
 
-#### `GET /.well-known/mcp.json`
+#### `GET /.well-known/mcp`
 
 MCP server discovery endpoint.
 
@@ -715,7 +725,10 @@ Errors return appropriate HTTP status codes with a JSON body:
 | `403` | Forbidden (insufficient capabilities) |
 | `404` | Resource not found |
 | `409` | Conflict (invalid state transition, e.g. pausing a finished job) |
+| `429` | Too many requests (wait for `Retry-After`) |
 | `500` | Server error |
+| `502` | An upstream service failed |
+| `503` | Service unavailable |
 
 ## Related Documentation
 

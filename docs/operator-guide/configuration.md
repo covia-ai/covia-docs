@@ -11,8 +11,8 @@ A venue is configured from a single JSON5 file passed on launch:
 java -jar covia.jar config.json
 ```
 
-This page is the exhaustive list of configuration keys, grouped by concern, with
-defaults. The topic guides — [Venue Quick Start](./venue-start),
+This page lists the main settings, grouped by concern, with
+defaults. The full list is in `venue/docs/CONFIG.md`. The topic guides — [Venue Quick Start](./venue-start),
 [Authentication](./auth), [Security](./security), [Persistence](./persistence),
 and [Embedded Venue](./embedded-venue) — carry the narrative and worked
 examples; this page is the index of *what keys exist and what they default to*.
@@ -45,6 +45,7 @@ All keys below are venue-entry keys unless noted, dotted paths showing nesting
 | Key | Default | Description |
 |-----|---------|-------------|
 | `name` | — | Human-readable venue name, surfaced in status. |
+| `description` | — | Optional human-readable description of the venue, alongside `name`. |
 | `port` | `8080` | HTTP listen port. |
 | `bindAddress` | all interfaces (`0.0.0.0`) | Network interface the HTTP connector binds to. Set `127.0.0.1` to restrict the venue to loopback — see [Embedded Venue](./embedded-venue). A loopback bind also flips the defaults for `rateLimit` (off) and `allowPrivateNetwork` (on). Distinct from `hostname`. |
 | `hostname` | — | The venue's *advertised* public host, used to derive `baseUrl` and a `did:web` alias in the DID document. Leave unset for a loopback/embedded venue (identity stays `did:key`). |
@@ -75,8 +76,11 @@ See [Authentication](./auth) for OAuth setup, token types, and admission.
 | `auth.public.caps` | secure read-only | Capability ceiling applied to unauthenticated callers (read-only, no `invoke`). `"unrestricted"` removes the ceiling (loopback throwaway venues only); an explicit capability vector sets a custom ceiling. |
 | `auth.tokenExpiry` | `86400` (24 h) | Expiry, in seconds, of venue-issued JWTs (after OAuth login). |
 | `auth.oauth.<provider>` | — | OAuth login providers (`google`, `microsoft`, `github`), each with `clientId` / `clientSecret`. |
+| `auth.loginRedirectUris` | — | Exact addresses the venue may send a sign-in code back to. |
 | `auth.acceptedAudiences` | venue DID(s) | Additional JWT `aud` values the venue accepts, beyond its own published DID. |
-| `auth.audience` | `verify` | Audience policy: `verify` (tolerate an absent `aud` during migration) or `require` (reject tokens with no `aud`). |
+| `auth.requireAud` | `true` | Reject tokens not meant for this venue |
+| `auth.requireExp` | `true` | Reject tokens with no expiry |
+| `auth.maxTokenLifetime` | none | Longest token lifetime accepted |
 | `users.autoCreate` | `false` | Automatically admit previously unknown authenticated DIDs. Off, an unknown DID gets `403` with a registration message — see [Admission](./auth#admission-authentication-is-not-membership). Keep off for private and production venues. |
 | `users.bootstrap` | — | Provision named venue users and their public `did:key` authenticator keys before HTTP starts. First-use only: once a user has authenticator history, later startups never add or revoke keys. |
 | `corsOrigins` | `*` | Allowed browser origins: a single origin, an array, the `"loopback"` sentinel (literal localhost forms, never resolves DNS), or `false`/`"none"`/`[]` to disable. Denied origins get `403`; invalid config fails startup rather than silently widening. |
@@ -92,9 +96,10 @@ See [Authentication](./auth) for OAuth setup, token types, and admission.
 | `a2a` | off unless present | Agent-to-Agent protocol config (`a2a.defaultChatOp`, `a2a.agentInfo`). Endpoints register only when this block is present. |
 | `webdav.enabled` | `false` | Mount DLFS over WebDAV at `/dlfs/`. |
 | `file.roots` | ephemeral `tmp` root | Named filesystem roots for the [File adapter](../user-guide/adapters/file). Forms: a path string, `{path, readOnly}`, `{dlfs, subpath, readOnly}` (a DLFS drive clamped to a subtree), or `{temp: true, prefix}`. With no roots configured the adapter creates a single ephemeral `tmp` root, deleted on exit. |
-| `modules` | — | External adapter jars loaded at boot: a path string or `{path, sha256, config}`. `sha256` pins jar content; loading is fail-fast and operator-only — there is deliberately no runtime module-load operation. See [venue modules](../user-guide/adapters/jvm#venue-modules). |
+| `modules` | — | External adapter jars loaded at boot: a path string or `{path, sha256, config}`. `sha256` pins jar content; boot loading is fail-fast. See [venue modules](../user-guide/adapters/jvm#venue-modules). |
+| `dynamicModules` | off | Policy for loading modules on a **running** venue via `v/ops/venue/module/load`: `{enabled, dir, anyPath}`. With `enabled`, the module must be a jar name inside the staging directory `dir` (no absolute paths, no `..`) unless `anyPath` widens it. Off by default — leave it off unless you intend operators to load code at runtime. |
 | `recordReadOnlyOperations` | `false` | Record even declared-read-only `/api/v1/run` operations as durable jobs. |
-| `enablePrivateJobs` | *(deprecated)* | No longer enables `private: true` on `/invoke` — invoke always creates a durable job. Read-only result-oriented execution goes through `/api/v1/run`. |
+| `enablePrivateJobs` | `false` | Lets `/api/v1/run` skip the job record when asked (`private: true`). `/invoke` always keeps a record. |
 | `defaultTransitionOp` | `v/ops/llmagent/chat` | Default agent transition operation when an agent config omits `operation`. |
 | `defaultLlmOperation` | `v/ops/langchain/openai` | Default level-3 LLM operation for agents. |
 | `maxToolIterations` | `30` | Venue-wide cap on agent tool-loop iterations per turn; agents can override per config. |
@@ -114,7 +119,14 @@ Per-adapter settings live under `adapters.<name>`:
 | `adapters.hitl.maxGrantLifetimeSecs` | none | Ceiling on the lifetime of [HITL](../user-guide/adapters/hitl)-minted capability grants; offers exceeding it are rejected before the human ever sees them. |
 | `adapters.orchestrator.maxItems` / `maxConcurrency` | `50` / `8` | Bounds on orchestrator `foreach` fan-out. |
 | `adapters.langchain.ollamaUrl` | — | Local Ollama endpoint for the LangChain adapter. |
+| `adapters.skills.defaultSkillsets` / `defaultSkills` | `v/skills/root` | The entry point the `skills:list` operation lists when no `skillset` is given, published at `v/info/adapters/skills`. Governs that operation only — agents declare their own sources. See [Skills adapter](../user-guide/adapters/skills). |
+| `adapters.<name>.enabled` | `true` | Boot switch for a non-kernel adapter. `false` leaves it registered but retracted — no catalog, no introspection, no dispatch. |
 | `adapters.sql.databases.<name>` | — | *(SQL module)* Operator-registered JDBC connections: `{url, user, password}`, with `s/NAME` secret references for passwords. `adapters.sql.path` makes venue-local databases persistent. See [SQL adapter](../user-guide/adapters/sql). |
+| `adapters.telegram.bots.<name>` | — | *(Telegram module)* Operator-declared bots: `{token, user, agent \| operation, reply, allow, open, parseMode, greeting}`. `adapters.telegram.apiUrl` overrides the Bot API base URL. See [Telegram adapter](../user-guide/adapters/telegram). |
+| `adapters.discord.bots.<name>` | — | *(Discord module)* As Telegram, plus `mentionOnly`. See [Discord adapter](../user-guide/adapters/discord). |
+| `adapters.claudecode.projects.<name>` | — | *(Claude Code module)* Directories Claude Code may run in: `{path, user, description, options}`. `maxSessions` (4) and `idleSeconds` (900) bound the live process pool; `command`, `env` and `defaults` are operator-only. See [Claude Code adapter](../user-guide/adapters/claudecode). |
+
+Adapter settings can also be applied to a **running** venue with `v/ops/venue/adapter/configure` (and an adapter switched off with `v/ops/venue/adapter/disable`) — venue-owned operations requiring `adapter/manage` on `<venue DID>/adapters`. Runtime changes are **not persisted**: after a restart this file is authoritative again. See [Runtime lifecycle](../user-guide/adapters/#runtime-lifecycle).
 
 ## Secrets bootstrap
 

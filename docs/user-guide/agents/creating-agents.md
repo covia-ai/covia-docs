@@ -20,7 +20,7 @@ The simplest possible agent has just an ID:
 }
 ```
 
-This creates an agent with default settings: `llmagent:chat` transition, `langchain:openai` backend, `gpt-5.4-mini` model, and the platform's default tool set. It will respond conversationally to any task.
+This creates an agent with default settings: `llmagent:chat` transition, `langchain:openai` backend, that backend's default model, and the platform's default tool set. It will respond conversationally to any task.
 
 ## Configuration
 
@@ -72,13 +72,16 @@ The `config` field controls agent behaviour. All fields are optional — default
 |-------|------|---------|-------------|
 | `operation` | string | `v/ops/llmagent/chat` | Level 2 transition function. Use `v/ops/goaltree/chat` for goal tree. |
 | `systemPrompt` | string | Generic assistant | The system message defining the agent's role and instructions. |
-| `model` | string | `gpt-5.4-mini` | LLM model name passed to the backend. |
+| `model` | string | *backend default* | LLM model name passed to the backend. Ask `langchain:models` what a venue offers. |
 | `llmOperation` | string | `v/ops/langchain/openai` | Level 3 LLM operation. See [LLM Backends](./llm-backends). |
 | `tools` | array | — | Operations the agent can call. Strings or `{operation, name, description}` maps. |
 | `defaultTools` | boolean | `true` | Include the platform's default tools (workspace CRUD, agent management, assets, schemas). Set `false` for explicit control. |
-| `caps` | array | — | Capability restrictions. Each entry: `{with: "path/", can: "crud/read"}`. |
+| `caps` | array | none: the agent can do anything its owner can | Limits on what the agent may do. You can only give limits you hold yourself. Each entry: `{with: "path/", can: "crud/read"}`. |
 | `context` | array | — | Lattice paths to load into context every turn. |
-| `skills` | array | — | Skill sources (`w/skills`, `v/skills`, `a/<hash>`). Injects the skills index and offers `skill_load`. See [Skills](./tools-and-context#skills). |
+| `skillsets` | array | — | Directories of skills (`w/skills`, `v/skills/root`). The usual declaration. |
+| `skills` | array | — | Individual skills — one path or `a/<hash>` each, for a curated index. |
+
+Declaring either kind injects the skills index and offers `skill_load`; declaring neither turns skills off entirely. The two kinds do not interchange — a directory listed under `skills` is not walked. See [Skills](./tools-and-context#skills).
 | `outputs` | object | — | Typed output schemas for `complete` and `fail` (Goal Tree only). |
 | `responseFormat` | string / object | — | `"text"`, `"json"`, or `{name, schema}` for strict structured responses. |
 
@@ -102,7 +105,7 @@ Capabilities restrict what paths and operations an agent can access. They follow
 ]
 ```
 
-The `with` field is a path prefix; `can` specifies the permission level (`crud/read`, `crud/write`, `crud`, etc.). Capabilities are disclosed to the agent in its system prompt so it knows what it can and cannot do. If a tool call is denied, the error message lists the agent's available capabilities.
+The `with` field names a path and everything under it, matching whole segments; `can` specifies the permission level (`crud/read`, `crud/write`, `crud`, etc.). Capabilities are disclosed to the agent in its system prompt so it knows what it can and cannot do. If a tool call is denied, the error message lists the agent's available capabilities.
 
 ### Context
 
@@ -180,12 +183,15 @@ Every venue provides these built-in templates:
 | Template | Tools | Purpose |
 |----------|-------|---------|
 | `template:skilled` | read, list + [skills](./tools-and-context#skills) | **Recommended default** — lean base, capabilities loaded on demand |
+| `template:goaltree` | Skills, no default tools | A [Goal Tree](./goal-tree) agent — `v/ops/goaltree/chat`, for goals worth decomposing |
 | `template:minimal` | None | Pure reasoning, no side effects |
 | `template:reader` | read, list, slice | Read-only data analysis |
 | `template:worker` | CRUD operations | General data processing |
 | `template:manager` | Agent ops + read/list | Agent coordination |
 | `template:analyst` | CRUD + schema ops | Data analysis with validation |
 | `template:full` | All defaults | Development and exploration |
+
+Templates are ordinary lattice values under `v/agents/templates/`, so `v/ops/covia/list` on that path tells you what a given venue actually offers.
 
 ### Custom Templates
 
@@ -229,48 +235,56 @@ Explicit fields you pass alongside the reference are merged on top of the resolv
 
 ## Initial State
 
-An agent can be created with pre-populated state by including a `state` field at the top level:
+An agent can be created with pre-populated state by putting `state` **inside a config layer** — a resolved config composition may carry it, and it is then used as the agent's initial state. (`state` is a top-level field of `agent:update`, not of `agent:create`.)
 
 ```json
 {
   "operation": "v/ops/agent/create",
   "input": {
     "agentId": "Alice",
-    "config": { "operation": "v/ops/goaltree/chat" },
-    "state": {
-      "config": {
-        "model": "gpt-5.4-mini",
-        "systemPrompt": "You are Alice...",
-        "tools": ["v/ops/covia/read"]
+    "config": {
+      "operation": "v/ops/goaltree/chat",
+      "state": {
+        "config": {
+          "model": "gpt-5.4-mini",
+          "systemPrompt": "You are Alice...",
+          "tools": ["v/ops/covia/read"]
+        }
       }
     }
   }
 }
 ```
 
+To set state on an agent that already exists, `agent:update` takes `state` at the top level.
+
 The `state` is opaque to the framework — its structure depends on the Level 2 adapter. For both `llmagent:chat` and `goaltree:chat`, the state includes a `config` sub-map with LLM settings.
 
-## Idempotent Creation
+## Creating over an existing agent
 
-By default, `agent:create` is idempotent. If an agent with the given ID already exists:
-- The call succeeds (no error)
-- The existing agent is unchanged
-- The response indicates `created: false`
+`agent:create` requires an **unused** name. If an agent with that id already exists the call **fails** — it is not idempotent, and it does not silently leave the existing agent in place:
 
-To replace an existing agent, use `overwrite: true`:
+```
+Agent already exists: Alice; update it, or delete it with remove=true before creating it again
+```
+
+There is no `overwrite` flag; a request carrying one fails with a message saying so. The two ways forward are deliberate, because they differ in what happens to the agent's history:
+
+**Change it in place** — `agent:update` merges config or state and preserves the agent's sessions, tasks and timeline. This is what you almost always want:
 
 ```json
 {
-  "operation": "v/ops/agent/create",
+  "operation": "v/ops/agent/update",
   "input": {
     "agentId": "Alice",
-    "overwrite": true,
     "config": { "systemPrompt": "Updated instructions..." }
   }
 }
 ```
 
-This updates the config in place for SLEEPING or SUSPENDED agents. For TERMINATED agents, it revives the agent with fresh state.
+**Replace it outright** — `agent:delete` with `remove: true` frees the name, discarding the record, after which `agent:create` succeeds again. Deleting without `remove` leaves the agent TERMINATED: the audit record survives and the name stays taken.
+
+Making the destructive path explicit is the point. An `overwrite` flag quietly decided, on the caller's behalf, whether a running agent's history was worth keeping.
 
 ## AP Demo Example
 
@@ -331,3 +345,5 @@ Each agent has the minimum tools and capabilities needed for its role — follow
 - [Tools and Context](./tools-and-context) — tool resolution, context loading, budgets
 - [LLM Backends](./llm-backends) — configuring OpenAI, Anthropic, Ollama, xAI
 - [Capabilities](../capabilities) — the UCAN capability model behind the `caps` field
+
+For an existing system prompt and SKILL.md files, use [Migrate an agent](./migrate-an-agent) to create the agent in one call.

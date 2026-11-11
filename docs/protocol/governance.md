@@ -9,9 +9,9 @@ Covia follows a community-driven governance model that ensures transparent and c
 The Covia protocol is designed to evolve through community governance:
 
 - **Open Development**: All protocol changes are proposed and discussed publicly
-- **Community Voting**: Protocol upgrades are decided through community consensus
-- **Backward Compatibility**: Changes maintain compatibility with existing implementations
 - **Gradual Migration**: Protocol updates support smooth transitions for all participants
+
+The Covia team writes the COGs and publishes them for review. How decisions and voting will work is not decided yet. Until version 1.0, releases can break compatibility.
 
 The protocol continues to evolve based on real-world implementation experience, community feedback, and emerging requirements from the AI ecosystem. 
 
@@ -31,8 +31,6 @@ The protocol continues to evolve based on real-world implementation experience, 
 
 ### 3. Decentralised Decision-Making
 - Multi-stakeholder governance
-- Distributed voting mechanisms
-- Prevention of capture by any single entity
 - Balance between stability and innovation
 
 ## Governance Process

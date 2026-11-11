@@ -90,9 +90,9 @@ The `body` is always a string — JSON responses must be parsed by the caller.
 
 The adapter includes SSRF (Server-Side Request Forgery) protection:
 
-- Blocks requests to private/internal network addresses (loopback, site-local, link-local) by default
+- Agents cannot call private or local network addresses unless you allow them (`adapters.http.allowedHosts`)
+- The same check covers every outbound call
 - Only HTTP and HTTPS schemes are permitted
-- Venue operators can configure allow lists for specific internal hosts
 
 ## Related
 
