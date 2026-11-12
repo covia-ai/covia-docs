@@ -268,7 +268,11 @@ const config: Config = {
             },
             {
               label: 'Privacy',
-              href: 'https://covia.ai/legal/privacy',
+              to: '/legal/privacy',
+            },
+            {
+              label: 'Terms',
+              to: '/legal/terms',
             },
             {
               label: 'Cookie preferences',
