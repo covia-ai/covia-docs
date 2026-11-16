@@ -13,9 +13,13 @@ There are public example venues you can use right now:
 |-------|-------|-------|
 | [venue-1.covia.ai](https://venue-1.covia.ai) | Google Cloud | Stable — latest release |
 | [venue-2.covia.ai](https://venue-2.covia.ai) | Google Cloud | Stable — latest release |
-| [venue-3.covia.ai](https://venue-3.covia.ai) | AWS | Development — latest development build |
-| [venue-4.covia.ai](https://venue-4.covia.ai) | Azure | Development — latest development build |
-| [venue-test.covia.ai](https://venue-test.covia.ai) | Google Cloud | Scratch venue for experiments — data may be cleared at any time |
+| [venue-3.covia.ai](https://venue-3.covia.ai) | AWS | Test venue — latest development build |
+| [venue-4.covia.ai](https://venue-4.covia.ai) | Azure | Test venue — latest development build |
+| [venue-test.covia.ai](https://venue-test.covia.ai) | Google Cloud | Test venue — scratch venue for experiments |
+
+:::caution Test venues
+venue-3, venue-4 and venue-test are **test venues**. Don't use them for real or personal data: they may be reset at any time. Use venue-1 or venue-2, or [run your own venue](../operator-guide/venue-start), for anything you need to keep.
+:::
 
 These docs track the development build, so the examples below use **venue-3** — they may occasionally be ahead of what the stable venues offer. Each venue's DID and stats are reported by `GET /api/v1/status`.
 
