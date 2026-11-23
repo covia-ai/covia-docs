@@ -6,7 +6,13 @@ sidebar_position: 2
 
 :::caution[Draft]
 
-This is a draft of the Covia white paper, for discussion only — not to be considered final. Parts of it predate the current protocol specifications; where they disagree, the [COGs](./cogs-overview) are authoritative.
+This is a draft of the Covia white paper, for discussion only, and is not final. Parts of it predate the current protocol specifications. Where they disagree, the [COGs](./cogs-overview) are authoritative. Revised November 2026 to remove material that no longer describes the runtime.
+
+:::
+
+:::note[Terminology]
+
+This paper uses older terms. Where it says **agent** for the server component, the specifications and the runtime say **venue**. Where it says **driver**, they say **SDK**. In the specifications, an agent is a persistent actor hosted by a venue.
 
 :::
 
@@ -42,6 +48,17 @@ Each Covia graph is:
 
 By combining execution and governance in a unified runtime, Covia.ai offers a **developer-friendly protocol for operating AI workflows safely in production** — even when they span multiple organisations or regulatory regimes.
 
+## Relationship to Other Standards
+
+Covia builds on existing open standards where they exist:
+
+- **Identity**: W3C Decentralised Identifiers, using `did:key` and `did:web` ([COG-2](./cogs/COG-002))
+- **Authority**: UCAN capability grants, which a holder can narrow and pass on, and which a venue verifies from the tokens alone ([COG-13](./cogs/COG-013), [COG-17](./cogs/COG-017))
+- **Agent interoperability**: A2A ([COG-14](./cogs/COG-014))
+- **Tools**: MCP in both directions. A venue is an [MCP server](../user-guide/mcp/venues-as-mcp-servers) and can [call external MCP tools](../user-guide/mcp/calling-mcp-tools)
+- **Human approval**: requests to a named person, with any grant bound to the choice that person makes ([COG-16](./cogs/COG-016))
+- **Across venues**: caller identity and authority carried from one venue to another ([COG-15](./cogs/COG-015))
+
 ## Architecture Overview
 
 Covia.ai is built as a **federated execution layer** for orchestrating AI workflows across distributed systems. The architecture is modular, pluggable, and policy-aware — designed to span clouds, teams, and partner organisations without centralising control or breaking trust boundaries.
@@ -53,10 +70,10 @@ At the core of Covia’s architecture is the **Execution Graph Runtime**, suppor
 | Component | Purpose |
 | -- | -- | 
 | SDK/CLI | Developer tooling to define, simulate, test, and deploy orchestration graphs |
-| Execution Graph Runtime | Runs each step and keeps its state. A step never runs twice; if a crash stops a step, the record shows it |
+| Execution Graph Runtime | Runs each step and keeps its state. Delivery is at-most-once: the runtime never re-runs a step by itself, so a crash can drop work. A step interrupted by a crash is recorded as failed, for the caller to verify before retrying |
 | Policy Engine | Checks access and identity before each step, and applies data-handling rules |
 | Venue Adapters | Interfaces for executing across clouds, SaaS tools, or partner agents | 
-| Audit + Trace Layer | Keeps a record of every job, with optional security logs. Metrics are on the roadmap | 
+| Audit + Trace Layer | Keeps a record of each job that changes state, with optional security logs. Read-only operations are recorded when the venue is configured to do so. Metrics are on the roadmap | 
 
 ### Federated by Design
 
@@ -66,6 +83,8 @@ Each **Venue** (e.g. a workspace, AWS account, on-prem node, or vendor endpoint)
 This allows Covia.ai to operate not just within an **organisation, but across organisational lines**, while maintaining runtime trust and governance.
 
 #### Goals
+
+These are design goals. The COGs and the runtime documentation state what is implemented.
 
 - Isolated runtime sandboxes
 - Signed, policy-bound transitions
@@ -185,7 +204,6 @@ Assets may be exposed as either:
 
 Agents SHOULD implement access control appropriate to the venues they represent. There is a spectrum of possible levels of access:
 - Fully open (free public data, information commons)
-- Public fee-based (subscription models, tokenised payments etc.)
 - Trusted (research collaborations, trusted business partners)
 - Internal (authorised teams within organisations)
 - Restricted (no access to most assets except through highly controlled operations)
@@ -240,7 +258,7 @@ Orchestration agents may impose appropriate access controls, as with any agent. 
 
 An orchestration MAY be considered as an operation in its own right, and hence used as a composable building block to create a higher-level orchestration.
 
-It is possible for an orchestration to include assets which are not directly accessible to other parties in the orchestration. This capability is particularly important when access to some assets may be highly restricted (e.g. patient medical records), and it is necessary to send compute operations to the data to be executed in a secure trusted execution environment.
+It is possible for an orchestration to include assets which are not directly accessible to other parties in the orchestration. This capability is particularly important when access to some assets may be highly restricted (e.g. patient medical records), and it is necessary to send compute operations to the data, so that they run inside the venue that governs the data and only results leave it.
 
 It is possible for any party to validate orchestration results by checking that metadata of output assets corresponds to the orchestration execution graph and any inputs used. This creates an automatic, verifiable provenance chain for any AI process, even where this spans multiple parties. This validation process involves several key steps:
 
@@ -258,21 +276,20 @@ By following these validation steps, stakeholders can enhance trust and transpar
 
 ### Lattice technology
 
-A lattice is a mathematical, algebraic structure with important properties: They can be used to form conflict-free replicated data types that automatically converge to consensus. This is a powerful tool for distributed systems, as it allows for consensus to be reached without locking.
+A lattice is a mathematical, algebraic structure with important properties: They can be used to form conflict-free replicated data types, whose replicas converge to the same state. This is a powerful tool for distributed systems, as it needs no locking and no central coordinator.
 
 The Covia protocol makes use of lattice technology in several areas:
 - For execution of distributed operations required in orchestration
 - For P2P transmission and replication of large verifiable Merkle tree based data structures (including DLFS drive)
-- For the consensus mechanism of the Convex public virtual machine (used optionally for smart contracts and decentralised tokenisation of AI services)
+
+The lattice, the CAD3 encoding, the content addressing, the Ed25519 signing and the on-disk store come from the Convex open-source libraries, used as a data structure and a storage layer. A venue runs no consensus. There is no chain, no validators and no shared ledger between venues. State replicates only between venues an operator connects.
 
 ### Open Ecosystem
 
 The protocol enables an open, peer-to-peer ecosystem of service providers offering an unlimited variety of venues, assets and services. It is an open standard precisely because this is the best model to enable an effective ecosystem.
 
-As such, the protocol is flexible and can support any business model chosen by participants. We anticipate:
+The protocol does not prescribe how participants work together. We anticipate:
 - Collaboration between trusted organisations on a contractual basis
-- Services offered publicly on a pay-as-you-go basis
-- Marketplaces of assets with licences for sale
 - A wide variety of free data assets open to all
 
 It is possible to configure agents to allow access to any existing data assets via the Covia protocol, so that existing data ecosystems are opened up to Covia users in a standard, interoperable way. As such, the protocol serves as a "bridge" between different islands of public and private data. 
@@ -283,9 +300,9 @@ The Covia roadmap is based around building interoperable components that impleme
 
 Many of these will be made available as open source reference implementations, that anyone can use freely or customise for their project. Companies in the ecosystem are free to offer commercially supported versions of these or create their own solutions as long as they remain consistent with the open standard protocol.
 
-:::note[Status (August 2026)]
+:::note[Status (November 2026)]
 
-This section predates the current implementation and is retained for context; much of it has shipped. The driver libraries exist as the [TypeScript](../user-guide/sdk/typescript) (npm `@covia/covia-sdk`), [Python](../user-guide/sdk/python) (PyPI `covia`), and [Java](../user-guide/sdk/java) SDKs. The reference agent is the open-source [venue runtime](../operator-guide/venue-start) (single JAR or container). The orchestration engine ships as the venue's [orchestrator adapter](../user-guide/adapters/orchestrator), executing multi-step graphs with cross-venue delegation. The standard documents are the [COG specifications](./cogs-overview). Enterprise adapters have shipped for AI frameworks ([LangChain4j](../user-guide/adapters/langchain-adapter)), [SQL databases](../user-guide/adapters/sql), [file systems](../user-guide/adapters/file), HTTP services, and [MCP bridging](../user-guide/mcp/calling-mcp-tools); NoSQL databases, GPU clusters, enterprise service buses, and enterprise application connectors remain on the roadmap.
+This section predates the current implementation and is retained for context; much of it has shipped. The driver libraries exist as the [TypeScript](../user-guide/sdk/typescript) (npm `@covia/covia-sdk`), [Python](../user-guide/sdk/python) (PyPI `covia`), and [Java](../user-guide/sdk/java) SDKs. The reference agent is the open-source [venue runtime](../operator-guide/venue-start) (single JAR or container). The orchestration engine ships as the venue's [orchestrator adapter](../user-guide/adapters/orchestrator), executing multi-step graphs with cross-venue delegation. The standard documents are the [COG specifications](./cogs-overview). Enterprise adapters have shipped for AI frameworks ([LangChain4j](../user-guide/adapters/langchain-adapter)), [SQL databases](../user-guide/adapters/sql), [file systems](../user-guide/adapters/file), HTTP services, and [MCP bridging](../user-guide/mcp/calling-mcp-tools); NoSQL databases, GPU clusters, enterprise service buses, and enterprise application connectors remain on the roadmap. DLFS has shipped as per-user drives in the venue, reached through the [DLFS](../user-guide/adapters/dlfs), [file](../user-guide/adapters/file) and [vault](../user-guide/adapters/vault) adapters.
 
 :::
 
@@ -318,7 +335,6 @@ Reference agents are software components that serve as a Covia protocol agent. T
 - Access control mechanisms
 - Ability to invoke operations
 - Ability to proxy and relay operations to other agents
-- Ability to perform decentralised functions on the Convex network
 
 The agents are readily customisable, especially with respect to allowing developers to implement their own custom operations or access control rules.
 
@@ -367,15 +383,3 @@ In addition to standard file management capabilities, the Browser incorporates a
 The DLFS Node is a back-end storage node for DLFS. This node runs on a server (typically internet connected) and replicates subsets of the DLFS lattice with its peers.
 
 The DLFS Node also serves as a Covia agent and can be configured to make DLFS based assets accessible to protocol users as a venue with customisable access control rules. 
-
-### Decentralised Vector Database
-
-Lattice Technology offers the intriguing possibility of a truly decentralised vector database, allowing the distributed storage, search and retrieval of vector data. Such vector databases are likely to become increasingly important with the demand for AI systems to use data based on vector embeddings.
-
-This solution is based on combining several important technologies:
-- Lattice Technology for replication and validation
-- Kademlia-style P2P routing
-- Locality-sensitive hashing (LSH)
-- Vector similarity search
-
-Decentralised vector database options can also be used directly with the Covia protocol, because database nodes are themselves Covia agents! So a vector similarity search can easily be included in a Covia-based orchestration as part of a larger AI process pipeline.
