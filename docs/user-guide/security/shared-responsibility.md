@@ -24,8 +24,8 @@ Security on Covia is shared. Covia secures the services it operates. Our cloud p
 ## Before you start: what the hosted services are today
 
 - The hosted services are a **public beta**. Interfaces may change and venues may be updated or restarted. **There is no service-level agreement** ([Terms of Service](https://app.covia.ai/terms) §2).
-- **venue-test is a scratch venue.** Its data may be cleared at any time without notice. Do not store personal data or anything you need to keep on it.
-- **venue-1 and venue-2 are Covia's production venues.** venue-3 and venue-4 run development builds for testing and may change without notice. Use venue-1 or venue-2 for anything you rely on.
+- **venue-test is the development venue.** It runs the newest development build, which has not been through QA, and its data may be cleared at any time without notice. Do not store personal data or anything you need to keep on it.
+- **venue-1 and venue-2 are Covia's production venues.** venue-3 and venue-4 run pre-release (QA) builds for testing and may change without notice. Use venue-1 or venue-2 for anything you rely on.
 - Keep your own copies of anything you cannot afford to lose. You can pull your assets to a venue you control at any time.
 
 ## The three parties
