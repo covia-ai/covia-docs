@@ -13,11 +13,11 @@ There are public example venues you can use right now:
 |-------|-------|-------|
 | [venue-1.covia.ai](https://venue-1.covia.ai) | Google Cloud | Stable — latest release |
 | [venue-2.covia.ai](https://venue-2.covia.ai) | Google Cloud | Stable — latest release |
-| [venue-3.covia.ai](https://venue-3.covia.ai) | AWS | Development — latest development build |
-| [venue-4.covia.ai](https://venue-4.covia.ai) | Azure | Development — latest development build |
-| [venue-test.covia.ai](https://venue-test.covia.ai) | Google Cloud | Scratch venue for experiments — data may be cleared at any time |
+| [venue-3.covia.ai](https://venue-3.covia.ai) | AWS | QA — latest pre-release build |
+| [venue-4.covia.ai](https://venue-4.covia.ai) | Azure | QA — latest pre-release build |
+| [venue-test.covia.ai](https://venue-test.covia.ai) | Google Cloud | Dev — newest development build; may be broken, and data may be cleared at any time |
 
-These docs track the development build, so the examples below use **venue-3** — they may occasionally be ahead of what the stable venues offer. Each venue's DID and stats are reported by `GET /api/v1/status`.
+Every change reaches the venues in that order: venue-test first, then venue-3 and venue-4 for testing, then venue-1 and venue-2 at a release. These docs track the QA build, so the examples below use **venue-3** — they may occasionally be ahead of what the stable venues offer. Each venue's DID and stats are reported by `GET /api/v1/status`.
 
 Prefer a UI? The [Covia App](https://app.covia.ai) lets you connect to venues, run operations, and operate agents interactively; the [Covia App guide](./app/) walks through it.
 
@@ -79,7 +79,7 @@ A Java SDK is on Maven Central as `ai.covia:covia-core` — see the [SDK referen
 To control local resources, install custom adapters, or hold your own data, run a venue yourself — it's a single self-contained server:
 
 ```bash
-docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest   # :latest = dev channel; use :stable for the release build
+docker run -p 8080:8080 ghcr.io/covia-ai/covia:latest   # :latest = QA build (matches these docs); :stable = latest release; :dev = newest development build
 ```
 
 Point the examples above at `http://localhost:8080`. See the [Operator Guide](../operator-guide/venue-start) for configuration, persistence, and authentication.
